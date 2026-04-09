@@ -1,0 +1,137 @@
+import { Outlet, Link, useLocation } from "react-router-dom";
+
+export default function AdminLayout() {
+  const location = useLocation();
+
+  const menuItems = [
+    { path: "/admin", label: "Bảng điều khiển", icon: "dashboard" },
+    { path: "/admin/products", label: "Sản phẩm", icon: "inventory_2" },
+    { path: "/admin/orders", label: "Đơn hàng", icon: "shopping_cart" },
+    { path: "/admin/customers", label: "Khách hàng", icon: "group" },
+  ];
+
+  const activeIndex = menuItems.findIndex((item) =>
+    item.path === "/admin"
+      ? location.pathname === "/admin"
+      : location.pathname.startsWith(item.path),
+  );
+
+  return (
+    <div className="bg-surface text-on-surface min-h-screen flex overflow-x-hidden selection:bg-primary selection:text-on-primary">
+      <aside className="h-screen sticky left-0 top-0 w-64 bg-[#24020c] flex flex-col py-6 gap-2 shrink-0 border-r border-white/10 z-50">
+        <div className="px-6 mb-8">
+          <div className="flex items-center gap-3">
+            <Link
+              to="/admin"
+              className="text-2xl font-black italic tracking-tighter text-red-600 leading-none hover:scale-105 transition-transform"
+            >
+              NETBITE
+              <span className="text-sm font-bold text-slate-300 not-italic ml-1">
+                Admin
+              </span>
+            </Link>
+          </div>
+          <p className="text-on-surface-variant/60 text-[10px] uppercase tracking-widest mt-2 font-bold">
+            Hệ thống quản trị
+          </p>
+        </div>
+
+        <nav className="flex-1 px-3 relative">
+          {/* Moving Highlight Background */}
+          {activeIndex !== -1 && (
+            <div
+              className="absolute left-3 right-3 bg-surface-container-highest rounded-xl border-l-4 border-primary shadow-lg shadow-primary/5 transition-all duration-300 ease-out z-0 h-[52px]"
+              style={{ top: `${activeIndex * (52 + 8)}px` }}
+            />
+          )}
+
+          <div className="space-y-2 relative z-10">
+            {menuItems.map((item, index) => {
+              const isActive = activeIndex === index;
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 h-[52px] ${
+                    isActive
+                      ? "text-primary"
+                      : "text-on-surface-variant hover:text-white"
+                  }`}
+                >
+                  <span
+                    className={`material-symbols-outlined transition-colors duration-300 ${isActive ? "text-primary" : ""}`}
+                  >
+                    {item.icon}
+                  </span>
+                  <span
+                    className={`font-bold text-sm transition-colors duration-300 ${isActive ? "font-black" : ""}`}
+                  >
+                    {item.label}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div className="pt-10"></div>
+
+          <div className="space-y-2">
+            <Link
+              to="/login"
+              className="text-on-surface-variant hover:text-error flex items-center gap-3 px-4 
+              py-3 mt-[295px] rounded-xl hover:bg-surface-container transition-all duration-300 
+              border-l-4 border-transparent hover:border-error/50"
+            >
+              <span className="material-symbols-outlined">logout</span>
+              <span className="font-bold text-sm">Đăng xuất</span>
+            </Link>
+          </div>
+        </nav>
+      </aside>
+
+      <div className="flex-1 flex flex-col min-w-0">
+        <header className="w-full top-0 sticky z-40 bg-[#24020c]/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-white/10">
+          <div className="flex items-center gap-4 flex-1">
+            <div className="relative w-full max-w-md group">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">
+                search
+              </span>
+              <input
+                className="w-full bg-surface-container-high border border-outline-variant/30 rounded-full pl-12 pr-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
+                placeholder="Tìm kiếm hệ thống..."
+                type="text"
+              />
+            </div>
+          </div>
+
+          <div className="flex items-center gap-5">
+            <div className="flex items-center gap-2">
+              <button className="relative p-2 rounded-full hover:bg-white/5 transition-all duration-200 text-slate-300 hover:text-primary cursor-pointer active:scale-95">
+                <span className="material-symbols-outlined">notifications</span>
+                <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-primary border-2 border-[#24020c] rounded-full"></span>
+              </button>
+            </div>
+            <div className="h-8 w-px bg-white/10 mx-1"></div>
+            <div className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1.5 pr-4 rounded-full transition-colors">
+              <img
+                alt="Ảnh đại diện Admin"
+                className="w-10 h-10 rounded-full object-cover border-2 border-primary"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBa7X4dnkqhpoVO-a3GjeVqhOoLbfjgbGLJ-1EVQViU99_IYooG1fTAyN32iFBroVClI0-7AMcQbrJpScklSfYksvIPHDaqoCfoyPZ3eWYOK0VgL_Bh5jVd_d17TKeT7NPWznNdbOG8EbCE9AcP6Otj4ng62y7OtjxHG4qoBw_hm2UemV64782wV-M1apFYzb2MEwC4HmAi1nDqVquJcS_uZ51n6NrdhwbgKSnIVgnTYwFirSXCR96LD--luFGawUSyVlw-ABF37AG-"
+              />
+              <div className="text-left hidden md:block">
+                <p className="text-sm font-bold text-on-surface leading-tight">
+                  Admin Hoang
+                </p>
+                <p className="text-[10px] text-primary uppercase tracking-widest font-bold">
+                  Thách Đấu
+                </p>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <Outlet />
+      </div>
+    </div>
+  );
+}

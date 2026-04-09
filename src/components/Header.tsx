@@ -1,0 +1,93 @@
+import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { useCart } from '../context/CartContext';
+import CartDrawer from './CartDrawer';
+
+export default function Header() {
+  const { user, logout } = useAuth();
+  const location = useLocation();
+  const { totalCount } = useCart();
+  const [cartOpen, setCartOpen] = useState(false);
+
+  if (location.pathname === '/checkout') {
+    return (
+      <header className="fixed top-0 w-full z-50 glass-header bg-[#24020c]/80 no-line-rule border-b border-white/5">
+        <div className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+          <Link to="/" className="text-2xl font-black italic tracking-tighter text-red-600 dark:text-red-500">NETBITE</Link>
+          <nav className="hidden md:flex gap-6 items-center font-bold tracking-tight">
+            <span className="text-primary border-b-2 border-primary pb-1">Thanh toán</span>
+            <span className="material-symbols-outlined text-sm text-on-surface-variant">chevron_right</span>
+            <span className="text-on-surface-variant opacity-50 cursor-not-allowed">Hoàn tất</span>
+          </nav>
+          <div className="flex items-center gap-4">
+            <Link to={user ? (user.role === 'admin' ? '/admin' : '/profile') : '/login'}
+              className="bg-surface-container hover:bg-surface-container-highest text-on-surface p-2.5 rounded-full transition-all duration-300 active:scale-95 border border-white/5">
+              <span className="material-symbols-outlined text-xl">person</span>
+            </Link>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
+  return (
+    <>
+      <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
+
+      <header className="fixed top-0 w-full z-30 glass-header bg-[#24020c]/80 no-line-rule">
+        <div className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
+          <Link to="/" className="text-2xl font-black italic tracking-tighter text-red-600 dark:text-red-500">NETBITE</Link>
+
+          <nav className="hidden md:flex gap-8 items-center">
+            <Link
+              className={`transition-colors tracking-tight font-headline ${location.pathname === '/' ? 'text-red-500 font-bold border-b-2 border-red-500 pb-1' : 'text-slate-300 hover:text-red-400'}`}
+              to="/">Trang Chủ</Link>
+            <Link
+              className={`transition-colors tracking-tight font-headline ${location.pathname === '/menu' || location.pathname.startsWith('/product/') ? 'text-red-500 font-bold border-b-2 border-red-500 pb-1' : 'text-slate-300 hover:text-red-400'}`}
+              to="/menu">Thực Đơn</Link>
+            <Link
+              className={`transition-colors tracking-tight font-headline ${location.pathname === '/about' ? 'text-red-500 font-bold border-b-2 border-red-500 pb-1' : 'text-slate-300 hover:text-red-400'}`}
+              to="/about">Về Chúng Tôi</Link>
+          </nav>
+
+          {location.pathname === '/' ? (
+            <button
+              onClick={() => window.location.href = '/login'}
+              className="bg-secondary text-on-secondary px-6 py-2 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all duration-300 active:scale-95">
+              Đặt đơn ngay
+            </button>
+          ) : (
+            <div className="flex items-center gap-4">
+              {/* Cart Icon + Badge → opens drawer */}
+              <button
+                onClick={() => setCartOpen(true)}
+                className="relative p-2 hover:bg-white/5 transition-all duration-200 rounded-full active:scale-95"
+              >
+                <span className="material-symbols-outlined text-primary">shopping_cart</span>
+                {totalCount > 0 && (
+                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-secondary text-on-secondary text-[10px] font-black rounded-full flex items-center justify-center px-1 shadow-[0_0_8px_rgba(255,171,105,0.6)]">
+                    {totalCount > 99 ? '99+' : totalCount}
+                  </span>
+                )}
+              </button>
+
+              {user ? (
+                <div className="flex gap-4 items-center">
+                  <Link
+                    to={user.role === 'admin' ? '/admin' : '/profile'}
+                    className="text-slate-300 hover:text-white font-bold">{user.name}</Link>
+                  <button onClick={logout} className="text-red-400 hover:text-red-300">Đăng xuất</button>
+                </div>
+              ) : (
+                <Link to="/login" className="bg-secondary text-on-secondary px-6 py-2 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all duration-300 active:scale-95">
+                  Đặt đơn ngay
+                </Link>
+              )}
+            </div>
+          )}
+        </div>
+      </header>
+    </>
+  );
+}

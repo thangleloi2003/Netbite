@@ -1,0 +1,358 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "123",
+      "role": "admin",
+      "name": "Quản trị viên",
+      "email": "admin@netbite.vn",
+      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuA7LRKZ2ix3cq9BaDKDOJF641c7-yfpl-LS9R_4huZbtFir6z0km8AGH0ppWFKfOxQaHoMM0O5YOV2Xpbuv7vXH6AqzRHYdFE0ivCXzLp4zZHI0inwUo4IEFRVQjBjjLIkQPb97rCp9RPKH615RDRDR3Zlpcs9vocNy92yjcthPhoAqI3YDPyE5LPBlpKIvCYzweyTAtb6oYDEHGIQoI8-slhN04UrKAhJUAsgqx51EwJojvLoKEd8ubbfeUcMPXZ7iVDE7WthlnSqs",
+      "membership": "admin"
+    },
+    {
+      "id": "2",
+      "username": "customer",
+      "password": "123",
+      "role": "customer",
+      "name": "Tuấn Kiệt",
+      "email": "kiett@example.com",
+      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuA7LRKZ2ix3cq9BaDKDOJF641c7-yfpl-LS9R_4huZbtFir6z0km8AGH0ppWFKfOxQaHoMM0O5YOV2Xpbuv7vXH6AqzRHYdFE0ivCXzLp4zZHI0inwUo4IEFRVQjBjjLIkQPb97rCp9RPKH615RDRDR3Zlpcs9vocNy92yjcthPhoAqI3YDPyE5LPBlpKIvCYzweyTAtb6oYDEHGIQoI8-slhN04UrKAhJUAsgqx51EwJojvLoKEd8ubbfeUcMPXZ7iVDE7WthlnSqs",
+      "membership": "gold"
+    }
+  ],
+  "categories": [
+    { "id": "1", "slug": "combo", "name": "Combo", "icon": "local_fire_department" },
+    { "id": "2", "slug": "noodle", "name": "Mì", "icon": "restaurant" },
+    { "id": "3", "slug": "snack", "name": "Đồ ăn vặt", "icon": "cookie" },
+    { "id": "4", "slug": "drink", "name": "Đồ uống", "icon": "local_bar" },
+    { "id": "5", "slug": "food", "name": "Món chính", "icon": "lunch_dining" }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "Burger Bò Full Buff",
+      "price": 45000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDutlCRjKEhBt74tF3heHkGwr5rUIZ2QE2q_WU-M0FHNA7AFYVorgWeDnG9ECvOAfxtxx4ARI_R0Mru0zkKQJ2Us13QN73S62PDL7QyHy7AHBOoTbAhjcaFzvD0tnkcTlpMOmjh4zYhxfzUsuadP7nCnPBNDLRMhQDBBkpsych4pOv3c_0ru7kYzEz-asSgfXin7y0qcQYcg_oGFdBj2LgvEPJieU-D3Q3doqoVoXxkZdt4nJlsyhADfcGD4Wpw2R4O77QesZdDsc7X",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDutlCRjKEhBt74tF3heHkGwr5rUIZ2QE2q_WU-M0FHNA7AFYVorgWeDnG9ECvOAfxtxx4ARI_R0Mru0zkKQJ2Us13QN73S62PDL7QyHy7AHBOoTbAhjcaFzvD0tnkcTlpMOmjh4zYhxfzUsuadP7nCnPBNDLRMhQDBBkpsych4pOv3c_0ru7kYzEz-asSgfXin7y0qcQYcg_oGFdBj2LgvEPJieU-D3Q3doqoVoXxkZdt4nJlsyhADfcGD4Wpw2R4O77QesZdDsc7X",
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuAyovayGLGPYC5vITR_QtrtVRUeMdseZE6jL5zTY0eHXE9o5TQqq1G5dcu3lc6nLNVpz1J2MvLNWQToUpabfa46yHG-K5s9GEXTk9X18PCPzgTB9EUic8Ce8l9tTtdgD5j08elBVehJiEPWSDCfnogm2754LCbLPcSiN242NcR4eroaEY6vEV4EBkyMO7C7y3RAicuHiaGFjJum4infHXRXZTT1BCXcjkfjZI4K6oLEJX-a5sYVbdKXaffsKFHKKANg_6vp9mFmtZGD"
+      ],
+      "category": "combo",
+      "description": "Chiếc Burger Bò Full Buff huyền thoại với miếng thịt bò Úc tươi ngon nướng lửa hồng, phủ phô mai Cheddar và tương đặc biệt của NetBite. Đây là nguồn năng lượng tối thượng cho mọi trận đấu.",
+      "tags": ["hot", "bestseller"],
+      "rating": 4.8,
+      "reviewCount": 1200,
+      "calories": 650,
+      "protein": 35,
+      "fat": 28,
+      "badges": [
+        { "icon": "local_fire_department", "label": "Cay nồng" },
+        { "icon": "restaurant", "label": "Nhiều đạm" },
+        { "icon": "timer", "label": "Giao nhanh" },
+        { "icon": "thermostat", "label": "Luôn nóng" }
+      ],
+      "toppings": [
+        { "id": "t1", "label": "Thêm phô mai", "price": 10000, "icon": "restaurant", "type": "quantifiable" },
+        { "id": "t2", "label": "Thêm xúc xích", "price": 15000, "icon": "lunch_dining", "type": "quantifiable" },
+        { "id": "t3", "label": "Thêm trứng", "price": 8000, "icon": "egg", "type": "quantifiable" }
+      ],
+      "relatedIds": ["5", "6", "7"]
+    },
+    {
+      "id": "2",
+      "name": "Pizza Pepperoni MVP",
+      "price": 129000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuA1jShbAweMprhdeG3wrt53fMYzq7e8G-QaP5Q4nedD3qhXfFHiEAby2ObY2kq6Fj8AaayZUcMyOpj8LgeXzm6uEenaPfiJH6rZP3Ci38hbej9Hr4Ryzrbxf1kMPTn1f4znqouoX2cz9WJLDRvpgEBjpuPnlWkwXa92jYcoif1sy0qeksRbV2KEDDDi84Q2PVMsHN49C3cOc7tAiQbaHvVg3yLrL5OKfXruLTOh2oZciSqvoDSI5vxYhb0rt7QVaA_ih-051KORfeHU",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuA1jShbAweMprhdeG3wrt53fMYzq7e8G-QaP5Q4nedD3qhXfFHiEAby2ObY2kq6Fj8AaayZUcMyOpj8LgeXzm6uEenaPfiJH6rZP3Ci38hbej9Hr4Ryzrbxf1kMPTn1f4znqouoX2cz9WJLDRvpgEBjpuPnlWkwXa92jYcoif1sy0qeksRbV2KEDDDi84Q2PVMsHN49C3cOc7tAiQbaHvVg3yLrL5OKfXruLTOh2oZciSqvoDSI5vxYhb0rt7QVaA_ih-051KORfeHU"
+      ],
+      "category": "food",
+      "description": "Pizza đế mỏng với lớp phô mai mozzarella dày kéo căng, cùng pepperoni cay thơm, sốt cà chua đặc biệt và rau húng tươi. Dành cho cả đội 5 người leo rank cùng nhau!",
+      "tags": [],
+      "rating": 4.6,
+      "reviewCount": 870,
+      "calories": 980,
+      "protein": 42,
+      "fat": 41,
+      "badges": [
+        { "icon": "restaurant", "label": "Chia sẻ" },
+        { "icon": "timer", "label": "Giao nhanh" }
+      ],
+      "toppings": [
+        { "id": "t1", "label": "Thêm phô mai", "price": 15000, "icon": "restaurant", "type": "quantifiable" },
+        { "id": "t4", "label": "Thêm cạnh gà", "price": 25000, "icon": "restaurant", "type": "quantifiable" }
+      ],
+      "relatedIds": ["1", "5", "6"]
+    },
+    {
+      "id": "3",
+      "name": "Sườn Nướng BBQ Gank",
+      "price": 185000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDCiHIqf8NfsGfXutGzqimL2GKcK4dQcyDeFogvHAsnFdOAHrvCzBekC-wrS2O9fgNffl5aWIhvVkDWJeulSQd5NZoSu3kg6Qva8LeJL69pFmpnHGY77L_opaDQ3nxKmaMgHkm6_Sd3XHfHzTBMWpM1KmPBqvqyqyIGSTF8I0BQhw9F9R0Ta16G6G_qSYXJsz3MsQeUyY1nyorVUVT3mPbltbtqZLjKo_3saz4BgBNKd-ixs0O9zd0yoWFaNmrmfYi_TNmwGV7AFblb",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDCiHIqf8NfsGfXutGzqimL2GKcK4dQcyDeFogvHAsnFdOAHrvCzBekC-wrS2O9fgNffl5aWIhvVkDWJeulSQd5NZoSu3kg6Qva8LeJL69pFmpnHGY77L_opaDQ3nxKmaMgHkm6_Sd3XHfHzTBMWpM1KmPBqvqyqyIGSTF8I0BQhw9F9R0Ta16G6G_qSYXJsz3MsQeUyY1nyorVUVT3mPbltbtqZLjKo_3saz4BgBNKd-ixs0O9zd0yoWFaNmrmfYi_TNmwGV7AFblb"
+      ],
+      "category": "food",
+      "description": "Sườn heo non nướng than hồng, phủ sốt BBQ ngọt mặn đặc trưng NetBite. Kèm theo khoai tây chiên giòn và coleslaw mát lạnh. Bữa ăn lý tưởng sau một trận đấu căng thẳng.",
+      "tags": [],
+      "rating": 4.7,
+      "reviewCount": 654,
+      "calories": 1100,
+      "protein": 55,
+      "fat": 48,
+      "badges": [
+        { "icon": "restaurant", "label": "Nhiều đạm" },
+        { "icon": "thermostat", "label": "Luôn nóng" }
+      ],
+      "toppings": [
+        { "id": "t5", "label": "Thêm sốt BBQ", "price": 5000, "icon": "restaurant", "type": "binary" }
+      ],
+      "relatedIds": ["1", "2", "5"]
+    },
+    {
+      "id": "4",
+      "name": "Mì Cay Hải Sản Crit Dame",
+      "price": 55000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBeP-6roJ3eWOYUYpiJ7VPVareHErGFmPEabg6YkNcLR-POaUlMwQK5J4X_cupfvh8vFMQg2FxL0_3sXU5bDnB1WZ3dtyRRzUD4q6_S8i6p5mwpp9rwCvafvBd_FsQ7t0nMXwU0UDWUDu5goBV2O2BkoC703-HO8PgOmO7l-1xltWs77q-xN74Q43TKZlwoEupFCgR9ygbuQunD-SWcj9cvxqh5shP5tdczLqyywW2uMtvTymWwDbTo4PADtBnCY0QL7at7V46duvIz",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuBeP-6roJ3eWOYUYpiJ7VPVareHErGFmPEabg6YkNcLR-POaUlMwQK5J4X_cupfvh8vFMQg2FxL0_3sXU5bDnB1WZ3dtyRRzUD4q6_S8i6p5mwpp9rwCvafvBd_FsQ7t0nMXwU0UDWUDu5goBV2O2BkoC703-HO8PgOmO7l-1xltWs77q-xN74Q43TKZlwoEupFCgR9ygbuQunD-SWcj9cvxqh5shP5tdczLqyywW2uMtvTymWwDbTo4PADtBnCY0QL7at7V46duvIz"
+      ],
+      "category": "noodle",
+      "description": "Mì cay hải sản siêu cấp with tôm, mực, bạch tuộc tươi ngon. Nước dùng cay đậm đà cùng độ cay tùy chọn từ Level 1-7. Cảnh báo: Level 7 chỉ dành cho những game thủ cứng!",
+      "tags": ["hot"],
+      "rating": 4.9,
+      "reviewCount": 2100,
+      "calories": 720,
+      "protein": 38,
+      "fat": 22,
+      "badges": [
+        { "icon": "local_fire_department", "label": "Rất cay" },
+        { "icon": "restaurant", "label": "Hải sản tươi" },
+        { "icon": "timer", "label": "Giao nhanh" }
+      ],
+      "toppings": [
+        { "id": "t6", "label": "Độ cay", "price": 0, "icon": "local_fire_department", "type": "level", "options": ["Cấp 0", "Cấp 1", "Cấp 2", "Cấp 3", "Cấp 4", "Cấp 5", "Cấp 6", "Cấp 7"] },
+        { "id": "t7", "label": "Thêm trứng lòng đào", "price": 8000, "icon": "egg", "type": "quantifiable" }
+      ],
+      "relatedIds": ["8", "9", "5"]
+    },
+    {
+      "id": "5",
+      "name": "Khoai tây chiên",
+      "price": 35000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDoUJlo_7LNLcPzwQOGWkilucYKKfDiF9woSfwgS_-UC0eTKUw7z242tpahcsKRYddKXRtvZOXV1p6Gi2vtcDjBwyu7GiUwiEtfWnTM_80lPrVKasKtj0lklNscsKuTODBo9Ivdwn8ieXj7-o7rm1cvvdeLY_G2g0g2DZVnCTe63J-ygPdrTSzNNiuEHWS6ERro-etgkgPhAI1TGKKFrUf0dyxx5Ca6kLfxWa-r8v6f5pI4tmrxZ1ZkM3l0SGZ6FsW667DjcT2MAi1m",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDoUJlo_7LNLcPzwQOGWkilucYKKfDiF9woSfwgS_-UC0eTKUw7z242tpahcsKRYddKXRtvZOXV1p6Gi2vtcDjBwyu7GiUwiEtfWnTM_80lPrVKasKtj0lklNscsKuTODBo9Ivdwn8ieXj7-o7rm1cvvdeLY_G2g0g2DZVnCTe63J-ygPdrTSzNNiuEHWS6ERro-etgkgPhAI1TGKKFrUf0dyxx5Ca6kLfxWa-r8v6f5pI4tmrxZ1ZkM3l0SGZ6FsW667DjcT2MAi1m"
+      ],
+      "category": "snack",
+      "description": "Khoai tây chiên giòn khổng lồ size XL, chấm với tương ớt và mayonnaise đặc biệt của NetBite. Snack hoàn hảo giữa trận.",
+      "tags": ["hot", "bestseller"],
+      "rating": 4.5,
+      "reviewCount": 3200,
+      "calories": 520,
+      "protein": 6,
+      "fat": 26,
+      "badges": [],
+      "toppings": [
+        { "id": "t5", "label": "Thêm phô mai bột", "price": 5000, "icon": "restaurant", "type": "binary" }
+      ],
+      "relatedIds": ["1", "6", "7"]
+    },
+    {
+      "id": "6",
+      "name": "Coca-Cola Zero Ice",
+      "price": 20000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDfyb-Vkijqlrb2s25xqgQAyXipnkDdQuGJzT8QtP9Q46ikFDyFYowoS5IZaQMZQg1hXegm4FnVtA3jKnpwocp4dDK7gh0wDjspcnqLBrDl6Pts-gvK_FedeW_w8102bHZPrC0InPulJQmjQ5vLGEMbwueTigRHzm7iiJTEAvQq_ccJJa4qSED_cl-_6jnCQ2UjUItYBpUwIo-yQdseEWMZ0H9ST6PZi-tjfKf1ii0VC9wiL5sVVPxXqBkBpyRVfsJP-MdcpuQ7GiUk",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDfyb-Vkijqlrb2s25xqgQAyXipnkDdQuGJzT8QtP9Q46ikFDyFYowoS5IZaQMZQg1hXegm4FnVtA3jKnpwocp4dDK7gh0wDjspcnqLBrDl6Pts-gvK_FedeW_w8102bHZPrC0InPulJQmjQ5vLGEMbwueTigRHzm7iiJTEAvQq_ccJJa4qSED_cl-_6jnCQ2UjUItYBpUwIo-yQdseEWMZ0H9ST6PZi-tjfKf1ii0VC9wiL5sVVPxXqBkBpyRVfsJP-MdcpuQ7GiUk"
+      ],
+      "category": "drink",
+      "description": "Coca-Cola Zero đựng trong cốc lớn đầy đá, mát lạnh giải khát tức thì. Phiên bản không đường hoàn hảo cho mọi game thủ.",
+      "tags": ["hot", "bestseller"],
+      "rating": 4.3,
+      "reviewCount": 540,
+      "calories": 5,
+      "protein": 0,
+      "fat": 0,
+      "badges": [],
+      "toppings": [
+        { "id": "t8", "label": "Mức đá", "price": 0, "icon": "ac_unit", "type": "level", "options": ["Không đá", "Ít đá", "Bình thường", "Nhiều đá"] }
+      ],
+      "relatedIds": ["7", "5", "1"]
+    },
+    {
+      "id": "7",
+      "name": "Trà Đào Cam Sả Tươi Mát",
+      "price": 45000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCFnu_r_xPErf1eipCZq-nt9kLFgEzoyHr_lQ8sJ8AlBb5lsKdkLQWIvu_RNkCPuv1IomzwZ8uWbQU4d5d1lPihOm-XjQr4QO0yWbYLfA8hJ2dOWzfPXOaGLORTdKkgFu09zsZAzifzTTih1kZXUCeV6fLcj0ZMuIQzMotS730vihg5N5fzbiFFQnUgxoFG78GfCM02I9XBeTmdyyY0I6Ud0JRuoWk67TgeR85ajtKL7HBhTvw_hg53dxfViEolv2mHWLZcUwZr3C6g",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCFnu_r_xPErf1eipCZq-nt9kLFgEzoyHr_lQ8sJ8AlBb5lsKdkLQWIvu_RNkCPuv1IomzwZ8uWbQU4d5d1lPihOm-XjQr4QO0yWbYLfA8hJ2dOWzfPXOaGLORTdKkgFu09zsZAzifzTTih1kZXUCeV6fLcj0ZMuIQzMotS730vihg5N5fzbiFFQnUgxoFG78GfCM02I9XBeTmdyyY0I6Ud0JRuoWk67TgeR85ajtKL7HBhTvw_hg53dxfViEolv2mHWLZcUwZr3C6g"
+      ],
+      "category": "drink",
+      "description": "Trà đào kết hợp cam và sả tươi, pha trong đá bào mịn. Hương vị thanh mát, giải nhiệt tức thì sau những pha gank căng thẳng.",
+      "tags": [],
+      "rating": 4.7,
+      "reviewCount": 980,
+      "calories": 120,
+      "protein": 0,
+      "fat": 0,
+      "badges": [],
+      "toppings": [
+        { "id": "t8", "label": "Mức đường", "price": 0, "icon": "water_drop", "type": "level", "options": ["0% đường", "50% đường", "100% đường"] },
+        { "id": "t9", "label": "Thêm trân châu", "price": 8000, "icon": "bubble_chart", "type": "quantifiable" }
+      ],
+      "relatedIds": ["6", "5", "8"]
+    },
+    {
+      "id": "8",
+      "name": "Takoyaki Nhật Bản (6 Viên)",
+      "price": 55000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDqmQ1kJ8HgxNtkgSlNMVFVE9azT-Sc6QLYQo_WWxy9Rug9HruQuddg47ETv51LH8FLkqyXnH14DSTIxgdsGE9rkqSX2yIlGpMad7u_YvkQapf8GIg2cjzu8IVOGcZcC5RscNCNpdx078e6b6tQ8lVcQGeKuUzdOs-T5WNaIAdpCZJSOx_e394Ny__Af_HRIQHg2KAQSx8G0T74wco-BJbFuOFkQsTdSgpnDA-tprJRJQ_l9za4p1himrBXQEcZVmIFj2cYKmiTmKfJ",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDqmQ1kJ8HgxNtkgSlNMVFVE9azT-Sc6QLYQo_WWxy9Rug9HruQuddg47ETv51LH8FLkqyXnH14DSTIxgdsGE9rkqSX2yIlGpMad7u_YvkQapf8GIg2cjzu8IVOGcZcC5RscNCNpdx078e6b6tQ8lVcQGeKuUzdOs-T5WNaIAdpCZJSOx_e394Ny__Af_HRIQHg2KAQSx8G0T74wco-BJbFuOFkQsTdSgpnDA-tprJRJQ_l9za4p1himrBXQEcZVmIFj2cYKmiTmKfJ"
+      ],
+      "category": "snack",
+      "description": "6 viên bánh bạch tuộc Nhật Bản nóng hổi, phủ sốt Takoyaki, rắc bonito flakes và rong biển sấy khô. Snack mang phong cách anime cho mọi weeb gamer!",
+      "tags": [],
+      "rating": 4.8,
+      "reviewCount": 760,
+      "calories": 420,
+      "protein": 18,
+      "fat": 20,
+      "badges": [],
+      "toppings": [
+        { "id": "t5", "label": "Thêm phô mai tan chảy", "price": 10000, "icon": "restaurant", "type": "binary" }
+      ],
+      "relatedIds": ["5", "9", "4"]
+    },
+    {
+      "id": "9",
+      "name": "Udon Xào Bò Sốt Tiêu Đen",
+      "price": 95000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCF1DyKV27FCMJaWTYbF5m5_Evm9nd8xOXI6TqkIo8S596vg4qDn6MER1MCAjjjXFB-s2MudOAqkkbRV9rY2JvqbBiRYV8oM4bqTCpLWXwXAWwdtZq98JEOA2E3nX2hxWLWBBzh-KQ-iPJvRSZWv09-eEtgSwBXZuDDSnwvmi_IsykR_kji4owbGNUHxnIEIfISxFLTFoMrMV1uML2y0hqyJ2zIr87ijeSH8krAFq4O5zRHay1p0nOqSiQI9UhoadOWePnDCtpyxgSp",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuCF1DyKV27FCMJaWTYbF5m5_Evm9nd8xOXI6TqkIo8S596vg4qDn6MER1MCAjjjXFB-s2MudOAqkkbRV9rY2JvqbBiRYV8oM4bqTCpLWXwXAWwdtZq98JEOA2E3nX2hxWLWBBzh-KQ-iPJvRSZWv09-eEtgSwBXZuDDSnwvmi_IsykR_kji4owbGNUHxnIEIfISxFLTFoMrMV1uML2y0hqyJ2zIr87ijeSH8krAFq4O5zRHay1p0nOqSiQI9UhoadOWePnDCtpyxgSp"
+      ],
+      "category": "noodle",
+      "description": "Mì udon Nhật Bản dày sợi xào cùng thịt bò Úc thái lát mỏng, sốt tiêu đen đậm đà và rau củ tươi. Bữa ăn no nê cho mọi game session dài.",
+      "tags": [],
+      "rating": 4.6,
+      "reviewCount": 430,
+      "calories": 880,
+      "protein": 48,
+      "fat": 32,
+      "badges": [
+        { "icon": "restaurant", "label": "Nhiều đạm" }
+      ],
+      "toppings": [
+        { "id": "t7", "label": "Thêm trứng lòng đào", "price": 8000, "icon": "egg", "type": "quantifiable" }
+      ],
+      "relatedIds": ["4", "8", "5"]
+    },
+    {
+      "id": "10",
+      "name": "Matcha Latte Kem Mặn",
+      "price": 50000,
+      "originalPrice": null,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDKhryG8Wjl1YXxyZpeufX2GddzeQiqHvfatKd7-Qbc7BrrR_NxOnxww_SbojBWD-hCeAJtw5qXO2FvxyKGlGnr8pBp0tfp9hYkoakjFHo4o3NovBS5gFRPEy0WabzftKA_guwgD-wG1_UJafv1055YQxcXk14hLxS25EZacX5UuoPJnJCwappg5xiDv-hSNadCxFqqGDOWiM0UYB-RvM7McW9uVmzDbT5zqtK_BTNdUAH6q3pUltfKDYv_KAoyEFLopSwZPaAD_p-d",
+      "images": [
+        "https://lh3.googleusercontent.com/aida-public/AB6AXuDKhryG8Wjl1YXxyZpeufX2GddzeQiqHvfatKd7-Qbc7BrrR_NxOnxww_SbojBWD-hCeAJtw5qXO2FvxyKGlGnr8pBp0tfp9hYkoakjFHo4o3NovBS5gFRPEy0WabzftKA_guwgD-wG1_UJafv1055YQxcXk14hLxS25EZacX5UuoPJnJCwappg5xiDv-hSNadCxFqqGDOWiM0UYB-RvM7McW9uVmzDbT5zqtK_BTNdUAH6q3pUltfKDYv_KAoyEFLopSwZPaAD_p-d"
+      ],
+      "category": "drink",
+      "description": "Matcha latte Uji Nhật Bản đắng nhẹ, pha sữa tươi béo ngậy, phủ kem mặn tan chảy. Thức uống chiều lòng mọi game thủ sành điệu.",
+      "tags": [],
+      "rating": 4.7,
+      "reviewCount": 610,
+      "calories": 280,
+      "protein": 8,
+      "fat": 14,
+      "badges": [],
+      "toppings": [
+        { "id": "t10", "label": "Thêm thạch matcha", "price": 8000, "icon": "clear_all", "type": "binary" }
+      ],
+      "relatedIds": ["6", "7", "5"]
+    }
+  ],
+  "combos": [
+    {
+      "id": "c1",
+      "name": "Combo Leo Rank",
+      "icon": "rocket_launch",
+      "iconColor": "primary",
+      "borderColor": "border-primary",
+      "discount": "-20% OFF",
+      "discountColor": "primary",
+      "items": ["01 Burger Bò Full Buff", "01 Khoai tây chiên", "01 Coca-Cola Zero Ice"],
+      "productIds": ["1", "5", "6"],
+      "price": 85000,
+      "originalPrice": 110000,
+      "buttonStyle": "bg-on-surface text-surface"
+    },
+    {
+      "id": "c2",
+      "name": "Combo Duo Combat",
+      "icon": "groups",
+      "iconColor": "secondary",
+      "borderColor": "border-secondary",
+      "badge": "BEST SELLER",
+      "discount": "-25% OFF",
+      "discountColor": "secondary",
+      "items": ["02 Mì Cay Hải Sản Crit Dame", "01 Takoyaki Nhật Bản (6 Viên)", "02 Trà Đào Cam Sả Tươi Mát"],
+      "productIds": ["4", "4", "8", "7", "7"],
+      "price": 155000,
+      "originalPrice": 205000,
+      "buttonStyle": "bg-secondary text-on-secondary"
+    },
+    {
+      "id": "c3",
+      "name": "Combo Pentakill",
+      "icon": "stars",
+      "iconColor": "tertiary-fixed-dim",
+      "borderColor": "border-tertiary-fixed-dim",
+      "badge": "PRO CHOICE",
+      "discount": "PRO CHOICE",
+      "discountColor": "tertiary-fixed-dim",
+      "items": ["01 Pizza Pepperoni MVP", "02 Takoyaki Nhật Bản (6 Viên)", "01 Coca-Cola Zero Ice"],
+      "productIds": ["2", "8", "8", "6"],
+      "price": 225000,
+      "originalPrice": 280000,
+      "buttonStyle": "bg-on-surface text-surface"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ORD001",
+      "userId": "2",
+      "items": [
+        { "productId": "1", "productName": "Burger Bò Full Buff", "quantity": 1, "price": 45000 },
+        { "productId": "6", "productName": "Coca-Cola Zero Ice", "quantity": 2, "price": 20000 }
+      ],
+      "total": 85000,
+      "status": "delivered",
+      "date": "2026-04-07",
+      "machineNumber": "A12"
+    },
+    {
+      "id": "ORD002",
+      "userId": "2",
+      "items": [
+        { "productId": "4", "productName": "Mì Cay Hải Sản Crit Dame", "quantity": 1, "price": 55000 },
+        { "productId": "7", "productName": "Trà Đào Cam Sả Tươi Mát", "quantity": 1, "price": 45000 }
+      ],
+      "total": 100000,
+      "status": "processing",
+      "date": "2026-04-08",
+      "machineNumber": "B05"
+    }
+  ]
+}
