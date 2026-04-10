@@ -24,13 +24,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = localStorage.getItem('netbite_user');
+    const saved = sessionStorage.getItem('netbite_user');
     if (saved) {
       try {
         setUser(JSON.parse(saved));
       } catch (e) {
-        console.error("Failed to parse user from localStorage", e);
-        localStorage.removeItem('netbite_user');
+        console.error("Failed to parse user from sessionStorage", e);
+        sessionStorage.removeItem('netbite_user');
       }
     }
     setLoading(false);
@@ -38,12 +38,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = (u: User) => {
     setUser(u);
-    localStorage.setItem('netbite_user', JSON.stringify(u));
+    sessionStorage.setItem('netbite_user', JSON.stringify(u));
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('netbite_user');
+    sessionStorage.removeItem('netbite_user');
   };
 
   const isAuthenticated = !!user;
