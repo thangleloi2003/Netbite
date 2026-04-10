@@ -105,7 +105,10 @@ export default function AdminProducts() {
                 <p className="text-primary font-black text-2xl mb-5 tracking-tighter">{product.price.toLocaleString('vi-VN')}đ</p>
 
                 <div className="flex gap-2 mt-auto">
-                  <button className="flex-1 flex items-center justify-center gap-2 bg-surface-container-high text-on-surface py-3 rounded-full hover:bg-primary hover:text-white transition-colors text-sm font-bold border border-transparent hover:border-primary/50">
+                  <button 
+                    onClick={() => navigate(`edit/${product.id}`)}
+                    className="flex-1 flex items-center justify-center gap-2 bg-surface-container-high text-on-surface py-3 rounded-full hover:bg-primary hover:text-white transition-colors text-sm font-bold border border-transparent hover:border-primary/50"
+                  >
                     <span className="material-symbols-outlined text-[18px]">edit</span> Sửa
                   </button>
                   <button 
