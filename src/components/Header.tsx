@@ -87,7 +87,7 @@ export default function Header() {
               to="/login"
               className="bg-secondary text-on-secondary px-6 py-2 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all duration-300 active:scale-95"
             >
-              Đặt đơn ngay
+              Đăng nhập
             </Link>
           )}
         </div>

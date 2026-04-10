@@ -22,12 +22,6 @@ export const authApi = {
       const { password: _password, ...userWithoutPassword } = r.data;
       return userWithoutPassword;
     }),
-
-  getProfile: (id: string) =>
-    api.get<User>(`/users/${id}`).then((r) => {
-      const { password: _password, ...userWithoutPassword } = r.data;
-      return userWithoutPassword;
-    }),
 };
 
 export const productApi = {
