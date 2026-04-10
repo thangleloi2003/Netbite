@@ -44,21 +44,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   });
 
+  const [pendingProductId, setPendingProductId] = useState<string | null>(null);
+
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items]);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      setItems([]);
-    }
-  }, [isAuthenticated]);
 
   const totalCount = items.reduce((sum, i) => sum + i.quantity, 0);
   const totalPrice = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
 
   const addItem = (item: Omit<CartItem, "quantity">, qty = 1) => {
     if (!isAuthenticated) {
+      setPendingProductId(item.id);
       setShowAuthWarning(true);
       setTimeout(() => setShowAuthWarning(false), 5000); // Auto hide after 5 seconds
       return;
@@ -121,7 +118,11 @@ export function CartProvider({ children }: { children: ReactNode }) {
             <button 
               onClick={() => {
                 setShowAuthWarning(false);
-                navigate('/login');
+                if (pendingProductId) {
+                  navigate(`/login?redirect=/product/${pendingProductId}`);
+                } else {
+                  navigate('/login');
+                }
               }}
               className="px-6 py-3 bg-primary text-on-primary text-sm font-black rounded-xl hover:bg-primary/90 transition-colors uppercase tracking-wider shrink-0 shadow-[0_0_15px_rgba(255,141,140,0.4)] hover:-translate-y-0.5 active:translate-y-0"
             >
