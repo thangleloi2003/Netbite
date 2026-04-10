@@ -1,4 +1,58 @@
+import { useEffect, useState } from "react";
+import { orderApi, authApi } from "../../services/api";
+import type { Order, User } from "../../types";
+
 export default function AdminDashboard() {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([orderApi.getAll(), authApi.getAllUsers()])
+      .then(([ordersData, usersData]) => {
+        // Sort orders by date/id descending for latest orders
+        setOrders(ordersData.reverse());
+        setUsers(usersData);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const today = new Date().toISOString().split("T")[0];
+  const ordersTodayCount = orders.filter(o => o.date === today || o.date.startsWith(today)).length;
+  
+  const totalRevenue = orders
+    .filter(o => o.status !== "cancelled")
+    .reduce((sum, o) => sum + o.total, 0);
+
+  const activeUsersCount = users.length;
+
+  const getUser = (userId: string) => users.find(u => u.id === userId);
+
+  function formatPrice(p: number) {
+    return p.toLocaleString("vi-VN") + "đ";
+  }
+
+  const formatStatus = (status: string) => {
+    switch (status) {
+      case "pending": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-secondary/20 text-secondary uppercase tracking-widest border border-secondary/20">Đang chờ</span>;
+      case "processing": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-primary/20 text-primary uppercase tracking-widest border border-primary/20">Đang chuẩn bị</span>;
+      case "delivered": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-green-500/20 text-green-400 uppercase tracking-widest border border-green-500/20">Thành công</span>;
+      case "cancelled": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-error/20 text-error uppercase tracking-widest border border-error/20">Đã hủy</span>;
+      default: return status;
+    }
+  };
+
+  const getInitials = (name: string) => {
+    if (!name) return "NA";
+    const parts = name.trim().split(" ");
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
+  if (loading) {
+    return <div className="p-8 text-center text-on-surface-variant">Đang tải dữ liệu...</div>;
+  }
+
   return (
     <main className="p-8 space-y-10 max-w-7xl mx-auto w-full">
       <div className="flex justify-between items-end">
@@ -19,7 +73,7 @@ export default function AdminDashboard() {
             </span>
           </div>
           <p className="text-on-surface-variant font-bold uppercase tracking-widest text-xs mb-1">Đơn hàng hôm nay</p>
-          <h3 className="text-4xl font-black text-on-surface">124</h3>
+          <h3 className="text-4xl font-black text-on-surface">{ordersTodayCount}</h3>
         </div>
 
         <div className="bg-surface-container-low p-6 rounded-2xl border-l-4 border-secondary hover:border-l-8 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
@@ -32,7 +86,7 @@ export default function AdminDashboard() {
             </span>
           </div>
           <p className="text-on-surface-variant font-bold uppercase tracking-widest text-xs mb-1">Tổng doanh thu</p>
-          <h3 className="text-4xl font-black text-on-surface">5.4M <span className="text-lg text-on-surface-variant">đ</span></h3>
+          <h3 className="text-4xl font-black text-on-surface">{formatPrice(totalRevenue).replace('đ', '')} <span className="text-lg text-on-surface-variant">đ</span></h3>
         </div>
 
         <div className="bg-surface-container-low p-6 rounded-2xl border-l-4 border-tertiary-fixed-dim hover:border-l-8 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">
@@ -45,7 +99,7 @@ export default function AdminDashboard() {
             </span>
           </div>
           <p className="text-on-surface-variant font-bold uppercase tracking-widest text-xs mb-1">Người dùng HĐ</p>
-          <h3 className="text-4xl font-black text-on-surface">56</h3>
+          <h3 className="text-4xl font-black text-on-surface">{activeUsersCount}</h3>
         </div>
       </div>
 
@@ -71,84 +125,67 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              <tr className="hover:bg-surface-container-high transition-colors group cursor-pointer">
-                <td className="px-8 py-5 text-sm font-mono text-primary font-bold">#NB-10294</td>
-                <td className="px-8 py-5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-xs font-black text-secondary">NA</div>
-                    <span className="text-sm font-bold">Nguyễn An</span>
-                  </div>
-                </td>
-                <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">Bún Chả Hà Nội x2...</td>
-                <td className="px-8 py-5 text-sm font-black text-on-surface">145.000đ</td>
-                <td className="px-8 py-5">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-green-500/20 text-green-400 uppercase tracking-widest border border-green-500/20">Thành công</span>
-                </td>
-                <td className="px-8 py-5 text-right">
-                  <div className="flex justify-end gap-2">
-                    <button className="p-2 bg-surface-container rounded-full hover:bg-primary hover:text-on-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                    <button className="p-2 bg-surface-container rounded-full hover:bg-error hover:text-white transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
-                  </div>
-                </td>
-              </tr>
-              <tr className="hover:bg-surface-container-high transition-colors group cursor-pointer">
-                <td className="px-8 py-5 text-sm font-mono text-primary font-bold">#NB-10293</td>
-                <td className="px-8 py-5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-tertiary-fixed-dim/20 flex items-center justify-center text-xs font-black text-tertiary-fixed-dim">TV</div>
-                    <span className="text-sm font-bold">Trần Văn</span>
-                  </div>
-                </td>
-                <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">Phở Bò Đặc Biệt</td>
-                <td className="px-8 py-5 text-sm font-black text-on-surface">85.000đ</td>
-                <td className="px-8 py-5">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-secondary/20 text-secondary uppercase tracking-widest border border-secondary/20">Đang chờ</span>
-                </td>
-                <td className="px-8 py-5 text-right">
-                  <div className="flex justify-end gap-2">
-                    <button className="p-2 bg-surface-container rounded-full hover:bg-primary hover:text-on-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                    <button className="p-2 bg-surface-container rounded-full hover:bg-error hover:text-white transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
-                  </div>
-                </td>
-              </tr>
-              <tr className="hover:bg-surface-container-high transition-colors group cursor-pointer">
-                <td className="px-8 py-5 text-sm font-mono text-primary font-bold">#NB-10292</td>
-                <td className="px-8 py-5">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-xs font-black text-primary">LH</div>
-                    <span className="text-sm font-bold">Lê Hoa</span>
-                  </div>
-                </td>
-                <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">Trà Đào Cam Sả x3</td>
-                <td className="px-8 py-5 text-sm font-black text-on-surface">120.000đ</td>
-                <td className="px-8 py-5">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-green-500/20 text-green-400 uppercase tracking-widest border border-green-500/20">Thành công</span>
-                </td>
-                <td className="px-8 py-5 text-right">
-                  <div className="flex justify-end gap-2">
-                    <button className="p-2 bg-surface-container rounded-full hover:bg-primary hover:text-on-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                    <button className="p-2 bg-surface-container rounded-full hover:bg-error hover:text-white transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
-                  </div>
-                </td>
-              </tr>
+              {orders.slice(0, 10).map(order => {
+                const user = getUser(order.userId);
+                const userName = user?.name || "Khách Vãng Lai";
+                
+                return (
+                  <tr key={order.id} className="hover:bg-surface-container-high transition-colors group cursor-pointer">
+                    <td className="px-8 py-5 text-sm font-mono text-primary font-bold">#{order.id}</td>
+                    <td className="px-8 py-5">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-xs font-black text-secondary">
+                          {getInitials(userName)}
+                        </div>
+                        <span className="text-sm font-bold">{userName}</span>
+                      </div>
+                    </td>
+                    <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">
+                      {order.items.length > 0 ? (
+                        <>
+                          {order.items[0].productName} x{order.items[0].quantity}
+                          {order.items.length > 1 && "..."}
+                        </>
+                      ) : "Không có món"}
+                    </td>
+                    <td className="px-8 py-5 text-sm font-black text-on-surface">{formatPrice(order.total)}</td>
+                    <td className="px-8 py-5">
+                      {formatStatus(order.status)}
+                    </td>
+                    <td className="px-8 py-5 text-right">
+                      <div className="flex justify-end gap-2">
+                        <button className="p-2 bg-surface-container rounded-full hover:bg-primary hover:text-on-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
+                        <button className="p-2 bg-surface-container rounded-full hover:bg-error hover:text-white transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
+              {orders.length === 0 && (
+                <tr>
+                  <td colSpan={6} className="px-8 py-8 text-center text-on-surface-variant">
+                    Chưa có đơn hàng nào.
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
 
-        <div className="px-8 py-6 flex items-center justify-between border-t border-white/5 bg-surface-container/30">
-          <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Hiển thị 1-10 của 124 đơn</p>
-          <div className="flex gap-2">
-            <button className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer text-on-surface">
-              <span className="material-symbols-outlined text-sm">chevron_left</span>
-            </button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center bg-primary text-on-primary font-black shadow-[0_0_15px_rgba(255,141,140,0.3)]">1</button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer font-bold text-on-surface">2</button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer font-bold text-on-surface">3</button>
-            <button className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer text-on-surface">
-              <span className="material-symbols-outlined text-sm">chevron_right</span>
-            </button>
+        {orders.length > 0 && (
+          <div className="px-8 py-6 flex items-center justify-between border-t border-white/5 bg-surface-container/30">
+            <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Hiển thị 1-{Math.min(10, orders.length)} của {orders.length} đơn</p>
+            <div className="flex gap-2">
+              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer text-on-surface disabled:opacity-50" disabled>
+                <span className="material-symbols-outlined text-sm">chevron_left</span>
+              </button>
+              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-primary text-on-primary font-black shadow-[0_0_15px_rgba(255,141,140,0.3)]">1</button>
+              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer text-on-surface disabled:opacity-50" disabled>
+                <span className="material-symbols-outlined text-sm">chevron_right</span>
+              </button>
+            </div>
           </div>
-        </div>
+        )}
       </section>
     </main>
   );

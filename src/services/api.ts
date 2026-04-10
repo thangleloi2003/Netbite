@@ -7,6 +7,8 @@ const api = axios.create({ baseURL: API_BASE });
 import type { Product, Category, Combo, Order, User } from "../types";
 
 export const authApi = {
+  getAllUsers: () => api.get<User[]>("/users").then((r) => r.data),
+  
   login: (credentials: Pick<User, "email" | "password">) =>
     api
       .get<User[]>("/users", { params: { email: credentials.email } })
@@ -54,9 +56,14 @@ export const comboApi = {
 };
 
 export const orderApi = {
+  getAll: () => api.get<Order[]>("/orders").then((r) => r.data),
+
   getByUserId: (userId: string) =>
     api.get<Order[]>("/orders", { params: { userId } }).then((r) => r.data),
 
   create: (order: Omit<Order, "id">) =>
     api.post<Order>("/orders", order).then((r) => r.data),
+    
+  update: (id: string, order: Partial<Order>) =>
+    api.patch<Order>(`/orders/${id}`, order).then((r) => r.data),
 };
