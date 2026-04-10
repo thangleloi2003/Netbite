@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { productApi, categoryApi, comboApi } from "../services/api";
 import type { Product, Category, Combo } from "../types";
 import { useCart } from '../hooks/useCart';
+import { useAuth } from '../hooks/useAuth';
 
 function formatPrice(p: number) {
   return p.toLocaleString("vi-VN") + "đ";
@@ -64,10 +65,10 @@ function ProductSkeleton() {
 
 function ComboCard({ combo }: { combo: Combo }) {
   const { addItem } = useCart();
+  const { isAuthenticated } = useAuth();
   const [adding, setAdding] = useState(false);
 
   const handleAdd = async () => {
-    setAdding(true);
     if (combo.productIds && combo.productIds.length > 0) {
       const results = await Promise.allSettled(
         combo.productIds.map((id) => productApi.getById(id)),
@@ -86,7 +87,11 @@ function ComboCard({ combo }: { combo: Combo }) {
         image: "",
       });
     }
-    setTimeout(() => setAdding(false), 1000);
+
+    if (isAuthenticated) {
+      setAdding(true);
+      setTimeout(() => setAdding(false), 1000);
+    }
   };
 
   const isPentakill = combo.id === "c3";

@@ -90,6 +90,7 @@ function ProductSkeleton() {
 export default function Home() {
   const { products: featuredProducts, loading: productsLoading } = useFeaturedProducts();
   const { combos, loading: combosLoading } = useCombos();
+  const { isAuthenticated } = useAuth();
   const [toast, setToast] = useState(false);
   const { addItem } = useCart();
   const navigate = useNavigate();
@@ -112,12 +113,15 @@ export default function Home() {
       // Fallback: add combo itself as a single item
       addItem({ id: combo.id, name: combo.name, price: combo.price, image: '' });
     }
-    setToast(true);
-    setTimeout(() => {
-      setToast(false);
-      navigate('/checkout');
-    }, 800);
-  }, [addItem, navigate]);
+
+    if (isAuthenticated) {
+      setToast(true);
+      setTimeout(() => {
+        setToast(false);
+        navigate('/checkout');
+      }, 800);
+    }
+  }, [addItem, navigate, isAuthenticated]);
 
   return (
     <div className="bg-surface text-on-surface">
