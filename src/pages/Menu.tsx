@@ -1,14 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  productApi,
-  categoryApi,
-  comboApi,
-  type Product,
-  type Category,
-  type Combo,
-} from "../services/api";
-import { useCart } from "../context/CartContext";
+import { productApi, categoryApi, comboApi } from "../services/api";
+import type { Product, Category, Combo } from "../types";
+import { useCart } from '../hooks/useCart';
 
 function formatPrice(p: number) {
   return p.toLocaleString("vi-VN") + "đ";

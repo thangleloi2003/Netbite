@@ -1,33 +1,39 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-
-
-type User = {
-  id: string;
-  username: string;
-  role: 'admin' | 'customer';
-  name: string;
-};
+import { createContext, useState, useEffect, type ReactNode } from 'react';
+import { type User } from '../types';
 
 type AuthContextType = {
   user: User | null;
+  loading: boolean;
   login: (u: User) => void;
   logout: () => void;
+  isAuthenticated: boolean;
+  isAdmin: boolean;
 };
 
-const AuthContext = createContext<AuthContextType>({
+export const AuthContext = createContext<AuthContextType>({
   user: null,
+  loading: true,
   login: () => {},
-  logout: () => {}
+  logout: () => {},
+  isAuthenticated: false,
+  isAdmin: false,
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const saved = localStorage.getItem('netbite_user');
     if (saved) {
-      setUser(JSON.parse(saved));
+      try {
+        setUser(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to parse user from localStorage", e);
+        localStorage.removeItem('netbite_user');
+      }
     }
+    setLoading(false);
   }, []);
 
   const login = (u: User) => {
@@ -40,11 +46,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('netbite_user');
   };
 
+  const isAuthenticated = !!user;
+  const isAdmin = user?.role === 'admin';
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );
 };
-
-export const useAuth = () => useContext(AuthContext);

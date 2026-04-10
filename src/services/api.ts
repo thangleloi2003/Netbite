@@ -4,72 +4,31 @@ const API_BASE = "http://localhost:8888";
 
 const api = axios.create({ baseURL: API_BASE });
 
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  originalPrice: number | null;
-  image: string;
-  images: string[];
-  category: string;
-  description: string;
-  tags: string[];
-  rating: number;
-  reviewCount: number;
-  calories: number;
-  protein: number;
-  fat: number;
-  badges: { icon: string; label: string }[];
-  toppings: {
-    id: string;
-    label: string;
-    price: number;
-    icon: string;
-    type: "level" | "binary" | "quantifiable";
-    options?: string[];
-  }[];
-  relatedIds: string[];
-}
+import type { Product, Category, Combo, Order, User } from "../types";
 
-export interface Category {
-  id: string;
-  slug: string;
-  name: string;
-  icon: string;
-}
+export const authApi = {
+  login: (credentials: Pick<User, "email" | "password">) =>
+    api
+      .get<User[]>("/users", { params: { email: credentials.email } })
+      .then((r) => {
+        const user = r.data.find((u) => u.password === credentials.password);
+        if (!user) throw new Error("Invalid credentials");
+        const { password: _password, ...userWithoutPassword } = user;
+        return userWithoutPassword;
+      }),
 
-export interface Combo {
-  id: string;
-  name: string;
-  icon: string;
-  iconColor: string;
-  borderColor: string;
-  badge?: string;
-  discount: string;
-  discountColor: string;
-  items: string[];
-  productIds?: string[];
-  price: number;
-  originalPrice: number;
-  buttonStyle: string;
-}
+  register: (user: Omit<User, "id">) =>
+    api.post<User>("/users", user).then((r) => {
+      const { password: _password, ...userWithoutPassword } = r.data;
+      return userWithoutPassword;
+    }),
 
-export interface OrderItem {
-  productId: string;
-  productName: string;
-  quantity: number;
-  price: number;
-}
-
-export interface Order {
-  id: string;
-  userId: string;
-  items: OrderItem[];
-  total: number;
-  status: "pending" | "processing" | "delivered" | "cancelled";
-  date: string;
-  machineNumber: string;
-}
+  getProfile: (id: string) =>
+    api.get<User>(`/users/${id}`).then((r) => {
+      const { password: _password, ...userWithoutPassword } = r.data;
+      return userWithoutPassword;
+    }),
+};
 
 export const productApi = {
   getAll: (params?: { category?: string }) =>
@@ -82,6 +41,14 @@ export const productApi = {
     api
       .get<Product[]>("/products", { params: { _limit: 4 } })
       .then((r) => r.data),
+
+  create: (product: Omit<Product, "id">) =>
+    api.post<Product>("/products", product).then((r) => r.data),
+
+  update: (id: string, product: Partial<Product>) =>
+    api.patch<Product>(`/products/${id}`, product).then((r) => r.data),
+
+  delete: (id: string) => api.delete(`/products/${id}`).then((r) => r.data),
 };
 
 export const categoryApi = {

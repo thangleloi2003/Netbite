@@ -1,8 +1,10 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { productApi, comboApi, type Product, type Combo } from '../services/api';
-import { useCart } from '../context/CartContext';
-
+import type { Product, Combo } from '../types';
+import { useCart } from '../hooks/useCart';
+import { useFeaturedProducts } from '../hooks/useProducts';
+import { useCombos } from '../hooks/useCombos';
+import { productApi } from '../services/api';
 function formatPrice(p: number) {
   return p.toLocaleString('vi-VN') + 'đ';
 }
@@ -82,22 +84,13 @@ function ProductSkeleton() {
 }
 
 export default function Home() {
-  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
-  const [combos, setCombos] = useState<Combo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { products: featuredProducts, loading: productsLoading } = useFeaturedProducts();
+  const { combos, loading: combosLoading } = useCombos();
   const [toast, setToast] = useState(false);
   const { addItem } = useCart();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    Promise.all([productApi.getFeatured(), comboApi.getAll()])
-      .then(([products, combosData]) => {
-        setFeaturedProducts(products);
-        setCombos(combosData);
-      })
-      .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+  const loading = productsLoading || combosLoading;
 
   const handleComboOrder = useCallback(async (combo: Combo) => {
     if (combo.productIds && combo.productIds.length > 0) {

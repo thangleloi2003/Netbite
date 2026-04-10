@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useCart } from '../context/CartContext';
+import { useCart } from '../hooks/useCart';
 
 function formatPrice(p: number) {
   return p.toLocaleString('vi-VN') + 'đ';

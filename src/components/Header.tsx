@@ -1,14 +1,20 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { useCart } from '../context/CartContext';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useCart } from '../hooks/useCart';
+import { useAuth } from '../hooks/useAuth';
 import CartDrawer from './CartDrawer';
 
 export default function Header() {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const { totalCount } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   if (location.pathname === '/checkout') {
     return (
@@ -51,15 +57,8 @@ export default function Header() {
               to="/about">Về Chúng Tôi</Link>
           </nav>
 
-          {location.pathname === '/' ? (
-            <button
-              onClick={() => window.location.href = '/login'}
-              className="bg-secondary text-on-secondary px-6 py-2 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all duration-300 active:scale-95">
-              Đặt đơn ngay
-            </button>
-          ) : (
+          {user ? (
             <div className="flex items-center gap-4">
-              {/* Cart Icon + Badge → opens drawer */}
               <button
                 onClick={() => setCartOpen(true)}
                 className="relative p-2 hover:bg-white/5 transition-all duration-200 rounded-full active:scale-95"
@@ -71,20 +70,25 @@ export default function Header() {
                   </span>
                 )}
               </button>
-
-              {user ? (
-                <div className="flex gap-4 items-center">
-                  <Link
-                    to={user.role === 'admin' ? '/admin' : '/profile'}
-                    className="text-slate-300 hover:text-white font-bold">{user.name}</Link>
-                  <button onClick={logout} className="text-red-400 hover:text-red-300">Đăng xuất</button>
-                </div>
-              ) : (
-                <Link to="/login" className="bg-secondary text-on-secondary px-6 py-2 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all duration-300 active:scale-95">
-                  Đặt đơn ngay
-                </Link>
-              )}
+              <div className="flex gap-4 items-center">
+                <Link
+                  to={user.role === 'admin' ? '/admin' : '/profile'}
+                  className="text-slate-300 hover:text-white font-bold hidden sm:block">{user.name}</Link>
+                <button 
+                  onClick={handleLogout} 
+                  className="bg-surface-container hover:bg-error/20 text-error px-4 py-2 rounded-full font-bold transition-all duration-300 active:scale-95 border border-error/20"
+                >
+                  Đăng xuất
+                </button>
+              </div>
             </div>
+          ) : (
+            <Link 
+              to="/login"
+              className="bg-secondary text-on-secondary px-6 py-2 rounded-full font-bold hover:bg-primary hover:text-on-primary transition-all duration-300 active:scale-95"
+            >
+              Đặt đơn ngay
+            </Link>
           )}
         </div>
       </header>

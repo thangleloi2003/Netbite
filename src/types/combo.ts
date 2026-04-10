@@ -1,0 +1,16 @@
+export interface Combo {
+  id: string;
+  name: string;
+  icon: string;
+  iconColor: string;
+  borderColor: string;
+  badge?: string;
+  discount: string;
+  discountColor: string;
+  items: string[];
+  productIds?: string[];
+  price: number;
+  originalPrice: number;
+  buttonStyle: string;
+}
+

@@ -1,6 +1,71 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { authApi } from '../services/api';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Register() {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    username: ''
+  });
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const validatePassword = (pass: string) => {
+    const conditions = {
+      length: pass.length >= 8,
+      uppercase: /[A-Z]/.test(pass),
+      lowercase: /[a-z]/.test(pass),
+      number: /[0-9]/.test(pass),
+      special: /[!@#$%^&*(),.?":{}|<>]/.test(pass),
+    };
+    return conditions;
+  };
+
+  const passwordConditions = validatePassword(formData.password);
+  const isPasswordValid = Object.values(passwordConditions).every(Boolean);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+
+    if (!isPasswordValid) {
+      setError('Mật khẩu không đáp ứng đủ điều kiện.');
+      return;
+    }
+
+    if (formData.password !== formData.confirmPassword) {
+      setError('Mật khẩu xác nhận không khớp.');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const user = await authApi.register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        username: formData.username || formData.email.split('@')[0],
+        role: 'customer'
+      });
+      login(user);
+      navigate('/');
+    } catch (err: any) {
+      setError(err.message || 'Đăng ký thất bại. Vui lòng thử lại.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="bg-surface text-on-surface w-full min-h-screen py-25 flex-grow flex items-center justify-center px-4 relative overflow-hidden border-none">
       <div className="absolute inset-0 z-0 pointer-events-none">
@@ -28,13 +93,26 @@ export default function Register() {
           </div>
 
           <div className="p-8 sm:p-10">
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              {error && (
+                <div className="bg-error/10 border border-error/20 text-error text-xs font-bold p-4 rounded-2xl flex items-center gap-3">
+                  <span className="material-symbols-outlined text-sm">error</span>
+                  {error}
+                </div>
+              )}
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Họ và Tên</label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">badge</span>
-                  <input className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
-                    placeholder="VD: Gamer Tuấn Kiệt" type="text" />
+                  <input 
+                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
+                    placeholder="VD: Gamer Tuấn Kiệt" 
+                    type="text" 
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
               </div>
 
@@ -42,8 +120,15 @@ export default function Register() {
                 <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Email</label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">mail</span>
-                  <input className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
-                    placeholder="name@domain.com" type="email" />
+                  <input 
+                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
+                    placeholder="name@domain.com" 
+                    type="email" 
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
               </div>
 
@@ -51,22 +136,67 @@ export default function Register() {
                 <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Mật khẩu</label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock</span>
-                  <input className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
-                    placeholder="••••••••" type="password" />
+                  <input 
+                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
+                    placeholder="••••••••" 
+                    type="password" 
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
+                {formData.password && (
+                  <div className="mt-3 px-4 space-y-1.5">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mb-1">Yêu cầu mật khẩu:</p>
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                      <div className={`flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider ${passwordConditions.length ? 'text-green-500' : 'text-on-surface-variant/40'}`}>
+                        <span className="material-symbols-outlined text-[12px]">{passwordConditions.length ? 'check_circle' : 'circle'}</span>
+                        Ít nhất 8 ký tự
+                      </div>
+                      <div className={`flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider ${passwordConditions.uppercase ? 'text-green-500' : 'text-on-surface-variant/40'}`}>
+                        <span className="material-symbols-outlined text-[12px]">{passwordConditions.uppercase ? 'check_circle' : 'circle'}</span>
+                        Chữ hoa (A-Z)
+                      </div>
+                      <div className={`flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider ${passwordConditions.lowercase ? 'text-green-500' : 'text-on-surface-variant/40'}`}>
+                        <span className="material-symbols-outlined text-[12px]">{passwordConditions.lowercase ? 'check_circle' : 'circle'}</span>
+                        Chữ thường (a-z)
+                      </div>
+                      <div className={`flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider ${passwordConditions.number ? 'text-green-500' : 'text-on-surface-variant/40'}`}>
+                        <span className="material-symbols-outlined text-[12px]">{passwordConditions.number ? 'check_circle' : 'circle'}</span>
+                        Chữ số (0-9)
+                      </div>
+                      <div className={`flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-wider ${passwordConditions.special ? 'text-green-500' : 'text-on-surface-variant/40'}`}>
+                        <span className="material-symbols-outlined text-[12px]">{passwordConditions.special ? 'check_circle' : 'circle'}</span>
+                        Ký tự đặc biệt (!@#...)
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div>
                 <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Xác nhận mật khẩu</label>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock_reset</span>
-                  <input className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
-                    placeholder="••••••••" type="password" />
+                  <input 
+                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
+                    placeholder="••••••••" 
+                    type="password" 
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleChange}
+                    required
+                  />
                 </div>
               </div>
 
-              <button className="w-full bg-primary hover:brightness-110 active:scale-[0.98] transition-all text-on-primary font-black uppercase tracking-widest py-4 rounded-full flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,141,140,0.4)] hover:shadow-[0_0_30px_rgba(255,141,140,0.6)] border border-white/10 mt-6" type="button">
-                Tạo tài khoản ngay
+              <button 
+                className="w-full bg-primary hover:brightness-110 active:scale-[0.98] transition-all text-on-primary font-black uppercase tracking-widest py-4 rounded-full flex items-center justify-center gap-3 shadow-[0_0_20px_rgba(255,141,140,0.4)] hover:shadow-[0_0_30px_rgba(255,141,140,0.6)] border border-white/10 mt-6 disabled:opacity-50 disabled:cursor-not-allowed" 
+                type="submit"
+                disabled={loading}
+              >
+                {loading ? 'Đang tạo tài khoản...' : 'Tạo tài khoản ngay'}
               </button>
             </form>
           </div>

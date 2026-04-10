@@ -1,7 +1,15 @@
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 export default function AdminLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const menuItems = [
     { path: "/admin", label: "Bảng điều khiển", icon: "dashboard" },
@@ -76,15 +84,15 @@ export default function AdminLayout() {
           <div className="pt-10"></div>
 
           <div className="space-y-2">
-            <Link
-              to="/login"
-              className="text-on-surface-variant hover:text-error flex items-center gap-3 px-4 
+            <button
+              onClick={handleLogout}
+              className="w-[calc(100%-24px)] mx-3 text-on-surface-variant hover:text-error flex items-center gap-3 px-4 
               py-3 mt-[295px] rounded-xl hover:bg-surface-container transition-all duration-300 
-              border-l-4 border-transparent hover:border-error/50"
+              border-l-4 border-transparent hover:border-error/50 cursor-pointer"
             >
               <span className="material-symbols-outlined">logout</span>
               <span className="font-bold text-sm">Đăng xuất</span>
-            </Link>
+            </button>
           </div>
         </nav>
       </aside>
@@ -116,14 +124,14 @@ export default function AdminLayout() {
               <img
                 alt="Ảnh đại diện Admin"
                 className="w-10 h-10 rounded-full object-cover border-2 border-primary"
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBa7X4dnkqhpoVO-a3GjeVqhOoLbfjgbGLJ-1EVQViU99_IYooG1fTAyN32iFBroVClI0-7AMcQbrJpScklSfYksvIPHDaqoCfoyPZ3eWYOK0VgL_Bh5jVd_d17TKeT7NPWznNdbOG8EbCE9AcP6Otj4ng62y7OtjxHG4qoBw_hm2UemV64782wV-M1apFYzb2MEwC4HmAi1nDqVquJcS_uZ51n6NrdhwbgKSnIVgnTYwFirSXCR96LD--luFGawUSyVlw-ABF37AG-"
+                src={user?.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuBa7X4dnkqhpoVO-a3GjeVqhOoLbfjgbGLJ-1EVQViU99_IYooG1fTAyN32iFBroVClI0-7AMcQbrJpScklSfYksvIPHDaqoCfoyPZ3eWYOK0VgL_Bh5jVd_d17TKeT7NPWznNdbOG8EbCE9AcP6Otj4ng62y7OtjxHG4qoBw_hm2UemV64782wV-M1apFYzb2MEwC4HmAi1nDqVquJcS_uZ51n6NrdhwbgKSnIVgnTYwFirSXCR96LD--luFGawUSyVlw-ABF37AG-"}
               />
               <div className="text-left hidden md:block">
                 <p className="text-sm font-bold text-on-surface leading-tight">
-                  Admin Hoang
+                  {user?.name || "Admin"}
                 </p>
                 <p className="text-[10px] text-primary uppercase tracking-widest font-bold">
-                  Thách Đấu
+                  {user?.role === 'admin' ? 'Thách Đấu' : 'Thành Viên'}
                 </p>
               </div>
             </div>
