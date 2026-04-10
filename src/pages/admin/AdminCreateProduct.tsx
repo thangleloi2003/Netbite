@@ -48,7 +48,12 @@ export default function AdminCreateProduct() {
     setError(null);
 
     try {
-      await productApi.create(formData);
+      // Initialize ID since the backend is mock json-server
+      const productToCreate = {
+        ...formData,
+        id: Date.now().toString(),
+      };
+      await productApi.create(productToCreate);
       navigate("/admin/products");
     } catch (err) {
       setError("Failed to create product. Please try again.");
