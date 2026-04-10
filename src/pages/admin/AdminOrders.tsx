@@ -1,4 +1,87 @@
+import { useState, useEffect } from "react";
+import { orderApi, authApi } from "../../services/api";
+import type { Order, User } from "../../types";
+
 export default function AdminOrders() {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<"all" | "pending" | "processing" | "delivered" | "cancelled">("all");
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const [ordersData, usersData] = await Promise.all([
+        orderApi.getAll(),
+        authApi.getAllUsers()
+      ]);
+      setOrders(ordersData.reverse());
+      setUsers(usersData);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleStatusChange = async (id: string, currentStatus: Order["status"]) => {
+    let nextStatus: Order["status"] = currentStatus;
+    if (currentStatus === "pending") nextStatus = "processing";
+    else if (currentStatus === "processing") nextStatus = "delivered";
+    else return; // Cannot change from delivered or cancelled via simple click
+
+    try {
+      const updatedOrder = await orderApi.update(id, { status: nextStatus });
+      setOrders(orders.map(o => o.id === id ? updatedOrder : o));
+    } catch (error) {
+      console.error("Failed to update order status:", error);
+    }
+  };
+
+  const handleCancelOrder = async (id: string) => {
+    if (window.confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) {
+      try {
+        const updatedOrder = await orderApi.update(id, { status: "cancelled" });
+        setOrders(orders.map(o => o.id === id ? updatedOrder : o));
+      } catch (error) {
+        console.error("Failed to cancel order:", error);
+      }
+    }
+  };
+
+  const getUser = (userId: string) => users.find(u => u.id === userId);
+
+  const getInitials = (name: string) => {
+    if (!name) return "NA";
+    const parts = name.trim().split(" ");
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  };
+
+  function formatPrice(p: number) {
+    return p.toLocaleString("vi-VN") + "đ";
+  }
+
+  const formatStatus = (status: string) => {
+    switch (status) {
+      case "pending": return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-secondary/10 text-secondary uppercase tracking-widest border border-secondary/30 animate-pulse">Chờ xử lý</span>;
+      case "processing": return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-primary/10 text-primary uppercase tracking-widest border border-primary/30">Đang chuẩn bị</span>;
+      case "delivered": return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 uppercase tracking-widest border border-green-500/20">Hoàn thành</span>;
+      case "cancelled": return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-error/10 text-error uppercase tracking-widest border border-error/20">Đã hủy</span>;
+      default: return status;
+    }
+  };
+
+  const filteredOrders = orders.filter(o => filter === "all" ? true : o.status === filter);
+  const todayOrders = orders.filter(o => {
+    const today = new Date().toISOString().split("T")[0];
+    return o.date === today || o.date.startsWith(today);
+  }).length;
+
   return (
     <main className="p-8 space-y-10 max-w-7xl mx-auto w-full">
       <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-6">
@@ -9,10 +92,22 @@ export default function AdminOrders() {
         </div>
 
         <div className="bg-surface-container-low p-1.5 rounded-full border border-white/5 flex flex-wrap gap-1 shadow-inner max-w-full overflow-x-auto no-scrollbar">
-          <button className="px-5 py-2.5 bg-primary text-on-primary text-xs font-black rounded-full shadow-[0_0_15px_rgba(255,141,140,0.3)] transition-all uppercase tracking-wider whitespace-nowrap">Tất cả</button>
-          <button className="px-5 py-2.5 text-secondary text-xs font-bold rounded-full hover:bg-white/5 transition-colors uppercase tracking-wider whitespace-nowrap">Chờ xử lý</button>
-          <button className="px-5 py-2.5 text-on-surface-variant text-xs font-bold rounded-full hover:text-white hover:bg-white/5 transition-colors uppercase tracking-wider whitespace-nowrap">Đang giao</button>
-          <button className="px-5 py-2.5 text-on-surface-variant text-xs font-bold rounded-full hover:text-white hover:bg-white/5 transition-colors uppercase tracking-wider whitespace-nowrap">Hoàn thành</button>
+          <button 
+            onClick={() => setFilter("all")}
+            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "all" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+          >Tất cả</button>
+          <button 
+            onClick={() => setFilter("pending")}
+            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "pending" ? "bg-secondary text-on-secondary shadow-[0_0_15px_rgba(255,171,105,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+          >Chờ xử lý</button>
+          <button 
+            onClick={() => setFilter("processing")}
+            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "processing" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+          >Đang chuẩn bị</button>
+          <button 
+            onClick={() => setFilter("delivered")}
+            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "delivered" ? "bg-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+          >Hoàn thành</button>
         </div>
       </div>
 
@@ -20,11 +115,8 @@ export default function AdminOrders() {
         <div className="px-8 py-6 flex justify-between items-center border-b border-white/5 bg-surface-container/50">
           <div>
             <h2 className="text-2xl font-black tracking-tight">Danh sách đơn hàng</h2>
-            <p className="text-xs uppercase tracking-widest text-on-surface-variant font-bold mt-1">124 đơn trong ngày</p>
+            <p className="text-xs uppercase tracking-widest text-on-surface-variant font-bold mt-1">{todayOrders} đơn trong ngày</p>
           </div>
-          <button className="bg-surface-container-high text-on-surface px-6 py-2.5 rounded-full text-sm font-black hover:bg-white/10 transition-all flex items-center gap-2 active:scale-95 tracking-tight border border-white/5">
-            <span className="material-symbols-outlined text-sm">filter_list</span> Bộ lọc
-          </button>
         </div>
 
         <div className="overflow-x-auto">
@@ -40,66 +132,69 @@ export default function AdminOrders() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              <tr className="hover:bg-surface-container-high transition-colors group cursor-pointer">
-                <td className="px-8 py-6 text-sm font-mono text-primary font-black">#NB-10295</td>
-                <td className="px-8 py-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-xs font-black text-secondary border border-secondary/30">HĐ</div>
-                    <div>
-                      <span className="text-sm font-bold block">Hoàng Đạt</span>
-                      <span className="text-[10px] text-on-surface-variant uppercase tracking-widest">Máy VIP 05</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-6 text-sm text-on-surface-variant font-medium">Combo Leo Rank...</td>
-                <td className="px-8 py-6 text-sm font-black text-on-surface text-lg tracking-tighter">85.000đ</td>
-                <td className="px-8 py-6">
-                  <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-secondary/10 text-secondary uppercase tracking-widest border border-secondary/30 animate-pulse">Chờ xử lý</span>
-                </td>
-                <td className="px-8 py-6 text-right">
-                  <button className="p-2.5 bg-surface-container rounded-full hover:bg-primary hover:text-on-primary transition-colors border border-white/5"><span className="material-symbols-outlined text-sm">visibility</span></button>
-                </td>
-              </tr>
-              <tr className="hover:bg-surface-container-high transition-colors group cursor-pointer">
-                <td className="px-8 py-6 text-sm font-mono text-primary font-black">#NB-10294</td>
-                <td className="px-8 py-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-tertiary-fixed-dim/20 flex items-center justify-center text-xs font-black text-tertiary-fixed-dim border border-tertiary-fixed-dim/30">NA</div>
-                    <div>
-                      <span className="text-sm font-bold block">Nguyễn An</span>
-                      <span className="text-[10px] text-on-surface-variant uppercase tracking-widest">Máy Thường 12</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-6 text-sm text-on-surface-variant font-medium">Bún Chả Hà Nội x2...</td>
-                <td className="px-8 py-6 text-sm font-black text-on-surface text-lg tracking-tighter">145.000đ</td>
-                <td className="px-8 py-6">
-                  <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-primary/10 text-primary uppercase tracking-widest border border-primary/30">Đang giao</span>
-                </td>
-                <td className="px-8 py-6 text-right">
-                  <button className="p-2.5 bg-surface-container rounded-full hover:bg-primary hover:text-on-primary transition-colors border border-white/5"><span className="material-symbols-outlined text-sm">visibility</span></button>
-                </td>
-              </tr>
-              <tr className="hover:bg-surface-container-high transition-colors group cursor-pointer opacity-80">
-                <td className="px-8 py-6 text-sm font-mono text-on-surface-variant font-bold">#NB-10292</td>
-                <td className="px-8 py-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-xs font-black text-on-surface-variant border border-white/10">LH</div>
-                    <div>
-                      <span className="text-sm font-bold block">Lê Hoa</span>
-                      <span className="text-[10px] text-on-surface-variant uppercase tracking-widest">Máy Stream 01</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-8 py-6 text-sm text-on-surface-variant font-medium">Trà Đào Cam Sả x3</td>
-                <td className="px-8 py-6 text-sm font-black text-on-surface-variant text-lg tracking-tighter">120.000đ</td>
-                <td className="px-8 py-6">
-                  <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 uppercase tracking-widest border border-green-500/20">Hoàn thành</span>
-                </td>
-                <td className="px-8 py-6 text-right">
-                  <button className="p-2.5 bg-surface-container rounded-full hover:bg-white/10 transition-colors border border-white/5"><span className="material-symbols-outlined text-sm text-on-surface-variant">visibility</span></button>
-                </td>
-              </tr>
+              {loading ? (
+                <tr>
+                  <td colSpan={6} className="px-8 py-8 text-center text-on-surface-variant">Đang tải dữ liệu...</td>
+                </tr>
+              ) : filteredOrders.length === 0 ? (
+                <tr>
+                  <td colSpan={6} className="px-8 py-8 text-center text-on-surface-variant">Không có đơn hàng nào.</td>
+                </tr>
+              ) : (
+                filteredOrders.map(order => {
+                  const user = getUser(order.userId);
+                  const userName = user?.name || "Khách Vãng Lai";
+                  
+                  return (
+                    <tr key={order.id} className="hover:bg-surface-container-high transition-colors group cursor-pointer">
+                      <td className="px-8 py-6 text-sm font-mono text-primary font-black">#{order.id}</td>
+                      <td className="px-8 py-6">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-xs font-black text-secondary border border-secondary/30">
+                            {getInitials(userName)}
+                          </div>
+                          <div>
+                            <span className="text-sm font-bold block">{userName}</span>
+                            <span className="text-[10px] text-on-surface-variant uppercase tracking-widest">{order.machineNumber || "N/A"}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-8 py-6 text-sm text-on-surface-variant font-medium">
+                        {order.items.length > 0 ? (
+                          <>
+                            {order.items[0].productName} x{order.items[0].quantity}
+                            {order.items.length > 1 && "..."}
+                          </>
+                        ) : "Không có món"}
+                      </td>
+                      <td className="px-8 py-6 text-sm font-black text-on-surface text-lg tracking-tighter">{formatPrice(order.total)}</td>
+                      <td className="px-8 py-6">
+                        {formatStatus(order.status)}
+                      </td>
+                      <td className="px-8 py-6 text-right">
+                        <div className="flex justify-end gap-2">
+                          {(order.status === "pending" || order.status === "processing") && (
+                            <>
+                              <button 
+                                onClick={(e) => { e.stopPropagation(); handleStatusChange(order.id, order.status); }}
+                                className="px-3 py-1.5 bg-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-primary hover:text-on-primary transition-colors border border-primary/30"
+                              >
+                                {order.status === "pending" ? "Chuẩn bị" : "Giao hàng"}
+                              </button>
+                              <button 
+                                onClick={(e) => { e.stopPropagation(); handleCancelOrder(order.id); }}
+                                className="px-3 py-1.5 bg-error/10 text-error text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-error hover:text-white transition-colors border border-error/20"
+                              >
+                                Hủy
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
           </table>
         </div>
