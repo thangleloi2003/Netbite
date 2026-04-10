@@ -13,6 +13,7 @@ import ProtectedRoute from '../components/ProtectedRoute'
 import AdminDashboard from '../pages/admin/AdminDashboard'
 import AdminProducts from '../pages/admin/AdminProducts'
 import AdminCreateProduct from '../pages/admin/AdminCreateProduct'
+import AdminEditProduct from '../pages/admin/AdminEditProduct'
 import AdminOrders from '../pages/admin/AdminOrders'
 import AdminCustomers from '../pages/admin/AdminCustomers'
 
@@ -40,6 +41,7 @@ const AppRoutes = () => {
           <Route index element={<AdminDashboard />} />
           <Route path="products" element={<AdminProducts />} />
           <Route path="products/create" element={<AdminCreateProduct />} />
+          <Route path="products/edit/:id" element={<AdminEditProduct />} />
           <Route path="orders" element={<AdminOrders />} />
           <Route path="customers" element={<AdminCustomers />} />
         </Route>
