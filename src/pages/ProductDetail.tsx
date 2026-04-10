@@ -3,6 +3,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { productApi } from "../services/api";
 import type { Product } from "../types";
 import { useCart } from '../hooks/useCart';
+import { useAuth } from '../hooks/useAuth';
 
 function formatPrice(p: number) {
   return p.toLocaleString("vi-VN") + "đ";
@@ -59,6 +60,7 @@ export default function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { addItem } = useCart();
+  const { isAuthenticated } = useAuth();
 
   const [product, setProduct] = useState<Product | null>(null);
   const [related, setRelated] = useState<Product[]>([]);
@@ -159,12 +161,27 @@ export default function ProductDetail() {
       },
       qty,
     );
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    if (isAuthenticated) {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1500);
+    }
   };
 
   const handleBuyNow = () => {
     if (!product) return;
+    
+    if (!isAuthenticated) {
+      addItem(
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+        },
+        qty,
+      );
+      return; // The CartContext will show the login prompt
+    }
     
     const toppingDetails = Object.entries(selectedToppings)
       .map(([tid, val]) => {

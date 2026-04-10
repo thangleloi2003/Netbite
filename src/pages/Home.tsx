@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import type { Product, Combo } from '../types';
 import { useCart } from '../hooks/useCart';
+import { useAuth } from '../hooks/useAuth';
 import { useFeaturedProducts } from '../hooks/useProducts';
 import { useCombos } from '../hooks/useCombos';
 import { productApi } from '../services/api';
@@ -28,12 +29,15 @@ function AddedToast({ show }: { show: boolean }) {
 
 function ProductCard({ product }: { product: Product }) {
   const { addItem } = useCart();
+  const { isAuthenticated } = useAuth();
   const [added, setAdded] = useState(false);
 
   const handleAdd = () => {
     addItem({ id: product.id, name: product.name, price: product.price, image: product.image });
-    setAdded(true);
-    setTimeout(() => setAdded(false), 1500);
+    if (isAuthenticated) {
+      setAdded(true);
+      setTimeout(() => setAdded(false), 1500);
+    }
   };
 
   return (

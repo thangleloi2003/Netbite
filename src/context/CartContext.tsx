@@ -108,30 +108,30 @@ export function CartProvider({ children }: { children: ReactNode }) {
       {/* Custom Auth Notification Toast */}
       {showAuthWarning && (
         <div className="fixed top-24 left-1/2 -translate-x-1/2 z-50 animate-bounce-in">
-          <div className="bg-surface-container-highest border border-white/10 p-4 rounded-2xl shadow-2xl flex items-center gap-4 w-[350px]">
-            <div className="w-10 h-10 rounded-full bg-error/20 flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-error text-[20px]">
+          <div className="bg-surface-container-highest border border-white/10 p-6 rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.5)] flex items-center gap-6 w-[450px]">
+            <div className="w-14 h-14 rounded-full bg-error/20 flex items-center justify-center shrink-0">
+              <span className="material-symbols-outlined text-error text-[28px]">
                 warning
               </span>
             </div>
             <div className="flex-1">
-              <h4 className="text-sm font-black text-on-surface">Cần đăng nhập</h4>
-              <p className="text-xs text-on-surface-variant mt-0.5">Vui lòng đăng nhập để mua hàng</p>
+              <h4 className="text-xl font-black text-on-surface tracking-tight">Cần đăng nhập</h4>
+              <p className="text-sm font-medium text-on-surface-variant mt-1">Vui lòng đăng nhập để thêm vào giỏ hàng</p>
             </div>
             <button 
               onClick={() => {
                 setShowAuthWarning(false);
                 navigate('/login');
               }}
-              className="px-4 py-2 bg-primary text-on-primary text-xs font-black rounded-xl hover:bg-primary/90 transition-colors uppercase tracking-wider shrink-0"
+              className="px-6 py-3 bg-primary text-on-primary text-sm font-black rounded-xl hover:bg-primary/90 transition-colors uppercase tracking-wider shrink-0 shadow-[0_0_15px_rgba(255,141,140,0.4)] hover:-translate-y-0.5 active:translate-y-0"
             >
               Đăng nhập
             </button>
             <button 
               onClick={() => setShowAuthWarning(false)}
-              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors absolute -top-2 -right-2 bg-surface-container-high border border-white/10"
+              className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 transition-colors absolute top-2 right-2 text-on-surface-variant hover:text-white"
             >
-              <span className="material-symbols-outlined text-[16px] text-on-surface-variant">close</span>
+              <span className="material-symbols-outlined text-[18px]">close</span>
             </button>
           </div>
         </div>
