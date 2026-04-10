@@ -68,5 +68,5 @@ Dự án hiện đã triển khai các chức năng cốt lõi sau:
 - `/src/pages`: Chứa các trang chính (Home, Menu, ProductDetail, Admin).
 - `/src/components`: Các thành phần giao diện dùng chung (Navbar, Layout).
 - `/src/services`: Nơi xử lý các lệnh gọi API.
-- `db.json`: "Cơ sở dữ liệu" lưu trữ thực đơn và thông tin đơn hàng.
+- `/mock-data/db.json`: "Cơ sở dữ liệu" lưu trữ thực đơn và thông tin đơn hàng.
 
