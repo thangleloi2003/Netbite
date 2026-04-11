@@ -100,25 +100,9 @@ export default function AdminLayout() {
       <div className="flex-1 flex flex-col min-w-0">
         <header className="w-full top-0 sticky z-40 bg-[#24020c]/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-white/10">
           <div className="flex items-center gap-4 flex-1">
-            <div className="relative w-full max-w-md group">
-              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">
-                search
-              </span>
-              <input
-                className="w-full bg-surface-container-high border border-outline-variant/30 rounded-full pl-12 pr-4 py-2.5 text-sm text-on-surface placeholder:text-on-surface-variant/40 focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none"
-                placeholder="Tìm kiếm hệ thống..."
-                type="text"
-              />
-            </div>
           </div>
 
           <div className="flex items-center gap-5">
-            <div className="flex items-center gap-2">
-              <button className="relative p-2 rounded-full hover:bg-white/5 transition-all duration-200 text-slate-300 hover:text-primary cursor-pointer active:scale-95">
-                <span className="material-symbols-outlined">notifications</span>
-                <span className="absolute top-2 right-2 w-2.5 h-2.5 bg-primary border-2 border-[#24020c] rounded-full"></span>
-              </button>
-            </div>
             <div className="h-8 w-px bg-white/10 mx-1"></div>
             <div className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1.5 pr-4 rounded-full transition-colors">
               <img
