@@ -57,7 +57,22 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    
+    if (type === "checkbox") {
+      const checked = (e.target as HTMLInputElement).checked;
+      if (name === "isBestSeller") {
+        setFormData((prev) => {
+          const currentTags = prev.tags || [];
+          const updatedTags = checked 
+            ? [...currentTags.filter(t => t !== "bestseller"), "bestseller"]
+            : currentTags.filter(t => t !== "bestseller");
+          return { ...prev, tags: updatedTags };
+        });
+        return;
+      }
+    }
+
     setFormData((prev) => ({
       ...prev,
       [name]: name === "price" || name === "originalPrice" ? Number(value) : value,

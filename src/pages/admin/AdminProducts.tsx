@@ -3,7 +3,7 @@ import { useAdminProducts } from "../../hooks/useAdminProducts";
 
 export default function AdminProducts() {
   const navigate = useNavigate();
-  const { filteredProducts, loading, filter, setFilter, deleteProduct } = useAdminProducts();
+  const { filteredProducts, loading, filter, setFilter, deleteProduct, toggleBestSeller } = useAdminProducts();
 
   return (
     <main className="p-8 space-y-10 max-w-7xl mx-auto w-full">
@@ -55,10 +55,25 @@ export default function AdminProducts() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredProducts.map((product) => (
-            <div key={product.id} className="group bg-surface-container-low p-4 rounded-3xl border border-white/5 hover:border-white/10 hover:-translate-y-2 transition-all duration-300 shadow-xl flex flex-col">
+            <div key={product.id} className="group bg-surface-container-low p-4 rounded-3xl border border-white/5 hover:border-white/10 hover:-translate-y-2 transition-all duration-300 shadow-xl flex flex-col relative">
               <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-surface-container-highest">
                 <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src={product.image} alt={product.name} />
-                {product.reviewCount > 50 && (
+                
+                <button 
+                  onClick={() => toggleBestSeller(product.id)}
+                  className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-all ${
+                    product.tags.includes("bestseller") 
+                      ? "bg-secondary text-on-secondary shadow-[0_0_15px_rgba(255,193,7,0.4)]" 
+                      : "bg-black/20 text-white/70 hover:bg-black/40 hover:text-white"
+                  }`}
+                  title={product.tags.includes("bestseller") ? "Gỡ Best Seller" : "Đánh dấu Best Seller"}
+                >
+                  <span className={`material-symbols-outlined text-[20px] ${product.tags.includes("bestseller") ? "fill-1" : ""}`} style={{ fontVariationSettings: product.tags.includes("bestseller") ? "'FILL' 1" : "" }}>
+                    star
+                  </span>
+                </button>
+
+                {product.tags.includes("bestseller") && (
                   <div className="absolute top-3 left-3">
                     <span className="bg-secondary/90 backdrop-blur-sm text-on-secondary text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Bestseller</span>
                   </div>

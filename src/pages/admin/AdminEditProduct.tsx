@@ -134,6 +134,27 @@ export default function AdminEditProduct() {
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium resize-none"
             />
           </div>
+
+          {/* Best Seller Toggle */}
+          <div className="md:col-span-2">
+            <label className="flex items-center gap-4 cursor-pointer group w-fit">
+              <div className="relative">
+                <input
+                  type="checkbox"
+                  name="isBestSeller"
+                  checked={productForm.tags?.includes("bestseller") || false}
+                  onChange={handleChange}
+                  className="sr-only peer"
+                />
+                <div className="w-14 h-8 bg-surface-container-highest rounded-full peer peer-checked:bg-secondary transition-all duration-300 border border-white/5"></div>
+                <div className="absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-all duration-300 peer-checked:translate-x-6 shadow-md"></div>
+              </div>
+              <div>
+                <span className="text-sm font-black uppercase tracking-widest text-on-surface transition-colors group-hover:text-secondary">Sản phẩm Best Seller</span>
+                <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-tighter">Hiển thị huy hiệu nổi bật cho món ăn này</p>
+              </div>
+            </label>
+          </div>
         </div>
 
         <div className="pt-4">

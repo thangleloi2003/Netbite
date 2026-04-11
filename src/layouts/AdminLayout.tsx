@@ -114,9 +114,6 @@ export default function AdminLayout() {
                 <p className="text-sm font-bold text-on-surface leading-tight">
                   {user?.name || "Admin"}
                 </p>
-                <p className="text-[10px] text-primary uppercase tracking-widest font-bold">
-                  {user?.role === 'admin' ? 'Thách Đấu' : 'Thành Viên'}
-                </p>
               </div>
             </div>
           </div>

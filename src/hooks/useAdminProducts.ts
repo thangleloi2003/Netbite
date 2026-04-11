@@ -41,6 +41,26 @@ export function useAdminProducts() {
     return false;
   };
 
+  const toggleBestSeller = async (id: string) => {
+    const product = products.find(p => p.id === id);
+    if (!product) return false;
+
+    const isBestSeller = product.tags.includes("bestseller");
+    const updatedTags = isBestSeller 
+      ? product.tags.filter(tag => tag !== "bestseller")
+      : [...product.tags, "bestseller"];
+
+    try {
+      const updatedProduct = await productApi.update(id, { tags: updatedTags });
+      setProducts(prev => prev.map(p => p.id === id ? updatedProduct : p));
+      return true;
+    } catch (err) {
+      setError("Failed to update best seller status");
+      console.error("Failed to update best seller status:", err);
+      return false;
+    }
+  };
+
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
       if (filter === "all") return true;
@@ -57,5 +77,6 @@ export function useAdminProducts() {
     setFilter,
     refreshProducts: fetchProducts,
     deleteProduct,
+    toggleBestSeller,
   };
 }
