@@ -25,8 +25,8 @@ export default function AdminLayout() {
   );
 
   return (
-    <div className="bg-surface text-on-surface min-h-screen flex overflow-x-hidden selection:bg-primary selection:text-on-primary">
-      <aside className="h-screen sticky left-0 top-0 w-64 bg-[#24020c] flex flex-col py-6 gap-2 shrink-0 border-r border-white/10 z-50">
+    <div className="bg-surface text-on-surface h-screen flex overflow-hidden selection:bg-primary selection:text-on-primary">
+      <aside className="h-full w-64 bg-[#24020c] flex flex-col py-6 gap-2 shrink-0 border-r border-white/10 z-50">
         <div className="px-6 mb-8">
           <div className="flex items-center gap-3">
             <Link
@@ -44,7 +44,7 @@ export default function AdminLayout() {
           </p>
         </div>
 
-        <nav className="flex-1 px-3 relative">
+        <nav className="flex-1 px-3 relative flex flex-col">
           {/* Moving Highlight Background */}
           {activeIndex !== -1 && (
             <div
@@ -81,37 +81,37 @@ export default function AdminLayout() {
             })}
           </div>
 
-          <div className="pt-10"></div>
-
-          <div className="space-y-2">
+          <div className="mt-auto pb-4 space-y-4">
+            <div className="mx-6 h-px bg-white/5"></div>
             <button
               onClick={handleLogout}
               className="w-[calc(100%-24px)] mx-3 text-on-surface-variant hover:text-error flex items-center gap-3 px-4 
-              py-3 mt-[295px] rounded-xl hover:bg-surface-container transition-all duration-300 
-              border-l-4 border-transparent hover:border-error/50 cursor-pointer"
+              py-3 rounded-xl hover:bg-error/10 transition-all duration-300 
+              border-l-4 border-transparent hover:border-error/50 cursor-pointer group"
             >
-              <span className="material-symbols-outlined">logout</span>
+              <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1">logout</span>
               <span className="font-bold text-sm">Đăng xuất</span>
             </button>
           </div>
         </nav>
       </aside>
 
-      <div className="flex-1 flex flex-col min-w-0">
-        <header className="w-full top-0 sticky z-40 bg-[#24020c]/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-white/10">
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+        <header className="w-full shrink-0 bg-[#24020c]/80 backdrop-blur-xl flex justify-between items-center px-8 py-4 border-b border-white/10">
           <div className="flex items-center gap-4 flex-1">
           </div>
 
           <div className="flex items-center gap-5">
             <div className="h-8 w-px bg-white/10 mx-1"></div>
-            <div className="flex items-center gap-3 cursor-pointer hover:bg-white/5 p-1.5 pr-4 rounded-full transition-colors">
+            <div className="flex items-center gap-3 p-1.5 pr-4 rounded-full bg-white/5 border border-white/5">
               <img
                 alt="Ảnh đại diện Admin"
                 className="w-10 h-10 rounded-full object-cover border-2 border-primary"
                 src={user?.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuBa7X4dnkqhpoVO-a3GjeVqhOoLbfjgbGLJ-1EVQViU99_IYooG1fTAyN32iFBroVClI0-7AMcQbrJpScklSfYksvIPHDaqoCfoyPZ3eWYOK0VgL_Bh5jVd_d17TKeT7NPWznNdbOG8EbCE9AcP6Otj4ng62y7OtjxHG4qoBw_hm2UemV64782wV-M1apFYzb2MEwC4HmAi1nDqVquJcS_uZ51n6NrdhwbgKSnIVgnTYwFirSXCR96LD--luFGawUSyVlw-ABF37AG-"}
               />
               <div className="text-left hidden md:block">
-                <p className="text-sm font-bold text-on-surface leading-tight">
+                <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-black mb-0.5">Administrator</p>
+                <p className="text-sm font-black text-on-surface leading-tight">
                   {user?.name || "Admin"}
                 </p>
               </div>
@@ -119,7 +119,9 @@ export default function AdminLayout() {
           </div>
         </header>
 
-        <Outlet />
+        <div className="flex-1 overflow-y-auto overflow-x-hidden custom-scrollbar">
+          <Outlet />
+        </div>
       </div>
     </div>
   );

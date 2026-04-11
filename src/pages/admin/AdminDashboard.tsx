@@ -55,7 +55,7 @@ export default function AdminDashboard() {
   }
 
   return (
-    <main className="p-8 space-y-10 max-w-7xl mx-auto w-full">
+    <main className="p-8 pb-20 space-y-10 max-w-7xl mx-auto w-full min-h-full">
       <div className="flex justify-between items-end">
         <div>
           <h2 className="text-4xl font-black tracking-tighter italic">BẢNG ĐIỀU KHIỂN</h2>
