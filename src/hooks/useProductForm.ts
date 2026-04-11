@@ -138,6 +138,63 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
     }
   };
 
+  const addTopping = () => {
+    setFormData((prev) => ({
+      ...prev,
+      toppings: [
+        ...(prev.toppings || []),
+        {
+          id: `t${Date.now()}`,
+          label: "",
+          price: 0,
+          icon: "restaurant",
+          type: "quantifiable",
+          options: [],
+        },
+      ],
+    }));
+  };
+
+  const removeTopping = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      toppings: (prev.toppings || []).filter((_, i) => i !== index),
+    }));
+  };
+
+  const updateTopping = (index: number, field: string, value: any) => {
+    setFormData((prev) => {
+      const newToppings = [...(prev.toppings || [])];
+      newToppings[index] = { ...newToppings[index], [field]: value };
+      return { ...prev, toppings: newToppings };
+    });
+  };
+
+  const addToppingOption = (index: number, option: string) => {
+    if (!option.trim()) return;
+    setFormData((prev) => {
+      const newToppings = [...(prev.toppings || [])];
+      const currentOptions = newToppings[index].options || [];
+      newToppings[index] = { 
+        ...newToppings[index], 
+        options: [...currentOptions, option.trim()] 
+      };
+      return { ...prev, toppings: newToppings };
+    });
+  };
+
+  const removeToppingOption = (index: number, optionIndex: number) => {
+    setFormData((prev) => {
+      const newToppings = [...(prev.toppings || [])];
+      const currentOptions = newToppings[index].options || [];
+      newToppings[index] = { 
+        ...newToppings[index], 
+        options: currentOptions.filter((_, i) => i !== optionIndex) 
+      };
+      return { ...prev, toppings: newToppings };
+    });
+  };
+
   return {
     formData,
     categories,
@@ -147,5 +204,10 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
     success,
     handleChange,
     handleSubmit,
+    addTopping,
+    removeTopping,
+    updateTopping,
+    addToppingOption,
+    removeToppingOption,
   };
 }
