@@ -10,6 +10,9 @@ export function useAdminCustomers() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<CustomerRank>("all");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 8;
 
   const fetchData = async () => {
     try {
@@ -33,6 +36,10 @@ export function useAdminCustomers() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setPage(1);
+  }, [filter, search]);
+
   const getCustomerTotalSpend = (userId: string) => {
     return orders
       .filter(o => o.userId === userId && o.status !== "cancelled")
@@ -47,23 +54,41 @@ export function useAdminCustomers() {
 
   const filteredUsers = useMemo(() => {
     return users.filter(u => {
-      if (filter === "all") return true;
       const spend = getCustomerTotalSpend(u.id);
       const rank = getCustomerRank(spend).name.toLowerCase();
-      if (filter === "vip" && rank === "vip") return true;
-      if (filter === "gold" && rank === "vàng") return true;
-      if (filter === "silver" && rank === "bạc") return true;
-      return false;
+      
+      const matchesFilter = filter === "all" || 
+                            (filter === "vip" && rank === "vip") ||
+                            (filter === "gold" && rank === "vàng") ||
+                            (filter === "silver" && rank === "bạc");
+      
+      const matchesSearch = u.name.toLowerCase().includes(search.toLowerCase()) || 
+                            u.email.toLowerCase().includes(search.toLowerCase()) ||
+                            u.username.toLowerCase().includes(search.toLowerCase());
+                            
+      return matchesFilter && matchesSearch;
     });
-  }, [users, orders, filter]);
+  }, [users, orders, filter, search]);
+
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const paginatedUsers = useMemo(() => {
+    const start = (page - 1) * itemsPerPage;
+    return filteredUsers.slice(start, start + itemsPerPage);
+  }, [filteredUsers, page]);
 
   return {
     users,
     filteredUsers,
+    paginatedUsers,
     loading,
     error,
     filter,
     setFilter,
+    search,
+    setSearch,
+    page,
+    setPage,
+    totalPages,
     getCustomerTotalSpend,
     getCustomerRank,
     refreshCustomers: fetchData,

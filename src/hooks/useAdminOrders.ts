@@ -10,6 +10,9 @@ export function useAdminOrders() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState<OrderFilterStatus>("all");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
 
   const fetchData = async () => {
     try {
@@ -33,6 +36,10 @@ export function useAdminOrders() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setPage(1);
+  }, [filter, search]);
+
   const updateOrderStatus = async (id: string, nextStatus: Order["status"]) => {
     try {
       const updatedOrder = await orderApi.update(id, { status: nextStatus });
@@ -52,9 +59,24 @@ export function useAdminOrders() {
     return false;
   };
 
+  const getUser = (userId: string) => users.find(u => u.id === userId);
+
   const filteredOrders = useMemo(() => {
-    return orders.filter(o => filter === "all" ? true : o.status === filter);
-  }, [orders, filter]);
+    return orders.filter(o => {
+      const matchesFilter = filter === "all" || o.status === filter;
+      const user = getUser(o.userId);
+      const matchesSearch = o.id.toLowerCase().includes(search.toLowerCase()) || 
+                            user?.name.toLowerCase().includes(search.toLowerCase()) ||
+                            o.machineNumber?.toLowerCase().includes(search.toLowerCase());
+      return matchesFilter && matchesSearch;
+    });
+  }, [orders, filter, search, users]);
+
+  const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+  const paginatedOrders = useMemo(() => {
+    const start = (page - 1) * itemsPerPage;
+    return filteredOrders.slice(start, start + itemsPerPage);
+  }, [filteredOrders, page]);
 
   const todayOrdersCount = useMemo(() => {
     const today = new Date().toISOString().split("T")[0];
@@ -63,16 +85,20 @@ export function useAdminOrders() {
     }).length;
   }, [orders]);
 
-  const getUser = (userId: string) => users.find(u => u.id === userId);
-
   return {
     orders,
     filteredOrders,
+    paginatedOrders,
     users,
     loading,
     error,
     filter,
     setFilter,
+    search,
+    setSearch,
+    page,
+    setPage,
+    totalPages,
     todayOrdersCount,
     getUser,
     updateOrderStatus,

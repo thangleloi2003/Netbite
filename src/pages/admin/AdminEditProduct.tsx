@@ -11,6 +11,7 @@ export default function AdminEditProduct() {
     loading, 
     initialLoading, 
     error, 
+    success,
     handleChange, 
     handleSubmit 
   } = useProductForm({ productId: id });
@@ -41,8 +42,16 @@ export default function AdminEditProduct() {
 
       <form onSubmit={handleSubmit} className="bg-surface-container-low p-8 rounded-3xl border border-white/5 shadow-2xl space-y-8">
         {error && (
-          <div className="bg-error/10 border border-error/20 text-error p-4 rounded-2xl text-sm font-bold">
+          <div className="bg-error/10 border border-error/20 text-error p-4 rounded-2xl text-sm font-bold flex items-center gap-2">
+            <span className="material-symbols-outlined">error</span>
             {error}
+          </div>
+        )}
+
+        {success && (
+          <div className="bg-green-500/10 border border-green-500/20 text-green-400 p-4 rounded-2xl text-sm font-bold flex items-center gap-2 animate-bounce">
+            <span className="material-symbols-outlined">check_circle</span>
+            Sản phẩm đã được cập nhật thành công! Đang chuyển hướng...
           </div>
         )}
 
@@ -159,14 +168,21 @@ export default function AdminEditProduct() {
 
         <div className="pt-4">
           <button
-            disabled={loading}
+            disabled={loading || success}
             type="submit"
-            className="w-full py-5 bg-primary text-on-primary font-black rounded-2xl shadow-[0_0_20px_rgba(255,141,140,0.4)] hover:shadow-[0_0_30px_rgba(255,141,140,0.6)] hover:-translate-y-1 active:translate-y-0 transition-all uppercase tracking-widest disabled:opacity-50 disabled:translate-y-0 flex items-center justify-center gap-3"
+            className={`w-full py-5 font-black rounded-2xl shadow-lg hover:-translate-y-1 active:translate-y-0 transition-all uppercase tracking-widest disabled:opacity-50 disabled:translate-y-0 flex items-center justify-center gap-3 ${
+              success ? "bg-green-500 text-white" : "bg-primary text-on-primary shadow-[0_0_20px_rgba(255,141,140,0.4)] hover:shadow-[0_0_30px_rgba(255,141,140,0.6)]"
+            }`}
           >
             {loading ? (
               <>
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 Đang xử lý...
+              </>
+            ) : success ? (
+              <>
+                <span className="material-symbols-outlined font-black">done_all</span>
+                Thành công!
               </>
             ) : (
               <>

@@ -7,6 +7,9 @@ export function useAdminProducts() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState("all");
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 8;
 
   const fetchProducts = async () => {
     try {
@@ -25,6 +28,10 @@ export function useAdminProducts() {
   useEffect(() => {
     fetchProducts();
   }, []);
+
+  useEffect(() => {
+    setPage(1);
+  }, [filter, search]);
 
   const deleteProduct = async (id: string) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
@@ -63,18 +70,32 @@ export function useAdminProducts() {
 
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
-      if (filter === "all") return true;
-      return p.category === filter;
+      const matchesFilter = filter === "all" || p.category === filter;
+      const matchesSearch = p.name.toLowerCase().includes(search.toLowerCase()) || 
+                            p.description.toLowerCase().includes(search.toLowerCase());
+      return matchesFilter && matchesSearch;
     });
-  }, [products, filter]);
+  }, [products, filter, search]);
+
+  const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  const paginatedProducts = useMemo(() => {
+    const start = (page - 1) * itemsPerPage;
+    return filteredProducts.slice(start, start + itemsPerPage);
+  }, [filteredProducts, page]);
 
   return {
     products,
     filteredProducts,
+    paginatedProducts,
     loading,
     error,
     filter,
     setFilter,
+    search,
+    setSearch,
+    page,
+    setPage,
+    totalPages,
     refreshProducts: fetchProducts,
     deleteProduct,
     toggleBestSeller,

@@ -1,15 +1,44 @@
 import { useAdminOrders } from "../../hooks/useAdminOrders";
+import { useAdminProducts } from "../../hooks/useAdminProducts";
+import { useAdminCustomers } from "../../hooks/useAdminCustomers";
 import { useFormat } from "../../hooks/useFormat";
 
 export default function AdminDashboard() {
-  const { orders, users, loading, todayOrdersCount, getUser } = useAdminOrders();
+  const { orders, users, loading: ordersLoading, todayOrdersCount, getUser } = useAdminOrders();
+  const { products, loading: productsLoading } = useAdminProducts();
+  const { getCustomerTotalSpend, getCustomerRank, loading: customersLoading } = useAdminCustomers();
   const { formatPrice, getInitials } = useFormat();
+
+  const loading = ordersLoading || productsLoading || customersLoading;
 
   const totalRevenue = orders
     .filter(o => o.status !== "cancelled")
     .reduce((sum, o) => sum + o.total, 0);
 
   const activeUsersCount = users.length;
+
+  const topProducts = products
+    .map(p => {
+      const salesCount = orders
+        .filter(o => o.status !== "cancelled")
+        .reduce((sum, o) => {
+          const item = o.items.find(i => i.productName === p.name);
+          return sum + (item ? item.quantity : 0);
+        }, 0);
+      return { ...p, salesCount };
+    })
+    .sort((a, b) => b.salesCount - a.salesCount)
+    .slice(0, 5);
+
+  const topCustomers = users
+    .filter(u => u.role !== 'admin')
+    .map(u => ({
+      ...u,
+      totalSpend: getCustomerTotalSpend(u.id),
+      rank: getCustomerRank(getCustomerTotalSpend(u.id))
+    }))
+    .sort((a, b) => b.totalSpend - a.totalSpend)
+    .slice(0, 5);
 
   const formatStatus = (status: string) => {
     switch (status) {
@@ -159,6 +188,62 @@ export default function AdminDashboard() {
           </div>
         )}
       </section>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <section className="bg-surface-container-low rounded-2xl overflow-hidden border border-white/5 shadow-xl">
+          <div className="px-8 py-6 border-b border-white/5 bg-surface-container/50">
+            <h2 className="text-xl font-black tracking-tight">Sản phẩm bán chạy</h2>
+          </div>
+          <div className="p-4 space-y-4">
+            {topProducts.map((p, i) => (
+              <div key={p.id} className="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container-high transition-all group">
+                <div className="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-black text-xs text-on-surface-variant">
+                  {i + 1}
+                </div>
+                <img src={p.image} className="w-12 h-12 rounded-xl object-cover" alt={p.name} />
+                <div className="flex-grow">
+                  <p className="font-black text-sm group-hover:text-primary transition-colors">{p.name}</p>
+                  <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">{p.category}</p>
+                </div>
+                <div className="text-right">
+                  <p className="font-black text-primary">{p.salesCount}</p>
+                  <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Đã bán</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="bg-surface-container-low rounded-2xl overflow-hidden border border-white/5 shadow-xl">
+          <div className="px-8 py-6 border-b border-white/5 bg-surface-container/50">
+            <h2 className="text-xl font-black tracking-tight">Khách hàng tiêu biểu</h2>
+          </div>
+          <div className="p-4 space-y-4">
+            {topCustomers.map((u, i) => (
+              <div key={u.id} className="flex items-center gap-4 p-3 rounded-2xl hover:bg-surface-container-high transition-all group">
+                <div className="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center font-black text-xs text-on-surface-variant">
+                  {i + 1}
+                </div>
+                <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center text-sm font-black text-secondary">
+                  {getInitials(u.name)}
+                </div>
+                <div className="flex-grow">
+                  <p className="font-black text-sm group-hover:text-secondary transition-colors">{u.name}</p>
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
+                    u.rank.name === 'VIP' ? 'bg-tertiary-fixed-dim text-on-tertiary-fixed' :
+                    u.rank.name === 'VÀNG' ? 'bg-secondary/20 text-secondary' :
+                    'bg-surface-container-highest text-on-surface-variant'
+                  }`}>{u.rank.name}</span>
+                </div>
+                <div className="text-right">
+                  <p className="font-black text-on-surface">{formatPrice(u.totalSpend)}</p>
+                  <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Tích lũy</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
     </main>
   );
 }

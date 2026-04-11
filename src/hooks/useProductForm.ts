@@ -33,7 +33,28 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(!!productId);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
   const [formData, setFormData] = useState<Omit<Product, "id"> | Partial<Product>>(initialFormState);
+
+  const validateForm = () => {
+    if (!formData.name || formData.name.trim().length < 3) {
+      setError("Tên sản phẩm phải có ít nhất 3 ký tự.");
+      return false;
+    }
+    if (!formData.price || Number(formData.price) <= 0) {
+      setError("Giá sản phẩm phải lớn hơn 0.");
+      return false;
+    }
+    if (!formData.category) {
+      setError("Vui lòng chọn danh mục.");
+      return false;
+    }
+    if (!formData.image || !formData.image.startsWith("http")) {
+      setError("Vui lòng nhập link hình ảnh hợp lệ.");
+      return false;
+    }
+    return true;
+  };
 
   useEffect(() => {
     categoryApi.getAll().then(setCategories).catch(console.error);
@@ -81,8 +102,12 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
+    setSuccess(false);
+
+    if (!validateForm()) return;
+
+    setLoading(true);
 
     try {
       if (productId) {
@@ -95,13 +120,18 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
         await productApi.create(productToCreate);
       }
       
+      setSuccess(true);
+      
       if (onSuccess) {
         onSuccess();
       } else {
-        navigate("/admin/products");
+        // Delay navigation to show success state
+        setTimeout(() => {
+          navigate("/admin/products");
+        }, 1500);
       }
     } catch (err) {
-      setError(`Failed to ${productId ? "update" : "create"} product. Please try again.`);
+      setError(`Lỗi: Không thể ${productId ? "cập nhật" : "tạo"} sản phẩm. Vui lòng thử lại.`);
       console.error(err);
     } finally {
       setLoading(false);
@@ -114,6 +144,7 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
     loading,
     initialLoading,
     error,
+    success,
     handleChange,
     handleSubmit,
   };
