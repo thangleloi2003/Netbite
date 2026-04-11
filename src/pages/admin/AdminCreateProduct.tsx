@@ -1,67 +1,19 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { productApi, categoryApi } from "../../services/api";
-import type { Category, Product } from "../../types";
+import { useProductForm } from "../../hooks/useProductForm";
+import type { Product } from "../../types";
 
 export default function AdminCreateProduct() {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const [formData, setFormData] = useState<Omit<Product, "id">>({
-    name: "",
-    price: 0,
-    originalPrice: null,
-    image: "",
-    images: [],
-    category: "",
-    description: "",
-    tags: [],
-    rating: 5,
-    reviewCount: 0,
-    calories: 0,
-    protein: 0,
-    fat: 0,
-    badges: [],
-    toppings: [],
-    relatedIds: [],
-  });
-
-  useEffect(() => {
-    categoryApi.getAll().then(setCategories).catch(console.error);
-  }, []);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "price" || name === "originalPrice" ? Number(value) : value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Initialize ID since the backend is mock json-server
-      const productToCreate = {
-        ...formData,
-        id: Date.now().toString(),
-      };
-      await productApi.create(productToCreate);
-      navigate("/admin/products");
-    } catch (err) {
-      setError("Failed to create product. Please try again.");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { 
+    formData, 
+    categories, 
+    loading, 
+    error, 
+    handleChange, 
+    handleSubmit 
+  } = useProductForm();
+  
+  const productForm = formData as Omit<Product, "id">;
 
   return (
     <main className="p-8 space-y-10 max-w-4xl mx-auto w-full">
@@ -96,7 +48,7 @@ export default function AdminCreateProduct() {
               required
               type="text"
               name="name"
-              value={formData.name}
+              value={productForm.name}
               onChange={handleChange}
               placeholder="VD: Burger Bò Đặc Biệt"
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
@@ -109,7 +61,7 @@ export default function AdminCreateProduct() {
             <select
               required
               name="category"
-              value={formData.category}
+              value={productForm.category}
               onChange={handleChange}
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium appearance-none"
             >
@@ -129,7 +81,7 @@ export default function AdminCreateProduct() {
               required
               type="number"
               name="price"
-              value={formData.price}
+              value={productForm.price}
               onChange={handleChange}
               placeholder="VD: 45000"
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
@@ -142,7 +94,7 @@ export default function AdminCreateProduct() {
             <input
               type="number"
               name="originalPrice"
-              value={formData.originalPrice || ""}
+              value={productForm.originalPrice || ""}
               onChange={handleChange}
               placeholder="VD: 55000"
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
@@ -156,7 +108,7 @@ export default function AdminCreateProduct() {
               required
               type="url"
               name="image"
-              value={formData.image}
+              value={productForm.image}
               onChange={handleChange}
               placeholder="https://example.com/image.jpg"
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
@@ -169,7 +121,7 @@ export default function AdminCreateProduct() {
             <textarea
               required
               name="description"
-              value={formData.description}
+              value={productForm.description}
               onChange={handleChange}
               rows={4}
               placeholder="Nhập mô tả chi tiết về sản phẩm..."

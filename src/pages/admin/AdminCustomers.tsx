@@ -1,61 +1,16 @@
-import { useState, useEffect } from "react";
-import { authApi, orderApi } from "../../services/api";
-import type { User, Order } from "../../types";
+import { useAdminCustomers } from "../../hooks/useAdminCustomers";
+import { useFormat } from "../../hooks/useFormat";
 
 export default function AdminCustomers() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | "vip" | "gold" | "silver">("all");
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const [usersData, ordersData] = await Promise.all([
-        authApi.getAllUsers(),
-        orderApi.getAll()
-      ]);
-      setUsers(usersData.filter(u => u.role !== 'admin'));
-      setOrders(ordersData);
-    } catch (error) {
-      console.error("Failed to fetch customers:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getCustomerTotalSpend = (userId: string) => {
-    return orders
-      .filter(o => o.userId === userId && o.status !== "cancelled")
-      .reduce((sum, o) => sum + o.total, 0);
-  };
-
-  const getCustomerRank = (spend: number) => {
-    if (spend >= 5000000) return { name: "VIP", color: "tertiary-fixed-dim" };
-    if (spend >= 2000000) return { name: "VÀNG", color: "secondary" };
-    return { name: "BẠC", color: "slate-400" };
-  };
-
-  const getInitials = (name: string) => {
-    if (!name) return "NA";
-    const parts = name.trim().split(" ");
-    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-  };
-
-  const filteredUsers = users.filter(u => {
-    if (filter === "all") return true;
-    const spend = getCustomerTotalSpend(u.id);
-    const rank = getCustomerRank(spend).name.toLowerCase();
-    if (filter === "vip" && rank === "vip") return true;
-    if (filter === "gold" && rank === "vàng") return true;
-    if (filter === "silver" && rank === "bạc") return true;
-    return false;
-  });
+  const { 
+    filteredUsers, 
+    loading, 
+    filter, 
+    setFilter, 
+    getCustomerTotalSpend, 
+    getCustomerRank 
+  } = useAdminCustomers();
+  const { getInitials } = useFormat();
 
   return (
     <main className="p-8 space-y-10 max-w-7xl mx-auto w-full">

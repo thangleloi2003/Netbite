@@ -1,70 +1,28 @@
-import { useState, useEffect } from "react";
-import { orderApi, authApi } from "../../services/api";
-import type { Order, User } from "../../types";
+import { useAdminOrders } from "../../hooks/useAdminOrders";
+import { useFormat } from "../../hooks/useFormat";
+import type { Order } from "../../types";
 
 export default function AdminOrders() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState<"all" | "pending" | "processing" | "delivered" | "cancelled">("all");
-
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const [ordersData, usersData] = await Promise.all([
-        orderApi.getAll(),
-        authApi.getAllUsers()
-      ]);
-      setOrders(ordersData.reverse());
-      setUsers(usersData);
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { 
+    filteredOrders, 
+    loading, 
+    filter, 
+    setFilter, 
+    todayOrdersCount, 
+    getUser, 
+    updateOrderStatus, 
+    cancelOrder 
+  } = useAdminOrders();
+  const { formatPrice, getInitials } = useFormat();
 
   const handleStatusChange = async (id: string, currentStatus: Order["status"]) => {
     let nextStatus: Order["status"] = currentStatus;
     if (currentStatus === "pending") nextStatus = "processing";
     else if (currentStatus === "processing") nextStatus = "delivered";
-    else return; // Cannot change from delivered or cancelled via simple click
+    else return;
 
-    try {
-      const updatedOrder = await orderApi.update(id, { status: nextStatus });
-      setOrders(orders.map(o => o.id === id ? updatedOrder : o));
-    } catch (error) {
-      console.error("Failed to update order status:", error);
-    }
+    await updateOrderStatus(id, nextStatus);
   };
-
-  const handleCancelOrder = async (id: string) => {
-    if (window.confirm("Bạn có chắc chắn muốn hủy đơn hàng này?")) {
-      try {
-        const updatedOrder = await orderApi.update(id, { status: "cancelled" });
-        setOrders(orders.map(o => o.id === id ? updatedOrder : o));
-      } catch (error) {
-        console.error("Failed to cancel order:", error);
-      }
-    }
-  };
-
-  const getUser = (userId: string) => users.find(u => u.id === userId);
-
-  const getInitials = (name: string) => {
-    if (!name) return "NA";
-    const parts = name.trim().split(" ");
-    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-  };
-
-  function formatPrice(p: number) {
-    return p.toLocaleString("vi-VN") + "đ";
-  }
 
   const formatStatus = (status: string) => {
     switch (status) {
@@ -76,11 +34,7 @@ export default function AdminOrders() {
     }
   };
 
-  const filteredOrders = orders.filter(o => filter === "all" ? true : o.status === filter);
-  const todayOrders = orders.filter(o => {
-    const today = new Date().toISOString().split("T")[0];
-    return o.date === today || o.date.startsWith(today);
-  }).length;
+
 
   return (
     <main className="p-8 space-y-10 max-w-7xl mx-auto w-full">
@@ -115,7 +69,7 @@ export default function AdminOrders() {
         <div className="px-8 py-6 flex justify-between items-center border-b border-white/5 bg-surface-container/50">
           <div>
             <h2 className="text-2xl font-black tracking-tight">Danh sách đơn hàng</h2>
-            <p className="text-xs uppercase tracking-widest text-on-surface-variant font-bold mt-1">{todayOrders} đơn trong ngày</p>
+            <p className="text-xs uppercase tracking-widest text-on-surface-variant font-bold mt-1">{todayOrdersCount} đơn trong ngày</p>
           </div>
         </div>
 
@@ -182,7 +136,7 @@ export default function AdminOrders() {
                                 {order.status === "pending" ? "Chuẩn bị" : "Giao hàng"}
                               </button>
                               <button 
-                                onClick={(e) => { e.stopPropagation(); handleCancelOrder(order.id); }}
+                                onClick={(e) => { e.stopPropagation(); cancelOrder(order.id); }}
                                 className="px-3 py-1.5 bg-error/10 text-error text-[10px] font-bold uppercase tracking-widest rounded-full hover:bg-error hover:text-white transition-colors border border-error/20"
                               >
                                 Hủy

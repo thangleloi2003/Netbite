@@ -1,36 +1,15 @@
-import { useEffect, useState } from "react";
-import { orderApi, authApi } from "../../services/api";
-import type { Order, User } from "../../types";
+import { useAdminOrders } from "../../hooks/useAdminOrders";
+import { useFormat } from "../../hooks/useFormat";
 
 export default function AdminDashboard() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { orders, users, loading, todayOrdersCount, getUser } = useAdminOrders();
+  const { formatPrice, getInitials } = useFormat();
 
-  useEffect(() => {
-    Promise.all([orderApi.getAll(), authApi.getAllUsers()])
-      .then(([ordersData, usersData]) => {
-        // Sort orders by date/id descending for latest orders
-        setOrders(ordersData.reverse());
-        setUsers(usersData);
-      })
-      .finally(() => setLoading(false));
-  }, []);
-
-  const today = new Date().toISOString().split("T")[0];
-  const ordersTodayCount = orders.filter(o => o.date === today || o.date.startsWith(today)).length;
-  
   const totalRevenue = orders
     .filter(o => o.status !== "cancelled")
     .reduce((sum, o) => sum + o.total, 0);
 
   const activeUsersCount = users.length;
-
-  const getUser = (userId: string) => users.find(u => u.id === userId);
-
-  function formatPrice(p: number) {
-    return p.toLocaleString("vi-VN") + "đ";
-  }
 
   const formatStatus = (status: string) => {
     switch (status) {
@@ -40,13 +19,6 @@ export default function AdminDashboard() {
       case "cancelled": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-error/20 text-error uppercase tracking-widest border border-error/20">Đã hủy</span>;
       default: return status;
     }
-  };
-
-  const getInitials = (name: string) => {
-    if (!name) return "NA";
-    const parts = name.trim().split(" ");
-    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-    return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
   };
 
   if (loading) {
@@ -73,7 +45,7 @@ export default function AdminDashboard() {
             </span>
           </div>
           <p className="text-on-surface-variant font-bold uppercase tracking-widest text-xs mb-1">Đơn hàng hôm nay</p>
-          <h3 className="text-4xl font-black text-on-surface">{ordersTodayCount}</h3>
+          <h3 className="text-4xl font-black text-on-surface">{todayOrdersCount}</h3>
         </div>
 
         <div className="bg-surface-container-low p-6 rounded-2xl border-l-4 border-secondary hover:border-l-8 hover:-translate-y-1 transition-all duration-300 relative overflow-hidden group">

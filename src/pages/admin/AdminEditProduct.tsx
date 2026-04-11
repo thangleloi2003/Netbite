@@ -1,77 +1,21 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { productApi, categoryApi } from "../../services/api";
-import type { Category, Product } from "../../types";
+import { useParams, useNavigate } from "react-router-dom";
+import { useProductForm } from "../../hooks/useProductForm";
+import type { Product } from "../../types";
 
 export default function AdminEditProduct() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { 
+    formData, 
+    categories, 
+    loading, 
+    initialLoading, 
+    error, 
+    handleChange, 
+    handleSubmit 
+  } = useProductForm({ productId: id });
 
-  const [formData, setFormData] = useState<Partial<Product>>({
-    name: "",
-    price: 0,
-    originalPrice: null,
-    image: "",
-    category: "",
-    description: "",
-  });
-
-  useEffect(() => {
-    categoryApi.getAll().then(setCategories).catch(console.error);
-
-    if (id) {
-      productApi.getById(id)
-        .then((product) => {
-          setFormData({
-            name: product.name,
-            price: product.price,
-            originalPrice: product.originalPrice,
-            image: product.image,
-            category: product.category,
-            description: product.description,
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-          setError("Failed to load product details.");
-        })
-        .finally(() => {
-          setInitialLoading(false);
-        });
-    }
-  }, [id]);
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "price" || name === "originalPrice" ? Number(value) : value,
-    }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!id) return;
-    
-    setLoading(true);
-    setError(null);
-
-    try {
-      await productApi.update(id, formData);
-      navigate("/admin/products");
-    } catch (err) {
-      setError("Failed to update product. Please try again.");
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const productForm = formData as Partial<Product>;
 
   if (initialLoading) {
     return <div className="p-8 text-center text-on-surface-variant">Đang tải dữ liệu...</div>;
@@ -110,7 +54,7 @@ export default function AdminEditProduct() {
               required
               type="text"
               name="name"
-              value={formData.name || ""}
+              value={productForm.name || ""}
               onChange={handleChange}
               placeholder="VD: Burger Bò Đặc Biệt"
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
@@ -123,7 +67,7 @@ export default function AdminEditProduct() {
             <select
               required
               name="category"
-              value={formData.category || ""}
+              value={productForm.category || ""}
               onChange={handleChange}
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium appearance-none"
             >
@@ -143,7 +87,7 @@ export default function AdminEditProduct() {
               required
               type="number"
               name="price"
-              value={formData.price || 0}
+              value={productForm.price || 0}
               onChange={handleChange}
               placeholder="VD: 45000"
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
@@ -156,7 +100,7 @@ export default function AdminEditProduct() {
             <input
               type="number"
               name="originalPrice"
-              value={formData.originalPrice || ""}
+              value={productForm.originalPrice || ""}
               onChange={handleChange}
               placeholder="VD: 55000"
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
@@ -170,7 +114,7 @@ export default function AdminEditProduct() {
               required
               type="url"
               name="image"
-              value={formData.image || ""}
+              value={productForm.image || ""}
               onChange={handleChange}
               placeholder="https://example.com/image.jpg"
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
@@ -183,7 +127,7 @@ export default function AdminEditProduct() {
             <textarea
               required
               name="description"
-              value={formData.description || ""}
+              value={productForm.description || ""}
               onChange={handleChange}
               rows={4}
               placeholder="Nhập mô tả chi tiết về sản phẩm..."

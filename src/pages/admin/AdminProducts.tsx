@@ -1,45 +1,9 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { productApi } from "../../services/api";
-import type { Product } from "../../types";
+import { useAdminProducts } from "../../hooks/useAdminProducts";
 
 export default function AdminProducts() {
   const navigate = useNavigate();
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [filter, setFilter] = useState("all");
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      setLoading(true);
-      const data = await productApi.getAll();
-      setProducts(data);
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
-      try {
-        await productApi.delete(id);
-        setProducts(products.filter((p) => p.id !== id));
-      } catch (error) {
-        console.error("Failed to delete product:", error);
-      }
-    }
-  };
-
-  const filteredProducts = products.filter((p) => {
-    if (filter === "all") return true;
-    return p.category === filter;
-  });
+  const { filteredProducts, loading, filter, setFilter, deleteProduct } = useAdminProducts();
 
   return (
     <main className="p-8 space-y-10 max-w-7xl mx-auto w-full">
@@ -112,7 +76,7 @@ export default function AdminProducts() {
                     <span className="material-symbols-outlined text-[18px]">edit</span> Sửa
                   </button>
                   <button 
-                    onClick={() => handleDelete(product.id)}
+                    onClick={() => deleteProduct(product.id)}
                     className="w-12 h-12 flex items-center justify-center bg-surface-container-high text-on-surface-variant rounded-full hover:bg-error hover:text-white transition-colors border border-transparent hover:border-error/50"
                   >
                     <span className="material-symbols-outlined text-[20px]">delete</span>
