@@ -5,7 +5,6 @@ export interface User {
   name: string;
   role: "admin" | "customer";
   avatar?: string;
-  membership?: string;
   password?: string;
 }
 

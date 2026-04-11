@@ -3,38 +3,38 @@
     {
       "id": "1",
       "username": "admin",
-      "password": "Abc1234@",
-      "role": "admin",
-      "name": "Quản trị viên",
       "email": "admin@netbite.vn",
+      "name": "Quản trị viên",
+      "role": "admin",
       "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuA7LRKZ2ix3cq9BaDKDOJF641c7-yfpl-LS9R_4huZbtFir6z0km8AGH0ppWFKfOxQaHoMM0O5YOV2Xpbuv7vXH6AqzRHYdFE0ivCXzLp4zZHI0inwUo4IEFRVQjBjjLIkQPb97rCp9RPKH615RDRDR3Zlpcs9vocNy92yjcthPhoAqI3YDPyE5LPBlpKIvCYzweyTAtb6oYDEHGIQoI8-slhN04UrKAhJUAsgqx51EwJojvLoKEd8ubbfeUcMPXZ7iVDE7WthlnSqs",
-      "membership": "admin"
+      "password": "Abc1234@"
     },
     {
       "id": "2",
       "username": "customer",
-      "password": "123",
-      "role": "customer",
-      "name": "Tuấn Kiệt",
       "email": "kiett@example.com",
+      "name": "Tuấn Kiệt",
+      "role": "customer",
       "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuA7LRKZ2ix3cq9BaDKDOJF641c7-yfpl-LS9R_4huZbtFir6z0km8AGH0ppWFKfOxQaHoMM0O5YOV2Xpbuv7vXH6AqzRHYdFE0ivCXzLp4zZHI0inwUo4IEFRVQjBjjLIkQPb97rCp9RPKH615RDRDR3Zlpcs9vocNy92yjcthPhoAqI3YDPyE5LPBlpKIvCYzweyTAtb6oYDEHGIQoI8-slhN04UrKAhJUAsgqx51EwJojvLoKEd8ubbfeUcMPXZ7iVDE7WthlnSqs",
-      "membership": "gold"
+      "password": "123"
     },
     {
-      "name": "nguyen van A",
-      "email": "vanA@gmail.com",
-      "password": "123",
+      "id": "NjdZkjE",
       "username": "vanA",
+      "email": "vanA@gmail.com",
+      "name": "nguyen van A",
       "role": "customer",
-      "id": "NjdZkjE"
+      "avatar": "",
+      "password": "123"
     },
     {
-      "name": "Dinh Van B",
-      "email": "B@gmail.com",
-      "password": "Abc1234@",
+      "id": "Q9oazDs",
       "username": "B",
+      "email": "B@gmail.com",
+      "name": "Dinh Van B",
       "role": "customer",
-      "id": "Q9oazDs"
+      "avatar": "",
+      "password": "Abc1234@"
     }
   ],
   "categories": [
