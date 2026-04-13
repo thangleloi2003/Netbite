@@ -63,6 +63,13 @@
       "name": "Enter",
       "role": "customer",
       "password": "1234@Abcd"
+    },
+    {
+      "id": "u_68ws5za8b",
+      "username": "f123",
+      "name": "FUCK",
+      "role": "customer",
+      "password": "1234Abc@"
     }
   ],
   "categories": [
