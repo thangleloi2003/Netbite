@@ -9,12 +9,12 @@ import type { Product, Category, Combo, Order, User } from "../types";
 export const authApi = {
   getAllUsers: () => api.get<User[]>("/users").then((r) => r.data),
   
-  login: (credentials: Pick<User, "email" | "password">) =>
+  login: (credentials: Pick<User, "username" | "password">) =>
     api
-      .get<User[]>("/users", { params: { email: credentials.email } })
+      .get<User[]>("/users", { params: { username: credentials.username } })
       .then((r) => {
         const user = r.data.find((u) => u.password === credentials.password);
-        if (!user) throw new Error("Invalid credentials");
+        if (!user) throw new Error("Tài khoản hoặc mật khẩu không chính xác");
         const { password: _password, ...userWithoutPassword } = user;
         return userWithoutPassword;
       }),

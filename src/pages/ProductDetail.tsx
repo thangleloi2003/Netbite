@@ -9,23 +9,6 @@ function formatPrice(p: number) {
   return p.toLocaleString("vi-VN") + "đ";
 }
 
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex text-secondary">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <span
-          key={i}
-          className="material-symbols-outlined text-xl"
-          style={{
-            fontVariationSettings: `'FILL' ${i <= Math.round(rating) ? 1 : 0}`,
-          }}
-        >
-          star
-        </span>
-      ))}
-    </div>
-  );
-}
 
 function RelatedCard({
   product,
@@ -302,13 +285,6 @@ export default function ProductDetail() {
               {product.name}
             </h1>
 
-            <div className="flex items-center gap-3">
-              <StarRating rating={product.rating} />
-              <span className="text-sm font-bold text-on-surface-variant">
-                ({product.rating} • {product.reviewCount.toLocaleString()} đánh
-                giá)
-              </span>
-            </div>
 
             <div className="text-5xl font-black text-primary tracking-tighter">
               {formatPrice(product.price + toppingPrice)}

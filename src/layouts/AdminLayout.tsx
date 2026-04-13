@@ -81,13 +81,11 @@ export default function AdminLayout() {
             })}
           </div>
 
-          <div className="mt-auto pb-4 space-y-4">
-            <div className="mx-6 h-px bg-white/5"></div>
+          <div className="mt-[310px] pb-4 space-y-2">
+            <div className="mx-4 h-px bg-white/5 mt-4"></div>
             <button
               onClick={handleLogout}
-              className="w-[calc(100%-24px)] mx-3 text-on-surface-variant hover:text-error flex items-center gap-3 px-4 
-              py-3 rounded-xl hover:bg-error/10 transition-all duration-300 
-              border-l-4 border-transparent hover:border-error/50 cursor-pointer group"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:text-white hover:bg-surface-container-highest transition-all duration-300 h-[52px] group cursor-pointer"
             >
               <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1">logout</span>
               <span className="font-bold text-sm">Đăng xuất</span>
@@ -103,12 +101,10 @@ export default function AdminLayout() {
 
           <div className="flex items-center gap-5">
             <div className="h-8 w-px bg-white/10 mx-1"></div>
-            <div className="flex items-center gap-3 p-1.5 pr-4 rounded-full bg-white/5 border border-white/5">
-              <img
-                alt="Ảnh đại diện Admin"
-                className="w-10 h-10 rounded-full object-cover border-2 border-primary"
-                src={user?.avatar || "https://lh3.googleusercontent.com/aida-public/AB6AXuBa7X4dnkqhpoVO-a3GjeVqhOoLbfjgbGLJ-1EVQViU99_IYooG1fTAyN32iFBroVClI0-7AMcQbrJpScklSfYksvIPHDaqoCfoyPZ3eWYOK0VgL_Bh5jVd_d17TKeT7NPWznNdbOG8EbCE9AcP6Otj4ng62y7OtjxHG4qoBw_hm2UemV64782wV-M1apFYzb2MEwC4HmAi1nDqVquJcS_uZ51n6NrdhwbgKSnIVgnTYwFirSXCR96LD--luFGawUSyVlw-ABF37AG-"}
-              />
+            <div className="flex items-center gap-3 p-1.5 pr-4 rounded-full bg-white/5 border border-white/5 group">
+              <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary font-black shadow-[0_0_10px_rgba(255,141,140,0.3)] group-hover:shadow-[0_0_15px_rgba(255,141,140,0.5)] transition-all">
+                {user?.name?.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() || "AD"}
+              </div>
               <div className="text-left hidden md:block">
                 <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-black mb-0.5">Administrator</p>
                 <p className="text-sm font-black text-on-surface leading-tight">

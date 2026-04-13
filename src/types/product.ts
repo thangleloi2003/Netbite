@@ -8,8 +8,6 @@ export interface Product {
   category: string;
   description: string;
   tags: string[];
-  rating: number;
-  reviewCount: number;
   calories: number;
   protein: number;
   fat: number;

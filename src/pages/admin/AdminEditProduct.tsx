@@ -227,9 +227,9 @@ export default function AdminEditProduct() {
                       onChange={(e) => updateTopping(index, "type", e.target.value)}
                       className="w-full bg-surface-container-high border border-white/5 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-secondary/50 transition-all text-sm font-bold appearance-none"
                     >
-                      <option value="quantifiable">Số lượng (Quantifiable)</option>
-                      <option value="binary">Bật/Tắt (Binary)</option>
-                      <option value="level">Cấp độ (Level)</option>
+                      <option value="quantifiable">Chọn số lượng +/-</option>
+                      <option value="binary">Chọn có/không</option>
+                      <option value="level">Chọn 1 trong các lựa chọn</option>
                     </select>
                   </div>
                 </div>

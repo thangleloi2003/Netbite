@@ -35,7 +35,7 @@ export default function AdminCustomers() {
             <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
             <input 
               type="text" 
-              placeholder="Tên, email, username..." 
+              placeholder="Tên, username..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className="pl-12 pr-6 py-3 bg-surface-container-low border border-white/5 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium text-sm w-full sm:w-64"
@@ -91,17 +91,13 @@ export default function AdminCustomers() {
                   }`}></div>
                   <div className="flex flex-col items-center text-center mt-2">
                     <div className="relative mb-4">
-                      {user.avatar ? (
-                        <img className="w-20 h-20 rounded-full object-cover border-4 border-surface shadow-lg" src={user.avatar} alt={user.name} />
-                      ) : (
-                        <div className={`w-20 h-20 rounded-full flex items-center justify-center border-4 border-surface shadow-lg ${
-                          rank.name === 'VIP' ? 'bg-tertiary-fixed-dim/20 text-tertiary-fixed-dim' :
-                          rank.name === 'VÀNG' ? 'bg-secondary/20 text-secondary' :
-                          'bg-surface-container-highest text-on-surface-variant'
-                        }`}>
-                          <span className="text-2xl font-black">{getInitials(user.name)}</span>
-                        </div>
-                      )}
+                      <div className={`w-20 h-20 rounded-full flex items-center justify-center border-4 border-surface shadow-lg ${
+                        rank.name === 'VIP' ? 'bg-tertiary-fixed-dim/20 text-tertiary-fixed-dim' :
+                        rank.name === 'VÀNG' ? 'bg-secondary/20 text-secondary' :
+                        'bg-surface-container-highest text-on-surface-variant'
+                      }`}>
+                        <span className="text-2xl font-black">{getInitials(user.name)}</span>
+                      </div>
                       <span className={`absolute bottom-0 right-0 font-black text-[10px] px-2 py-0.5 rounded-full border-2 border-surface ${
                         rank.name === 'VIP' ? 'bg-tertiary-fixed-dim text-on-tertiary-fixed' :
                         rank.name === 'VÀNG' ? 'bg-secondary text-on-secondary' :
@@ -109,7 +105,6 @@ export default function AdminCustomers() {
                       }`}>{rank.name}</span>
                     </div>
                     <h3 className="text-xl font-black text-on-surface mb-1">{user.name}</h3>
-                    <p className="text-xs text-on-surface-variant font-bold tracking-widest mb-6">{user.email}</p>
 
                     <div className="w-full bg-surface-container-highest rounded-2xl p-4 mb-6 border border-white/5">
                       <p className="text-[10px] uppercase tracking-widest text-on-surface-variant font-bold mb-1">Tổng chi tiêu</p>
@@ -188,13 +183,9 @@ export default function AdminCustomers() {
 
             <div className="flex flex-col items-center text-center">
               <div className="relative mb-6">
-                {selectedUser.avatar ? (
-                  <img className="w-32 h-32 rounded-full object-cover border-4 border-surface shadow-2xl" src={selectedUser.avatar} alt={selectedUser.name} />
-                ) : (
-                  <div className="w-32 h-32 rounded-full bg-primary/20 flex items-center justify-center text-4xl font-black text-primary border-4 border-surface shadow-2xl">
-                    {getInitials(selectedUser.name)}
-                  </div>
-                )}
+                <div className="w-32 h-32 rounded-full bg-primary/20 flex items-center justify-center text-4xl font-black text-primary border-4 border-surface shadow-2xl">
+                  {getInitials(selectedUser.name)}
+                </div>
                 <div className={`absolute bottom-1 right-1 px-4 py-1.5 rounded-full border-4 border-surface font-black text-xs shadow-lg ${
                   getCustomerRank(getCustomerTotalSpend(selectedUser.id)).name === 'VIP' ? 'bg-tertiary-fixed-dim text-on-tertiary-fixed' :
                   getCustomerRank(getCustomerTotalSpend(selectedUser.id)).name === 'VÀNG' ? 'bg-secondary text-on-secondary' :
@@ -205,7 +196,6 @@ export default function AdminCustomers() {
               </div>
 
               <h4 className="text-3xl font-black mb-1">{selectedUser.name}</h4>
-              <p className="text-on-surface-variant font-bold tracking-widest uppercase text-sm mb-8">{selectedUser.email}</p>
 
               <div className="grid grid-cols-2 gap-4 w-full mb-8">
                 <div className="bg-surface-container-low p-6 rounded-3xl border border-white/5">
@@ -225,7 +215,6 @@ export default function AdminCustomers() {
               </div>
 
               <div className="w-full space-y-3">
-                <button className="w-full py-4 bg-surface-container-high text-on-surface font-black rounded-2xl hover:bg-white hover:text-black transition-all uppercase tracking-widest">Gửi thông báo</button>
                 <button className="w-full py-4 bg-error/10 text-error font-black rounded-2xl hover:bg-error hover:text-white transition-all uppercase tracking-widest">Khóa tài khoản</button>
               </div>
             </div>

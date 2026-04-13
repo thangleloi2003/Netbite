@@ -6,42 +6,51 @@ import type { Product } from "../../types";
 export default function AdminCreateProduct() {
   const navigate = useNavigate();
   const [newOption, setNewOption] = useState<{ [key: number]: string }>({});
-  const { 
-    formData, 
-    categories, 
-    loading, 
-    error, 
+  const {
+    formData,
+    categories,
+    loading,
+    error,
     success,
-    handleChange, 
+    handleChange,
     handleSubmit,
     addTopping,
     removeTopping,
     updateTopping,
     addToppingOption,
-    removeToppingOption
+    removeToppingOption,
   } = useProductForm();
-  
+
   const productForm = formData as Omit<Product, "id">;
 
   return (
     <main className="p-8 space-y-10 max-w-4xl mx-auto w-full">
       <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-6 mb-4">
         <div>
-          <h2 className="text-4xl font-black tracking-tighter italic uppercase mb-2">THÊM SẢN PHẨM MỚI</h2>
+          <h2 className="text-4xl font-black tracking-tighter italic uppercase mb-2">
+            THÊM SẢN PHẨM MỚI
+          </h2>
           <div className="h-1.5 w-16 bg-secondary rounded-full mb-3"></div>
-          <p className="text-on-surface-variant font-medium">Tạo món ăn mới cho thực đơn của bạn.</p>
+          <p className="text-on-surface-variant font-medium">
+            Tạo món ăn mới cho thực đơn của bạn.
+          </p>
         </div>
-        
-        <button 
+
+        <button
           onClick={() => navigate("/admin/products")}
           className="px-6 py-2.5 bg-surface-container-high text-on-surface text-xs font-black rounded-full border border-white/5 hover:bg-surface-container-highest transition-all uppercase tracking-wider flex items-center gap-2"
         >
-          <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+          <span className="material-symbols-outlined text-[18px]">
+            arrow_back
+          </span>
           Quay lại
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="bg-surface-container-low p-8 rounded-3xl border border-white/5 shadow-2xl space-y-8">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-surface-container-low p-8 rounded-3xl border border-white/5 shadow-2xl space-y-8"
+      >
         {error && (
           <div className="bg-error/10 border border-error/20 text-error p-4 rounded-2xl text-sm font-bold flex items-center gap-2">
             <span className="material-symbols-outlined">error</span>
@@ -59,7 +68,9 @@ export default function AdminCreateProduct() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Tên sản phẩm */}
           <div className="space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">Tên sản phẩm</label>
+            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
+              Tên sản phẩm
+            </label>
             <input
               required
               type="text"
@@ -73,7 +84,9 @@ export default function AdminCreateProduct() {
 
           {/* Danh mục */}
           <div className="space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">Danh mục</label>
+            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
+              Danh mục
+            </label>
             <select
               required
               name="category"
@@ -92,7 +105,9 @@ export default function AdminCreateProduct() {
 
           {/* Giá bán */}
           <div className="space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">Giá bán (VNĐ)</label>
+            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
+              Giá bán (VNĐ)
+            </label>
             <input
               required
               type="number"
@@ -106,7 +121,9 @@ export default function AdminCreateProduct() {
 
           {/* Giá gốc (nếu có) */}
           <div className="space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">Giá gốc (nếu có)</label>
+            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
+              Giá gốc (nếu có)
+            </label>
             <input
               type="number"
               name="originalPrice"
@@ -119,7 +136,9 @@ export default function AdminCreateProduct() {
 
           {/* Hình ảnh URL */}
           <div className="md:col-span-2 space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">Link hình ảnh</label>
+            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
+              Link hình ảnh
+            </label>
             <input
               required
               type="url"
@@ -133,7 +152,9 @@ export default function AdminCreateProduct() {
 
           {/* Mô tả */}
           <div className="md:col-span-2 space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">Mô tả sản phẩm</label>
+            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
+              Mô tả sản phẩm
+            </label>
             <textarea
               required
               name="description"
@@ -160,8 +181,12 @@ export default function AdminCreateProduct() {
                 <div className="absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-all duration-300 peer-checked:translate-x-6 shadow-md"></div>
               </div>
               <div>
-                <span className="text-sm font-black uppercase tracking-widest text-on-surface transition-colors group-hover:text-secondary">Sản phẩm Best Seller</span>
-                <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-tighter">Hiển thị huy hiệu nổi bật cho món ăn này</p>
+                <span className="text-sm font-black uppercase tracking-widest text-on-surface transition-colors group-hover:text-secondary">
+                  Sản phẩm Best Seller
+                </span>
+                <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-tighter">
+                  Hiển thị huy hiệu nổi bật cho món ăn này
+                </p>
               </div>
             </label>
           </div>
@@ -171,76 +196,107 @@ export default function AdminCreateProduct() {
         <div className="pt-8 border-t border-white/5 space-y-6">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-xl font-black italic tracking-tighter uppercase">Toppings / Tùy chọn</h3>
-              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mt-1">Thêm các lựa chọn hoặc món ăn kèm cho sản phẩm này.</p>
+              <h3 className="text-xl font-black italic tracking-tighter uppercase">
+                Toppings / Tùy chọn
+              </h3>
+              <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest mt-1">
+                Thêm các lựa chọn hoặc món ăn kèm cho sản phẩm này.
+              </p>
             </div>
             <button
               type="button"
               onClick={addTopping}
               className="px-4 py-2 bg-secondary text-on-secondary text-[10px] font-black rounded-full hover:bg-secondary/80 transition-all uppercase tracking-widest flex items-center gap-2 shadow-lg"
             >
-              <span className="material-symbols-outlined text-[16px]">add</span> Thêm tùy chọn
+              <span className="material-symbols-outlined text-[16px]">add</span>{" "}
+              Thêm tùy chọn
             </button>
           </div>
 
           <div className="space-y-4">
             {productForm.toppings?.map((topping, index) => (
-              <div key={topping.id} className="bg-surface-container-high/50 p-6 rounded-[32px] border border-white/5 space-y-4 relative group">
+              <div
+                key={topping.id}
+                className="bg-surface-container-high/50 p-6 rounded-[32px] border border-white/5 space-y-4 relative group"
+              >
                 <button
                   type="button"
                   onClick={() => removeTopping(index)}
                   className="absolute top-4 right-4 w-8 h-8 rounded-full bg-error/10 text-error flex items-center justify-center hover:bg-error hover:text-white transition-all opacity-0 group-hover:opacity-100"
                 >
-                  <span className="material-symbols-outlined text-[18px]">close</span>
+                  <span className="material-symbols-outlined text-[18px]">
+                    close
+                  </span>
                 </button>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Tên tùy chọn</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">
+                      Tên tùy chọn
+                    </label>
                     <input
                       type="text"
                       value={topping.label}
-                      onChange={(e) => updateTopping(index, "label", e.target.value)}
+                      onChange={(e) =>
+                        updateTopping(index, "label", e.target.value)
+                      }
                       placeholder="VD: Thêm phô mai"
                       className="w-full bg-surface-container-high border border-white/5 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-secondary/50 transition-all text-sm font-bold"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Giá thêm (VNĐ)</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">
+                      Giá thêm (VNĐ)
+                    </label>
                     <input
                       type="number"
                       value={topping.price}
-                      onChange={(e) => updateTopping(index, "price", Number(e.target.value))}
+                      onChange={(e) =>
+                        updateTopping(index, "price", Number(e.target.value))
+                      }
                       className="w-full bg-surface-container-high border border-white/5 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-secondary/50 transition-all text-sm font-bold"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Loại tùy chọn</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">
+                      Loại tùy chọn
+                    </label>
                     <select
                       value={topping.type}
-                      onChange={(e) => updateTopping(index, "type", e.target.value)}
+                      onChange={(e) =>
+                        updateTopping(index, "type", e.target.value)
+                      }
                       className="w-full bg-surface-container-high border border-white/5 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-secondary/50 transition-all text-sm font-bold appearance-none"
                     >
-                      <option value="quantifiable">Số lượng (Quantifiable)</option>
-                      <option value="binary">Bật/Tắt (Binary)</option>
-                      <option value="level">Cấp độ (Level)</option>
+                      <option value="quantifiable">Số lượng +/- (Quantifiable)</option>
+                      <option value="binary">Chọn có/không (Binary)</option>
+                      <option value="level">Chọn cấp độ cho mì cay (Level)</option>
                     </select>
                   </div>
                 </div>
 
                 {topping.type === "level" && (
                   <div className="pt-4 border-t border-white/5 space-y-3">
-                    <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Danh sách lựa chọn (VD: Cấp 0, Cấp 1...)</label>
+                    <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">
+                      Danh sách lựa chọn (VD: Cấp 0, Cấp 1...)
+                    </label>
                     <div className="flex flex-wrap gap-2">
                       {topping.options?.map((opt, optIdx) => (
-                        <div key={optIdx} className="flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1.5 rounded-full border border-secondary/20 group/opt">
-                          <span className="text-[10px] font-black uppercase tracking-wider">{opt}</span>
+                        <div
+                          key={optIdx}
+                          className="flex items-center gap-2 bg-secondary/10 text-secondary px-3 py-1.5 rounded-full border border-secondary/20 group/opt"
+                        >
+                          <span className="text-[10px] font-black uppercase tracking-wider">
+                            {opt}
+                          </span>
                           <button
                             type="button"
                             onClick={() => removeToppingOption(index, optIdx)}
                             className="w-4 h-4 rounded-full flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-all"
                           >
-                            <span className="material-symbols-outlined text-[12px]">close</span>
+                            <span className="material-symbols-outlined text-[12px]">
+                              close
+                            </span>
                           </button>
                         </div>
                       ))}
@@ -248,12 +304,20 @@ export default function AdminCreateProduct() {
                         <input
                           type="text"
                           value={newOption[index] || ""}
-                          onChange={(e) => setNewOption(prev => ({ ...prev, [index]: e.target.value }))}
+                          onChange={(e) =>
+                            setNewOption((prev) => ({
+                              ...prev,
+                              [index]: e.target.value,
+                            }))
+                          }
                           onKeyDown={(e) => {
                             if (e.key === "Enter") {
                               e.preventDefault();
                               addToppingOption(index, newOption[index] || "");
-                              setNewOption(prev => ({ ...prev, [index]: "" }));
+                              setNewOption((prev) => ({
+                                ...prev,
+                                [index]: "",
+                              }));
                             }
                           }}
                           placeholder="Thêm lựa chọn..."
@@ -263,11 +327,13 @@ export default function AdminCreateProduct() {
                           type="button"
                           onClick={() => {
                             addToppingOption(index, newOption[index] || "");
-                            setNewOption(prev => ({ ...prev, [index]: "" }));
+                            setNewOption((prev) => ({ ...prev, [index]: "" }));
                           }}
                           className="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-all"
                         >
-                          <span className="material-symbols-outlined text-[14px]">add</span>
+                          <span className="material-symbols-outlined text-[14px]">
+                            add
+                          </span>
                         </button>
                       </div>
                     </div>
@@ -289,7 +355,9 @@ export default function AdminCreateProduct() {
             disabled={loading || success}
             type="submit"
             className={`w-full py-5 font-black rounded-2xl shadow-lg hover:-translate-y-1 active:translate-y-0 transition-all uppercase tracking-widest disabled:opacity-50 disabled:translate-y-0 flex items-center justify-center gap-3 ${
-              success ? "bg-green-500 text-white" : "bg-primary text-on-primary shadow-[0_0_20px_rgba(255,141,140,0.4)] hover:shadow-[0_0_30px_rgba(255,141,140,0.6)]"
+              success
+                ? "bg-green-500 text-white"
+                : "bg-primary text-on-primary shadow-[0_0_20px_rgba(255,141,140,0.4)] hover:shadow-[0_0_30px_rgba(255,141,140,0.6)]"
             }`}
           >
             {loading ? (
@@ -299,12 +367,16 @@ export default function AdminCreateProduct() {
               </>
             ) : success ? (
               <>
-                <span className="material-symbols-outlined font-black">done_all</span>
+                <span className="material-symbols-outlined font-black">
+                  done_all
+                </span>
                 Thành công!
               </>
             ) : (
               <>
-                <span className="material-symbols-outlined font-black">add_circle</span>
+                <span className="material-symbols-outlined font-black">
+                  add_circle
+                </span>
                 Tạo sản phẩm
               </>
             )}

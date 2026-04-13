@@ -4,8 +4,9 @@ import { useAuth } from '../hooks/useAuth';
 import { authApi } from '../services/api';
 
 export default function Login() {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -18,7 +19,7 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const user = await authApi.login({ email, password });
+      const user = await authApi.login({ username, password });
       login(user);
       
       const searchParams = new URLSearchParams(location.search);
@@ -32,7 +33,7 @@ export default function Login() {
         navigate('/');
       }
     } catch (err: any) {
-      setError(err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại email và mật khẩu.');
+      setError(err.message || 'Đăng nhập thất bại. Vui lòng kiểm tra lại tài khoản và mật khẩu.');
     } finally {
       setLoading(false);
     }
@@ -73,15 +74,15 @@ export default function Login() {
                 </div>
               )}
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Email</label>
+                <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Tài khoản</label>
                 <div className="relative group">
-                  <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">mail</span>
+                  <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">person</span>
                   <input 
                     className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
-                    placeholder="name@domain.com" 
-                    type="email" 
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="Nhập tên tài khoản" 
+                    type="text" 
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
                     required
                   />
                 </div>
@@ -95,13 +96,22 @@ export default function Login() {
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock</span>
                   <input 
-                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
-                    type="password" 
+                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-12 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
+                    type={showPassword ? 'text' : 'password'} 
                     placeholder="••••••••"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-5 top-8 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors p-1"
+                  >
+                    <span className="material-symbols-outlined text-xl">
+                      {showPassword ? 'visibility' : 'visibility_off'}
+                    </span>
+                  </button>
                 </div>
               </div>
 

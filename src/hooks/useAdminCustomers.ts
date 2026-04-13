@@ -63,7 +63,6 @@ export function useAdminCustomers() {
                             (filter === "silver" && rank === "bạc");
       
       const matchesSearch = u.name.toLowerCase().includes(search.toLowerCase()) || 
-                            u.email.toLowerCase().includes(search.toLowerCase()) ||
                             u.username.toLowerCase().includes(search.toLowerCase());
                             
       return matchesFilter && matchesSearch;

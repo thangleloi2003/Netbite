@@ -282,7 +282,7 @@ export default function Menu() {
         const aBest = a.tags.includes("bestseller") ? 1 : 0;
         const bBest = b.tags.includes("bestseller") ? 1 : 0;
         if (aBest !== bBest) return bBest - aBest;
-        return b.reviewCount - a.reviewCount;
+        return 0;
       }
       return 0;
     });

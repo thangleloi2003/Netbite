@@ -3,38 +3,66 @@
     {
       "id": "1",
       "username": "admin",
-      "email": "admin@netbite.vn",
       "name": "Quản trị viên",
       "role": "admin",
-      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuA7LRKZ2ix3cq9BaDKDOJF641c7-yfpl-LS9R_4huZbtFir6z0km8AGH0ppWFKfOxQaHoMM0O5YOV2Xpbuv7vXH6AqzRHYdFE0ivCXzLp4zZHI0inwUo4IEFRVQjBjjLIkQPb97rCp9RPKH615RDRDR3Zlpcs9vocNy92yjcthPhoAqI3YDPyE5LPBlpKIvCYzweyTAtb6oYDEHGIQoI8-slhN04UrKAhJUAsgqx51EwJojvLoKEd8ubbfeUcMPXZ7iVDE7WthlnSqs",
-      "password": "Abc1234@"
+      "password": "12345"
     },
     {
       "id": "2",
       "username": "customer",
-      "email": "kiett@example.com",
       "name": "Tuấn Kiệt",
       "role": "customer",
-      "avatar": "https://lh3.googleusercontent.com/aida-public/AB6AXuA7LRKZ2ix3cq9BaDKDOJF641c7-yfpl-LS9R_4huZbtFir6z0km8AGH0ppWFKfOxQaHoMM0O5YOV2Xpbuv7vXH6AqzRHYdFE0ivCXzLp4zZHI0inwUo4IEFRVQjBjjLIkQPb97rCp9RPKH615RDRDR3Zlpcs9vocNy92yjcthPhoAqI3YDPyE5LPBlpKIvCYzweyTAtb6oYDEHGIQoI8-slhN04UrKAhJUAsgqx51EwJojvLoKEd8ubbfeUcMPXZ7iVDE7WthlnSqs",
       "password": "123"
     },
     {
-      "id": "NjdZkjE",
+      "id": "3",
       "username": "vanA",
-      "email": "vanA@gmail.com",
       "name": "nguyen van A",
       "role": "customer",
-      "avatar": "",
       "password": "123"
     },
     {
-      "id": "Q9oazDs",
+      "id": "4",
       "username": "B",
-      "email": "B@gmail.com",
       "name": "Dinh Van B",
       "role": "customer",
-      "avatar": "",
       "password": "Abc1234@"
+    },
+    {
+      "id": "5",
+      "username": "thang",
+      "name": "Thang Nguyen",
+      "role": "customer",
+      "password": "12345@Thang"
+    },
+    {
+      "id": "6",
+      "username": "C",
+      "name": "C",
+      "role": "customer",
+      "password": "1234@Abcd"
+    },
+    {
+      "id": "7",
+      "username": "d",
+      "name": "D",
+      "role": "customer",
+      "password": "1234@Abcd"
+    },
+    {
+      "id": "8",
+      "username": "e",
+      "email": "e@gmail.com",
+      "name": "e",
+      "role": "customer",
+      "password": "1234@Abcd"
+    },
+    {
+      "id": "9",
+      "username": "enter96",
+      "name": "Enter",
+      "role": "customer",
+      "password": "1234@Abcd"
     }
   ],
   "categories": [
@@ -520,6 +548,98 @@
         "7",
         "5"
       ]
+    },
+    {
+      "id": "11",
+      "name": "Mì cay Hảo Hảo",
+      "price": 10000,
+      "originalPrice": 100000,
+      "image": "https://png.pngtree.com/png-clipart/20231017/original/pngtree-noodle-food-3d-png-image_13325743.png",
+      "images": [],
+      "category": "noodle",
+      "description": "Mì ngon vl",
+      "tags": [
+        "bestseller"
+      ],
+      "rating": 5,
+      "reviewCount": 0,
+      "calories": 0,
+      "protein": 0,
+      "fat": 0,
+      "badges": [],
+      "toppings": [
+        {
+          "id": "t1776046997094",
+          "label": "Thêm trứng",
+          "price": 5000,
+          "icon": "restaurant",
+          "type": "binary",
+          "options": []
+        },
+        {
+          "id": "t1776047036158",
+          "label": "Thêm xúc xích",
+          "price": 10000,
+          "icon": "restaurant",
+          "type": "binary",
+          "options": []
+        }
+      ],
+      "relatedIds": []
+    },
+    {
+      "id": "12",
+      "name": "Tài lộc quá lớn đỏ",
+      "price": 12000,
+      "originalPrice": null,
+      "image": "https://cdnv2.tgdd.vn/bhx-static/bhx/Products/Images/3226/76519/bhx/nuoc-tang-luc-sting-dau-sleek-lon-330ml_202509291421449068.jpg",
+      "images": [],
+      "category": "drink",
+      "description": "Tài lộc quá lớn, uống là mê say",
+      "tags": [
+        "bestseller"
+      ],
+      "rating": 5,
+      "reviewCount": 0,
+      "calories": 0,
+      "protein": 0,
+      "fat": 0,
+      "badges": [],
+      "toppings": [],
+      "relatedIds": []
+    },
+    {
+      "id": "13",
+      "name": "Tài lộc quá lớn vàng ",
+      "price": 12000,
+      "originalPrice": 0,
+      "image": "https://www.bonchon.com.vn/sites/default/files/styles/large/public/product/2025-11/Sting%20Nh%C3%A2n%20S%C3%A2m_0.jpg?itok=x8gPzc5y",
+      "images": [],
+      "category": "drink",
+      "description": "Tài lộc quá lớn, uống là mê say",
+      "tags": [
+        "bestseller"
+      ],
+      "rating": 5,
+      "reviewCount": 0,
+      "calories": 0,
+      "protein": 0,
+      "fat": 0,
+      "badges": [],
+      "toppings": [
+        {
+          "id": "t1776050721587",
+          "label": "Tẩy Đá",
+          "price": 0,
+          "icon": "restaurant",
+          "type": "level",
+          "options": [
+            "Nhiều",
+            "Ít"
+          ]
+        }
+      ],
+      "relatedIds": []
     }
   ],
   "combos": [
@@ -636,7 +756,7 @@
         }
       ],
       "total": 100000,
-      "status": "processing",
+      "status": "delivered",
       "date": "2026-04-08",
       "machineNumber": "B05"
     }

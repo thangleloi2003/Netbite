@@ -17,8 +17,6 @@ const initialFormState: Omit<Product, "id"> = {
   category: "",
   description: "",
   tags: [],
-  rating: 5,
-  reviewCount: 0,
   calories: 0,
   protein: 0,
   fat: 0,
@@ -113,9 +111,12 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
       if (productId) {
         await productApi.update(productId, formData);
       } else {
+        
+        const nextId = "p_" + Math.random().toString(36).substr(2, 9);
+
         const productToCreate = {
+          id: nextId,
           ...formData,
-          id: Date.now().toString(),
         } as Product;
         await productApi.create(productToCreate);
       }

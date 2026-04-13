@@ -6,11 +6,12 @@ import { useAuth } from '../hooks/useAuth';
 export default function Register() {
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
+    username: '',
     password: '',
-    confirmPassword: '',
-    username: ''
+    confirmPassword: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
@@ -50,13 +51,24 @@ export default function Register() {
 
     setLoading(true);
     try {
+      const allUsers = await authApi.getAllUsers();
+      
+      // Kiểm tra username đã tồn tại chưa
+      if (allUsers.some(u => u.username.toLowerCase() === formData.username.toLowerCase())) {
+        setError('Tên tài khoản này đã tồn tại. Vui lòng chọn tên khác.');
+        setLoading(false);
+        return;
+      }
+      
+      const nextId = "u_" + Math.random().toString(36).substr(2, 9);
+
       const user = await authApi.register({
+        id: nextId,
+        username: formData.username,
         name: formData.name,
-        email: formData.email,
-        password: formData.password,
-        username: formData.username || formData.email.split('@')[0],
-        role: 'customer'
-      });
+        role: 'customer',
+        password: formData.password
+      } as any);
       login(user);
       navigate('/');
     } catch (err: any) {
@@ -117,15 +129,15 @@ export default function Register() {
               </div>
 
               <div>
-                <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Email</label>
+                <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Tên tài khoản</label>
                 <div className="relative group">
-                  <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">mail</span>
+                  <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">person</span>
                   <input 
                     className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
-                    placeholder="name@domain.com" 
-                    type="email" 
-                    name="email"
-                    value={formData.email}
+                    placeholder="VD: tuankiet2024" 
+                    type="text" 
+                    name="username"
+                    value={formData.username}
                     onChange={handleChange}
                     required
                   />
@@ -137,14 +149,23 @@ export default function Register() {
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock</span>
                   <input 
-                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
+                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-12 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
                     placeholder="••••••••" 
-                    type="password" 
+                    type={showPassword ? 'text' : 'password'} 
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
                     required
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-5 top-8 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors p-1"
+                  >
+                    <span className="material-symbols-outlined text-xl">
+                      {showPassword ? 'visibility' : 'visibility_off'}
+                    </span>
+                  </button>
                 </div>
                 {formData.password && (
                   <div className="mt-3 px-4 space-y-1.5">
@@ -180,14 +201,23 @@ export default function Register() {
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock_reset</span>
                   <input 
-                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
+                    className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-12 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
                     placeholder="••••••••" 
-                    type="password" 
+                    type={showConfirmPassword ? 'text' : 'password'} 
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
                     required
                   />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-5 top-8 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors p-1"
+                  >
+                    <span className="material-symbols-outlined text-xl">
+                      {showConfirmPassword ? 'visibility' : 'visibility_off'}
+                    </span>
+                  </button>
                 </div>
               </div>
 
