@@ -8,9 +8,6 @@ export interface Product {
   category: string;
   description: string;
   tags: string[];
-  calories: number;
-  protein: number;
-  fat: number;
   badges: { icon: string; label: string }[];
   toppings: {
     id: string;

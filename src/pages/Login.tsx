@@ -91,7 +91,7 @@ export default function Login() {
               <div>
                 <div className="flex justify-between items-center mb-2 px-4">
                   <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Mật khẩu</label>
-                  <Link className="text-[10px] font-black text-primary tracking-widest hover:brightness-125 transition-colors" to="#">Quên mật khẩu?</Link>
+                  <Link className="text-[12px] font-black text-primary tracking-widest hover:brightness-125 transition-colors" to="#">Quên mật khẩu?</Link>
                 </div>
                 <div className="relative group">
                   <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock</span>

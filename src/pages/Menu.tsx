@@ -302,9 +302,9 @@ export default function Menu() {
         </p>
       </div>
 
-      <div className="flex flex-col lg:flex-row gap-6 items-start">
+      <div className="flex flex-col lg:flex-row gap-8 items-start relative">
         {/* Sidebar */}
-        <aside className="w-full lg:w-60 shrink-0 space-y-4 lg:sticky lg:top-28">
+        <aside className="w-full lg:w-1/4 shrink-0 space-y-6 lg:sticky lg:top-20 z-20">
           {/* Category */}
           <section className="bg-[#2c0411] rounded-2xl p-4 border border-white/5">
             <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-on-surface-variant/50 mb-4 flex items-center gap-2">

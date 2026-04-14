@@ -27,7 +27,7 @@ export default function Header() {
             <span className="text-on-surface-variant opacity-50 cursor-not-allowed">Hoàn tất</span>
           </nav>
           <div className="flex items-center gap-4">
-            <Link to={user ? (user.role === 'admin' ? '/admin' : '/profile') : '/login'}
+            <Link to={user ? (user.role === 'admin' ? '/admin' : '/') : '/login'}
               className="bg-surface-container hover:bg-surface-container-highest text-on-surface p-2.5 rounded-full transition-all duration-300 active:scale-95 border border-white/5">
               <span className="material-symbols-outlined text-xl">person</span>
             </Link>
@@ -61,7 +61,7 @@ export default function Header() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setCartOpen(true)}
-                className="relative p-2 hover:bg-white/5 transition-all duration-200 rounded-full active:scale-95"
+                className="relative p-2 hover:bg-white/5 transition-all duration-200 rounded-full active:scale-95 translate-y-0.5"
               >
                 <span className="material-symbols-outlined text-primary">shopping_cart</span>
                 {totalCount > 0 && (
@@ -72,7 +72,7 @@ export default function Header() {
               </button>
               <div className="flex gap-4 items-center">
                 <Link
-                  to={user.role === 'admin' ? '/admin' : '/profile'}
+                  to={user.role === 'admin' ? '/admin' : '/'}
                   className="text-slate-300 hover:text-white font-bold hidden sm:block">{user.name}</Link>
                 <button 
                   onClick={handleLogout} 

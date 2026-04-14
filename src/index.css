@@ -14,6 +14,7 @@
 @layer base {
   body {
     font-family: 'Plus Jakarta Sans', sans-serif;
+    overflow-x: hidden;
   }
 }
 
@@ -58,4 +59,22 @@
 .scrollbar-none::-webkit-scrollbar,
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #24020c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ff8d8c;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ff7072;
 }

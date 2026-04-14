@@ -23,6 +23,9 @@ Dự án được xây dựng theo mô hình **Single Page Application (SPA)** v
 
 ### 1. Phân hệ Khách hàng (Client Side)
 Hệ thống được tối ưu để game thủ có thể đặt món chỉ với vài cú click mà không làm gián đoạn trận đấu:
+- **Giao diện Responsive & Premium**: 
+    - **Sticky Menu**: Sidebar danh Mục món ăn tự động bám theo màn hình khi cuộn trang, giúp chuyển đổi danh mục tức thì.
+    - **Brand Scrolling**: Hệ thống thanh cuộn (Scrollbar) màu đỏ đặc trưng, tăng tính nhận diện thương hiệu.
 - **Hệ thống Định danh mới**: Đăng nhập/Đăng ký siêu tốc chỉ bằng **Username** (Không yêu cầu Email).
 - **Thực đơn Đa tầng**: Lọc món theo danh mục, tìm kiếm thời gian thực.
 - **Tùy biến Topping Chuyên sâu**: Cho phép chọn cấp độ cay, thêm topping có số lượng (trứng, phô mai) hoặc lựa chọn nhị phân.
@@ -79,6 +82,15 @@ Từ phiên bản 2026, NetBite áp dụng tiêu chuẩn ID mới:
 - **User ID**: Định dạng `u_xxxxxxxxx` (Ngẫu nhiên).
 - **Product ID**: Định dạng `p_xxxxxxxxx` (Ngẫu nhiên).
 - **Username**: Là định danh duy nhất (Unique identifier) trong toàn hệ thống.
+
+---
+
+## 🧪 Chiến lược Kiểm thử (Testing Strategy)
+Hệ thống được thiết kế để kiểm thử thông qua các kịch bản thực tế (End-to-End):
+- **Xác thực**: Kiểm tra luồng Đăng ký/Đăng nhập bằng Username.
+- **Quy trình đặt món**: Thêm món với Topping Level (Cay) và Topping Định lượng -> Kiểm tra giỏ hàng.
+- **Thanh toán**: Xác nhận đơn hàng với mã Máy/Bàn và kiểm tra trạng thái trong trang Admin.
+- **Admin**: Kiểm tra CRUD sản phẩm và luồng cập nhật trạng thái đơn hàng.
 
 ---
 *© 2026 NetBite Gaming Cafe Application. All rights reserved.*

@@ -7,7 +7,7 @@ export default function Layout() {
   const isProfilePage = location.pathname === '/profile';
 
   return (
-    <div className="bg-surface text-on-surface overflow-x-hidden min-h-screen flex flex-col relative">
+    <div className="bg-surface text-on-surface min-h-screen flex flex-col relative">
       {!isProfilePage && <Header />}
       <main className="flex-grow flex flex-col w-full h-full">
         <Outlet />
