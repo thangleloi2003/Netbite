@@ -1,37 +1,19 @@
 import { useState, useEffect, useMemo } from "react";
-import { authApi, orderApi } from "../services/api";
-import type { User, Order } from "../types";
+import { useAdmin } from "../context/AdminContext";
 
 export function useAdminCustomers() {
-  const [users, setUsers] = useState<User[]>([]);
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { 
+    users, 
+    orders, 
+    loading, 
+    error, 
+    deleteUser: contextDeleteUser,
+    refreshData 
+  } = useAdmin();
+
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 8;
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const [usersData, ordersData] = await Promise.all([
-        authApi.getAllUsers(),
-        orderApi.getAll()
-      ]);
-      setUsers(usersData.filter(u => u.role !== 'admin'));
-      setOrders(ordersData);
-    } catch (err) {
-      setError("Failed to fetch customers");
-      console.error("Failed to fetch customers:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   useEffect(() => {
     setPage(1);
@@ -46,11 +28,9 @@ export function useAdminCustomers() {
   const deleteUser = async (id: string) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa tài khoản người dùng này?")) {
       try {
-        await authApi.deleteUser(id);
-        setUsers(prev => prev.filter(u => u.id !== id));
+        await contextDeleteUser(id);
         return true;
       } catch (err) {
-        setError("Failed to delete user");
         console.error("Failed to delete user:", err);
         return false;
       }
@@ -63,7 +43,7 @@ export function useAdminCustomers() {
       const matchesSearch = u.name.toLowerCase().includes(search.toLowerCase()) || 
                             u.username.toLowerCase().includes(search.toLowerCase());
                             
-      return matchesSearch;
+      return u.role !== 'admin' && matchesSearch;
     });
   }, [users, search]);
 
@@ -86,6 +66,6 @@ export function useAdminCustomers() {
     totalPages,
     getCustomerTotalSpend,
     deleteUser,
-    refreshCustomers: fetchData,
+    refreshCustomers: refreshData,
   };
 }

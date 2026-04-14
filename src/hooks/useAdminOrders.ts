@@ -1,40 +1,23 @@
 import { useState, useEffect, useMemo } from "react";
-import { orderApi, authApi } from "../services/api";
-import type { Order, User } from "../types";
+import { useAdmin } from "../context/AdminContext";
+import type { Order } from "../types";
 
 export type OrderFilterStatus = "all" | "pending" | "processing" | "delivered" | "cancelled";
 
 export function useAdminOrders() {
-  const [orders, setOrders] = useState<Order[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { 
+    orders, 
+    users, 
+    loading, 
+    error, 
+    updateOrder: contextUpdateOrder,
+    refreshData 
+  } = useAdmin();
+
   const [filter, setFilter] = useState<OrderFilterStatus>("all");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 5;
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const [ordersData, usersData] = await Promise.all([
-        orderApi.getAll(),
-        authApi.getAllUsers()
-      ]);
-      setOrders(ordersData.reverse());
-      setUsers(usersData);
-    } catch (err) {
-      setError("Failed to fetch orders");
-      console.error("Failed to fetch data:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   useEffect(() => {
     setPage(1);
@@ -42,11 +25,9 @@ export function useAdminOrders() {
 
   const updateOrderStatus = async (id: string, nextStatus: Order["status"]) => {
     try {
-      const updatedOrder = await orderApi.update(id, { status: nextStatus });
-      setOrders(prev => prev.map(o => o.id === id ? updatedOrder : o));
+      await contextUpdateOrder(id, { status: nextStatus });
       return true;
     } catch (err) {
-      setError("Failed to update order status");
       console.error("Failed to update order status:", err);
       return false;
     }
@@ -99,10 +80,10 @@ export function useAdminOrders() {
     page,
     setPage,
     totalPages,
-    todayOrdersCount,
-    getUser,
     updateOrderStatus,
     cancelOrder,
-    refreshOrders: fetchData,
+    getUser,
+    todayOrdersCount,
+    refreshOrders: refreshData,
   };
 }

@@ -1,38 +1,21 @@
 import { useState, useEffect, useMemo } from "react";
-import { productApi, categoryApi } from "../services/api";
-import type { Product, Category } from "../types";
+import { useAdmin } from "../context/AdminContext";
 
 export function useAdminProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { 
+    products, 
+    categories, 
+    loading, 
+    error, 
+    deleteProduct: contextDeleteProduct,
+    updateProduct: contextUpdateProduct,
+    refreshData 
+  } = useAdmin();
+  
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 8;
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const [productsData, categoriesData] = await Promise.all([
-        productApi.getAll(),
-        categoryApi.getAll()
-      ]);
-      setProducts(productsData);
-      setCategories(categoriesData);
-    } catch (err) {
-      setError("Failed to fetch data");
-      console.error("Failed to fetch data:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
 
   useEffect(() => {
     setPage(1);
@@ -41,11 +24,9 @@ export function useAdminProducts() {
   const deleteProduct = async (id: string) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa sản phẩm này?")) {
       try {
-        await productApi.delete(id);
-        setProducts(prev => prev.filter((p) => p.id !== id));
+        await contextDeleteProduct(id);
         return true;
       } catch (err) {
-        setError("Failed to delete product");
         console.error("Failed to delete product:", err);
         return false;
       }
@@ -63,11 +44,9 @@ export function useAdminProducts() {
       : [...product.tags, "bestseller"];
 
     try {
-      const updatedProduct = await productApi.update(id, { tags: updatedTags });
-      setProducts(prev => prev.map(p => p.id === id ? updatedProduct : p));
+      await contextUpdateProduct(id, { tags: updatedTags });
       return true;
     } catch (err) {
-      setError("Failed to update best seller status");
       console.error("Failed to update best seller status:", err);
       return false;
     }
@@ -83,11 +62,9 @@ export function useAdminProducts() {
       : [...product.tags, "hot"];
 
     try {
-      const updatedProduct = await productApi.update(id, { tags: updatedTags });
-      setProducts(prev => prev.map(p => p.id === id ? updatedProduct : p));
+      await contextUpdateProduct(id, { tags: updatedTags });
       return true;
     } catch (err) {
-      setError("Failed to update hot status");
       console.error("Failed to update hot status:", err);
       return false;
     }
@@ -122,7 +99,7 @@ export function useAdminProducts() {
     page,
     setPage,
     totalPages,
-    refreshProducts: fetchData,
+    refreshProducts: refreshData,
     deleteProduct,
     toggleBestSeller,
     toggleHot,
