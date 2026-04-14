@@ -18,5 +18,9 @@ export interface Product {
     options?: string[];
   }[];
   relatedIds: string[];
+  comboItems?: {
+    productId: string;
+    quantity: number;
+  }[];
 }
 

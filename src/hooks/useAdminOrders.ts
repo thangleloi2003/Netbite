@@ -12,7 +12,7 @@ export function useAdminOrders() {
   const [filter, setFilter] = useState<OrderFilterStatus>("all");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const itemsPerPage = 10;
+  const itemsPerPage = 5;
 
   const fetchData = async () => {
     try {

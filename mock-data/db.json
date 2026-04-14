@@ -115,7 +115,7 @@
         "https://lh3.googleusercontent.com/aida-public/AB6AXuDutlCRjKEhBt74tF3heHkGwr5rUIZ2QE2q_WU-M0FHNA7AFYVorgWeDnG9ECvOAfxtxx4ARI_R0Mru0zkKQJ2Us13QN73S62PDL7QyHy7AHBOoTbAhjcaFzvD0tnkcTlpMOmjh4zYhxfzUsuadP7nCnPBNDLRMhQDBBkpsych4pOv3c_0ru7kYzEz-asSgfXin7y0qcQYcg_oGFdBj2LgvEPJieU-D3Q3doqoVoXxkZdt4nJlsyhADfcGD4Wpw2R4O77QesZdDsc7X",
         "https://lh3.googleusercontent.com/aida-public/AB6AXuAyovayGLGPYC5vITR_QtrtVRUeMdseZE6jL5zTY0eHXE9o5TQqq1G5dcu3lc6nLNVpz1J2MvLNWQToUpabfa46yHG-K5s9GEXTk9X18PCPzgTB9EUic8Ce8l9tTtdgD5j08elBVehJiEPWSDCfnogm2754LCbLPcSiN242NcR4eroaEY6vEV4EBkyMO7C7y3RAicuHiaGFjJum4infHXRXZTT1BCXcjkfjZI4K6oLEJX-a5sYVbdKXaffsKFHKKANg_6vp9mFmtZGD"
       ],
-      "category": "combo",
+      "category": "food",
       "description": "Chiếc Burger Bò Full Buff huyền thoại với miếng thịt bò Úc tươi ngon nướng lửa hồng, phủ phô mai Cheddar và tương đặc biệt của NetBite. Đây là nguồn năng lượng tối thượng cho mọi trận đấu.",
       "tags": [
         "hot",
@@ -596,6 +596,34 @@
       "badges": [],
       "toppings": [],
       "relatedIds": []
+    },
+    {
+      "id": "p_h3mdd1uxd",
+      "name": "Combo Destroyer Galaxy",
+      "price": 108000,
+      "originalPrice": 135000,
+      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBeP-6roJ3eWOYUYpiJ7VPVareHErGFmPEabg6YkNcLR-POaUlMwQK5J4X_cupfvh8vFMQg2FxL0_3sXU5bDnB1WZ3dtyRRzUD4q6_S8i6p5mwpp9rwCvafvBd_FsQ7t0nMXwU0UDWUDu5goBV2O2BkoC703-HO8PgOmO7l-1xltWs77q-xN74Q43TKZlwoEupFCgR9ygbuQunD-SWcj9cvxqh5shP5tdczLqyywW2uMtvTymWwDbTo4PADtBnCY0QL7at7V46duvIz",
+      "images": [],
+      "category": "combo",
+      "description": "Combo hủy diệt vị giác",
+      "tags": [],
+      "badges": [],
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
+        {
+          "productId": "p_wd48jj258",
+          "quantity": 1
+        },
+        {
+          "productId": "p_ha8hrnfsk",
+          "quantity": 1
+        },
+        {
+          "productId": "p_ktzltm6yr",
+          "quantity": 1
+        }
+      ]
     }
   ],
   "combos": [

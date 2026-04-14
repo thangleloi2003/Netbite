@@ -24,6 +24,8 @@ export const authApi = {
       const { password: _password, ...userWithoutPassword } = r.data;
       return userWithoutPassword;
     }),
+
+  deleteUser: (id: string) => api.delete(`/users/${id}`).then((r) => r.data),
 };
 
 export const productApi = {

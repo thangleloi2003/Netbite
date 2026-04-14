@@ -20,11 +20,13 @@ const initialFormState: Omit<Product, "id"> = {
   badges: [],
   toppings: [],
   relatedIds: [],
+  comboItems: [],
 };
 
 export function useProductForm({ productId, onSuccess }: UseProductFormProps = {}) {
   const navigate = useNavigate();
   const [categories, setCategories] = useState<Category[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(!!productId);
   const [error, setError] = useState<string | null>(null);
@@ -45,19 +47,34 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
       setError("Vui lòng chọn danh mục.");
       return false;
     }
-    if (!formData.image || !formData.image.startsWith("http")) {
-      setError("Vui lòng nhập link hình ảnh hợp lệ.");
-      return false;
+    
+    // Only require image if not a combo
+    if (formData.category !== "combo") {
+      if (!formData.image || !formData.image.startsWith("http")) {
+        setError("Vui lòng nhập link hình ảnh hợp lệ.");
+        return false;
+      }
     }
+
     if (formData.originalPrice && Number(formData.originalPrice) <= Number(formData.price)) {
       setError("Giá gốc phải lớn hơn giá bán hiện tại.");
       return false;
     }
+
+    // Validate combo items if category is combo
+    if (formData.category === "combo") {
+      if (!formData.comboItems || formData.comboItems.length === 0) {
+        setError("Combo phải có ít nhất một sản phẩm.");
+        return false;
+      }
+    }
+
     return true;
   };
 
   useEffect(() => {
     categoryApi.getAll().then(setCategories).catch(console.error);
+    productApi.getAll().then(setAllProducts).catch(console.error);
 
     if (productId) {
       setInitialLoading(true);
@@ -110,15 +127,26 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
     setLoading(true);
 
     try {
-      if (productId) {
-        await productApi.update(productId, formData);
+      // Clean up comboItems if not a combo
+      const dataToSubmit = { ...formData };
+      if (dataToSubmit.category !== "combo") {
+        delete dataToSubmit.comboItems;
       } else {
-        
-        const nextId = "p_" + Math.random().toString(36).substr(2, 9);
+        // Set default generic image for combo
+        if (dataToSubmit.category === "combo") {
+          dataToSubmit.image = "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop";
+        }
+        // Combo doesn't need toppings
+        dataToSubmit.toppings = [];
+      }
 
+      if (productId) {
+        await productApi.update(productId, dataToSubmit);
+      } else {
+        const nextId = "p_" + Math.random().toString(36).substr(2, 9);
         const productToCreate = {
           id: nextId,
-          ...formData,
+          ...dataToSubmit,
         } as Product;
         await productApi.create(productToCreate);
       }
@@ -128,7 +156,6 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
       if (onSuccess) {
         onSuccess();
       } else {
-        // Delay navigation to show success state
         setTimeout(() => {
           navigate("/admin/products");
         }, 1500);
@@ -139,6 +166,55 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
     } finally {
       setLoading(false);
     }
+  };
+
+  const addComboItem = (productId: string) => {
+    if (!productId) return;
+    setFormData((prev) => {
+      const currentItems = prev.comboItems || [];
+      if (currentItems.find(item => item.productId === productId)) return prev;
+      
+      const updatedItems = [...currentItems, { productId, quantity: 1 }];
+      
+      // Update originalPrice based on total of items
+      const newOriginalPrice = updatedItems.reduce((sum, item) => {
+        const p = allProducts.find(prod => prod.id === item.productId);
+        return sum + (p ? p.price * item.quantity : 0);
+      }, 0);
+
+      return { ...prev, comboItems: updatedItems, originalPrice: newOriginalPrice };
+    });
+  };
+
+  const removeComboItem = (productId: string) => {
+    setFormData((prev) => {
+      const updatedItems = (prev.comboItems || []).filter(item => item.productId !== productId);
+      
+      // Recalculate originalPrice
+      const newOriginalPrice = updatedItems.reduce((sum, item) => {
+        const p = allProducts.find(prod => prod.id === item.productId);
+        return sum + (p ? p.price * item.quantity : 0);
+      }, 0);
+
+      return { ...prev, comboItems: updatedItems, originalPrice: newOriginalPrice > 0 ? newOriginalPrice : null };
+    });
+  };
+
+  const updateComboItemQuantity = (productId: string, quantity: number) => {
+    if (quantity < 1) return;
+    setFormData((prev) => {
+      const updatedItems = (prev.comboItems || []).map(item => 
+        item.productId === productId ? { ...item, quantity } : item
+      );
+
+      // Recalculate originalPrice
+      const newOriginalPrice = updatedItems.reduce((sum, item) => {
+        const p = allProducts.find(prod => prod.id === item.productId);
+        return sum + (p ? p.price * item.quantity : 0);
+      }, 0);
+
+      return { ...prev, comboItems: updatedItems, originalPrice: newOriginalPrice };
+    });
   };
 
   const addTopping = () => {
@@ -211,18 +287,22 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
   return {
     formData,
     categories,
+    allProducts,
     loading,
     initialLoading,
     error,
     success,
-    discountPercentage,
     handleChange,
     handleSubmit,
+    addComboItem,
+    removeComboItem,
+    updateComboItemQuantity,
     addTopping,
     removeTopping,
     updateTopping,
     addToppingOption,
     removeToppingOption,
     setDiscount,
+    discountPercentage,
   };
 }

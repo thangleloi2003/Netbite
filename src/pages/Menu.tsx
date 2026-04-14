@@ -63,29 +63,69 @@ function ProductSkeleton() {
   );
 }
 
-function ComboCard({ combo }: { combo: Combo }) {
+function ComboCard({ combo, product, allProducts }: { combo?: Combo; product?: Product; allProducts: Product[] }) {
   const { addItem } = useCart();
   const { isAuthenticated } = useAuth();
   const [adding, setAdding] = useState(false);
 
+  // Determine which data source to use
+  const isDynamic = !!product;
+  const id = isDynamic ? product.id : combo!.id;
+  const name = isDynamic ? product.name : combo!.name;
+  const price = isDynamic ? product.price : combo!.price;
+  const originalPrice = isDynamic ? product.originalPrice : combo!.originalPrice;
+  const icon = isDynamic ? "auto_awesome" : combo!.icon;
+  const iconColor = isDynamic ? "primary" : combo!.iconColor;
+  const borderColor = isDynamic ? "border-primary" : combo!.borderColor;
+  const discountLabel = isDynamic 
+    ? (originalPrice ? `-${Math.round((1 - price / originalPrice) * 100)}% OFF` : "COMBO") 
+    : combo!.discount;
+  const discountColor = isDynamic ? "primary" : combo!.discountColor;
+  const badge = isDynamic ? "MỚI" : combo!.badge;
+  
+  // Format items list
+  const items = isDynamic 
+    ? (product.comboItems?.map(item => {
+        const p = allProducts.find(ap => ap.id === item.productId);
+        return `${item.quantity}x ${p ? p.name : 'Sản phẩm'}`;
+      }) || [])
+    : combo!.items;
+
   const handleAdd = async () => {
-    if (combo.productIds && combo.productIds.length > 0) {
-      const results = await Promise.allSettled(
-        combo.productIds.map((id) => productApi.getById(id)),
-      );
-      results.forEach((r) => {
-        if (r.status === "fulfilled") {
-          const p = r.value;
-          addItem({ id: p.id, name: p.name, price: p.price, image: p.image });
-        }
-      });
+    if (isDynamic) {
+      // Dynamic combo logic: Add all products in combo to cart
+      if (product.comboItems && product.comboItems.length > 0) {
+        const results = await Promise.allSettled(
+          product.comboItems.map((item) => productApi.getById(item.productId)),
+        );
+        results.forEach((r, idx) => {
+          if (r.status === "fulfilled") {
+            const p = r.value;
+            const qty = product.comboItems![idx].quantity;
+            addItem({ id: p.id, name: p.name, price: p.price, image: p.image }, qty);
+          }
+        });
+      }
     } else {
-      addItem({
-        id: combo.id,
-        name: combo.name,
-        price: combo.price,
-        image: "",
-      });
+      // Static combo logic
+      if (combo!.productIds && combo!.productIds.length > 0) {
+        const results = await Promise.allSettled(
+          combo!.productIds.map((id) => productApi.getById(id)),
+        );
+        results.forEach((r) => {
+          if (r.status === "fulfilled") {
+            const p = r.value;
+            addItem({ id: p.id, name: p.name, price: p.price, image: p.image });
+          }
+        });
+      } else {
+        addItem({
+          id: combo!.id,
+          name: combo!.name,
+          price: combo!.price,
+          image: "",
+        });
+      }
     }
 
     if (isAuthenticated) {
@@ -94,15 +134,15 @@ function ComboCard({ combo }: { combo: Combo }) {
     }
   };
 
-  const isPentakill = combo.id === "c3";
+  const isPentakill = !isDynamic && id === "c3";
 
   return (
     <div
       className={`bg-surface-container-highest p-6 rounded-2xl relative border-l-[4px] ${
-        isPentakill ? "border-tertiary-fixed-dim" : combo.borderColor
+        isPentakill ? "border-tertiary-fixed-dim" : borderColor
       } hover:border-l-[8px] transition-all relative flex flex-col`}
     >
-      {combo.badge && (
+      {badge && (
         <div
           className={`absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[9px] font-black tracking-widest z-10 shadow-lg border ${
             isPentakill
@@ -110,7 +150,7 @@ function ComboCard({ combo }: { combo: Combo }) {
               : "bg-secondary text-on-secondary border-secondary/20 shadow-secondary/20"
           }`}
         >
-          {combo.badge}
+          {badge}
         </div>
       )}
 
@@ -124,29 +164,29 @@ function ComboCard({ combo }: { combo: Combo }) {
             className={`material-symbols-outlined text-4xl ${
               isPentakill
                 ? "text-tertiary-fixed-dim"
-                : `text-${combo.iconColor}`
+                : `text-${iconColor}`
             }`}
           >
-            {combo.icon}
+            {icon}
           </span>
         </div>
         <span
           className={`px-3 py-1 rounded-full text-[10px] font-black tracking-wider self-start ${
             isPentakill
               ? "bg-tertiary-fixed-dim/20 text-tertiary-fixed-dim"
-              : `bg-${combo.discountColor}/20 text-${combo.discountColor}`
+              : `bg-${discountColor}/20 text-${discountColor}`
           }`}
         >
-          {combo.discount}
+          {discountLabel}
         </span>
       </div>
 
       <h3 className="text-xl font-black mb-4 tracking-tight leading-tight">
-        {combo.name}
+        {name}
       </h3>
 
       <ul className="space-y-2.5 mb-8 text-on-surface-variant flex-1">
-        {combo.items.map((item, i) => (
+        {items.map((item, i) => (
           <li
             key={i}
             className="flex items-start gap-2 text-[11px] font-bold leading-normal"
@@ -163,11 +203,11 @@ function ComboCard({ combo }: { combo: Combo }) {
 
       <div className="flex items-baseline gap-2 mb-6">
         <span className="text-2xl font-black text-on-surface tracking-tighter">
-          {formatPrice(combo.price)}
+          {formatPrice(price)}
         </span>
-        {combo.originalPrice && (
+        {originalPrice && originalPrice > price && (
           <span className="text-on-surface-variant/30 line-through text-xs font-medium italic">
-            {formatPrice(combo.originalPrice)}
+            {formatPrice(originalPrice)}
           </span>
         )}
       </div>
@@ -178,7 +218,7 @@ function ComboCard({ combo }: { combo: Combo }) {
         className={`w-full py-3.5 rounded-2xl font-black hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-70 shadow-lg text-xs tracking-widest uppercase mb-1 ${
           isPentakill
             ? "bg-tertiary-fixed-dim text-on-secondary"
-            : combo.borderColor === "border-primary"
+            : borderColor === "border-primary"
               ? "bg-primary text-on-primary shadow-primary/20"
               : "bg-secondary text-on-secondary shadow-secondary/20"
         }`}
@@ -211,6 +251,7 @@ const SORT_OPTIONS: { value: SortType; label: string }[] = [
 
 export default function Menu() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [combos, setCombos] = useState<Combo[]>([]);
   const [activeTab, setActiveTab] = useState<TabType>("all");
@@ -221,23 +262,24 @@ export default function Menu() {
   const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    Promise.all([categoryApi.getAll(), comboApi.getAll()])
-      .then(([cats, combosData]) => {
+    Promise.all([categoryApi.getAll(), comboApi.getAll(), productApi.getAll()])
+      .then(([cats, combosData, productsData]) => {
         setCategories(cats);
         setCombos(combosData);
+        setAllProducts(productsData);
       })
       .catch(() => {});
   }, []);
 
   useEffect(() => {
-    if (activeTab === "combo") {
-      setLoading(false);
-      return;
-    }
     setLoading(true);
-    const params = activeTab !== "all" ? { category: activeTab } : undefined;
+    const params = (activeTab !== "all" && activeTab !== "combo") ? { category: activeTab } : undefined;
+    
+    // When activeTab is "combo", we want to show products with category "combo"
+    const productParams = activeTab === "combo" ? { category: "combo" } : params;
+
     productApi
-      .getAll(params)
+      .getAll(productParams)
       .then(setProducts)
       .catch(() => setProducts([]))
       .finally(() => setLoading(false));
@@ -460,8 +502,13 @@ export default function Menu() {
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {/* Render static combos */}
                 {combos.map((c) => (
-                  <ComboCard key={c.id} combo={c} />
+                  <ComboCard key={c.id} combo={c} allProducts={allProducts} />
+                ))}
+                {/* Render product-based combos */}
+                {products.map((p) => (
+                  <ComboCard key={p.id} product={p} allProducts={allProducts} />
                 ))}
               </div>
             </>

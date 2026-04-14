@@ -5,6 +5,7 @@ export default function AdminProducts() {
   const navigate = useNavigate();
   const {
     paginatedProducts,
+    categories,
     loading, 
     filter, 
     setFilter, 
@@ -38,25 +39,22 @@ export default function AdminProducts() {
             />
           </div>
 
-          <div className="bg-surface-container-low p-1.5 rounded-full border border-white/5 flex shadow-inner">
-            <button 
-              onClick={() => setFilter("all")}
-              className={`px-6 py-2.5 text-xs font-black rounded-full transition-all uppercase tracking-wider ${filter === "all" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white"}`}
+          <div className="relative">
+            <select 
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="pl-6 pr-12 py-3 bg-surface-container-low border border-white/5 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-black text-xs uppercase tracking-widest appearance-none cursor-pointer w-full sm:w-48"
             >
-              Tất cả
-            </button>
-            <button 
-              onClick={() => setFilter("food")}
-              className={`px-6 py-2.5 text-xs font-black rounded-full transition-all uppercase tracking-wider ${filter === "food" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white"}`}
-            >
-              Đồ ăn
-            </button>
-            <button 
-              onClick={() => setFilter("drink")}
-              className={`px-6 py-2.5 text-xs font-black rounded-full transition-all uppercase tracking-wider ${filter === "drink" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white"}`}
-            >
-              Đồ uống
-            </button>
+              <option value="all">Tất cả danh mục</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.slug}>
+                  {cat.name.toUpperCase()}
+                </option>
+              ))}
+            </select>
+            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
+              keyboard_arrow_down
+            </span>
           </div>
 
           <button 
@@ -79,10 +77,21 @@ export default function AdminProducts() {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {paginatedProducts.map((product) => (
-              <div key={product.id} className="group bg-surface-container-low p-4 rounded-3xl border border-white/5 hover:border-white/10 hover:-translate-y-2 transition-all duration-300 shadow-xl flex flex-col relative">
+              <div key={product.id} className={`group bg-surface-container-low p-4 rounded-3xl border hover:-translate-y-2 transition-all duration-300 shadow-xl flex flex-col relative ${
+                product.category === 'combo' ? 'border-primary/40 hover:border-primary/60 bg-primary/5' : 'border-white/5 hover:border-white/10'
+              }`}>
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-surface-container-highest">
-                  <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src={product.image} alt={product.name} />
-                  
+                  {product.category === 'combo' ? (
+                    <div className="w-full h-full bg-primary/10 flex flex-col items-center justify-center p-6 text-center">
+                       <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                          <span className="material-symbols-outlined text-5xl font-black text-primary">auto_awesome</span>
+                       </div>
+                       <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Combo Package</h4>
+                    </div>
+                  ) : (
+                    <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src={product.image} alt={product.name} />
+                  )}
+
                   <div className="absolute top-3 right-3 flex flex-col gap-2">
                     <button 
                       onClick={() => toggleBestSeller(product.id)}
@@ -114,6 +123,9 @@ export default function AdminProducts() {
                   </div>
 
                   <div className="absolute top-3 left-3 flex flex-col gap-2">
+                    {product.category === 'combo' && (
+                      <span className="bg-primary text-on-primary text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg w-fit">Combo</span>
+                    )}
                     {product.tags.includes("bestseller") && (
                       <span className="bg-secondary/90 backdrop-blur-sm text-on-secondary text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg w-fit">Bestseller</span>
                     )}

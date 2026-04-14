@@ -6,7 +6,7 @@ import { useFormat } from "../../hooks/useFormat";
 export default function AdminDashboard() {
   const { orders, users, loading: ordersLoading, todayOrdersCount, getUser } = useAdminOrders();
   const { products, loading: productsLoading } = useAdminProducts();
-  const { getCustomerTotalSpend, getCustomerRank, loading: customersLoading } = useAdminCustomers();
+  const { getCustomerTotalSpend, loading: customersLoading } = useAdminCustomers();
   const { formatPrice, getInitials } = useFormat();
 
   const loading = ordersLoading || productsLoading || customersLoading;
@@ -34,8 +34,7 @@ export default function AdminDashboard() {
     .filter(u => u.role !== 'admin')
     .map(u => ({
       ...u,
-      totalSpend: getCustomerTotalSpend(u.id),
-      rank: getCustomerRank(getCustomerTotalSpend(u.id))
+      totalSpend: getCustomerTotalSpend(u.id)
     }))
     .sort((a, b) => b.totalSpend - a.totalSpend)
     .slice(0, 5);
@@ -229,11 +228,7 @@ export default function AdminDashboard() {
                 </div>
                 <div className="flex-grow">
                   <p className="font-black text-sm group-hover:text-secondary transition-colors">{u.name}</p>
-                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
-                    u.rank.name === 'VIP' ? 'bg-tertiary-fixed-dim text-on-tertiary-fixed' :
-                    u.rank.name === 'VÀNG' ? 'bg-secondary/20 text-secondary' :
-                    'bg-surface-container-highest text-on-surface-variant'
-                  }`}>{u.rank.name}</span>
+                  <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">@{u.username}</p>
                 </div>
                 <div className="text-right">
                   <p className="font-black text-on-surface">{formatPrice(u.totalSpend)}</p>

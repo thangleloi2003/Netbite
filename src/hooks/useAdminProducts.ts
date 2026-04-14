@@ -1,9 +1,10 @@
 import { useState, useEffect, useMemo } from "react";
-import { productApi } from "../services/api";
-import type { Product } from "../types";
+import { productApi, categoryApi } from "../services/api";
+import type { Product, Category } from "../types";
 
 export function useAdminProducts() {
   const [products, setProducts] = useState<Product[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState("all");
@@ -11,22 +12,26 @@ export function useAdminProducts() {
   const [page, setPage] = useState(1);
   const itemsPerPage = 8;
 
-  const fetchProducts = async () => {
+  const fetchData = async () => {
     try {
       setLoading(true);
       setError(null);
-      const data = await productApi.getAll();
-      setProducts(data);
+      const [productsData, categoriesData] = await Promise.all([
+        productApi.getAll(),
+        categoryApi.getAll()
+      ]);
+      setProducts(productsData);
+      setCategories(categoriesData);
     } catch (err) {
-      setError("Failed to fetch products");
-      console.error("Failed to fetch products:", err);
+      setError("Failed to fetch data");
+      console.error("Failed to fetch data:", err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -105,6 +110,7 @@ export function useAdminProducts() {
 
   return {
     products,
+    categories,
     filteredProducts,
     paginatedProducts,
     loading,
@@ -116,7 +122,7 @@ export function useAdminProducts() {
     page,
     setPage,
     totalPages,
-    refreshProducts: fetchProducts,
+    refreshProducts: fetchData,
     deleteProduct,
     toggleBestSeller,
     toggleHot,

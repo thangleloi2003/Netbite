@@ -181,7 +181,7 @@ export default function AdminOrders() {
         {totalPages > 0 && (
           <div className="px-8 py-6 flex items-center justify-between border-t border-white/5 bg-surface-container/30">
             <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
-              Hiển thị {(page - 1) * 10 + 1}-{Math.min(page * 10, filteredOrders.length)} của {filteredOrders.length} đơn
+              Hiển thị {(page - 1) * 5 + 1}-{Math.min(page * 5, filteredOrders.length)} của {filteredOrders.length} đơn
             </p>
             <div className="flex gap-2">
               <button 

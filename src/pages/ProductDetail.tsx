@@ -212,6 +212,14 @@ export default function ProductDetail() {
 
   const images = product.images?.length ? product.images : [product.image];
 
+  // Calculate combo items if it's a combo
+  const comboProducts = product.category === 'combo' 
+    ? product.comboItems?.map(item => {
+        const p = allProducts.find(prod => prod.id === item.productId);
+        return p ? { ...p, quantity: item.quantity } : null;
+      }).filter(Boolean)
+    : [];
+
   return (
     <>
       {/* CSS ẩn thanh cuộn nhưng vẫn trượt được */}
@@ -289,8 +297,39 @@ export default function ProductDetail() {
 
               <div className="text-5xl font-black text-primary tracking-tighter">
                 {formatPrice(product.price + toppingPrice)}
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <span className="text-lg text-on-surface-variant/40 line-through ml-4 font-medium italic">
+                    {formatPrice(product.originalPrice)}
+                  </span>
+                )}
               </div>
             </div>
+
+            {/* Combo Contents */}
+            {comboProducts && comboProducts.length > 0 && (
+              <div className="bg-primary/5 p-6 rounded-[32px] border border-primary/10 space-y-4">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-primary text-xl">inventory_2</span>
+                  <span className="text-sm font-black uppercase tracking-widest text-primary">Có gì trong combo?</span>
+                </div>
+                <div className="grid grid-cols-1 gap-3">
+                  {comboProducts.map((p, idx) => (
+                    <div key={idx} className="flex items-center justify-between bg-surface-container-low p-3 rounded-2xl border border-white/5">
+                      <div className="flex items-center gap-3">
+                        <img src={p!.image} className="w-10 h-10 rounded-xl object-cover" alt="" />
+                        <div>
+                          <p className="text-sm font-bold">{p!.name}</p>
+                          <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">{formatPrice(p!.price)}</p>
+                        </div>
+                      </div>
+                      <div className="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-black">
+                        x{p!.quantity}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Toppings (Buff Topping) */}
             {product.toppings.length > 0 && (

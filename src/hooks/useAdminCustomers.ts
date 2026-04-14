@@ -2,14 +2,11 @@ import { useState, useEffect, useMemo } from "react";
 import { authApi, orderApi } from "../services/api";
 import type { User, Order } from "../types";
 
-export type CustomerRank = "all" | "vip" | "gold" | "silver";
-
 export function useAdminCustomers() {
   const [users, setUsers] = useState<User[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [filter, setFilter] = useState<CustomerRank>("all");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const itemsPerPage = 8;
@@ -38,7 +35,7 @@ export function useAdminCustomers() {
 
   useEffect(() => {
     setPage(1);
-  }, [filter, search]);
+  }, [search]);
 
   const getCustomerTotalSpend = (userId: string) => {
     return orders
@@ -46,28 +43,29 @@ export function useAdminCustomers() {
       .reduce((sum, o) => sum + o.total, 0);
   };
 
-  const getCustomerRank = (spend: number) => {
-    if (spend >= 5000000) return { name: "VIP", color: "tertiary-fixed-dim" };
-    if (spend >= 2000000) return { name: "VÀNG", color: "secondary" };
-    return { name: "BẠC", color: "slate-400" };
+  const deleteUser = async (id: string) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa tài khoản người dùng này?")) {
+      try {
+        await authApi.deleteUser(id);
+        setUsers(prev => prev.filter(u => u.id !== id));
+        return true;
+      } catch (err) {
+        setError("Failed to delete user");
+        console.error("Failed to delete user:", err);
+        return false;
+      }
+    }
+    return false;
   };
 
   const filteredUsers = useMemo(() => {
     return users.filter(u => {
-      const spend = getCustomerTotalSpend(u.id);
-      const rank = getCustomerRank(spend).name.toLowerCase();
-      
-      const matchesFilter = filter === "all" || 
-                            (filter === "vip" && rank === "vip") ||
-                            (filter === "gold" && rank === "vàng") ||
-                            (filter === "silver" && rank === "bạc");
-      
       const matchesSearch = u.name.toLowerCase().includes(search.toLowerCase()) || 
                             u.username.toLowerCase().includes(search.toLowerCase());
                             
-      return matchesFilter && matchesSearch;
+      return matchesSearch;
     });
-  }, [users, orders, filter, search]);
+  }, [users, search]);
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const paginatedUsers = useMemo(() => {
@@ -81,15 +79,13 @@ export function useAdminCustomers() {
     paginatedUsers,
     loading,
     error,
-    filter,
-    setFilter,
     search,
     setSearch,
     page,
     setPage,
     totalPages,
     getCustomerTotalSpend,
-    getCustomerRank,
+    deleteUser,
     refreshCustomers: fetchData,
   };
 }
