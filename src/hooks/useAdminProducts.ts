@@ -68,6 +68,26 @@ export function useAdminProducts() {
     }
   };
 
+  const toggleHot = async (id: string) => {
+    const product = products.find(p => p.id === id);
+    if (!product) return false;
+
+    const isHot = product.tags.includes("hot");
+    const updatedTags = isHot 
+      ? product.tags.filter(tag => tag !== "hot")
+      : [...product.tags, "hot"];
+
+    try {
+      const updatedProduct = await productApi.update(id, { tags: updatedTags });
+      setProducts(prev => prev.map(p => p.id === id ? updatedProduct : p));
+      return true;
+    } catch (err) {
+      setError("Failed to update hot status");
+      console.error("Failed to update hot status:", err);
+      return false;
+    }
+  };
+
   const filteredProducts = useMemo(() => {
     return products.filter((p) => {
       const matchesFilter = filter === "all" || p.category === filter;
@@ -99,5 +119,6 @@ export function useAdminProducts() {
     refreshProducts: fetchProducts,
     deleteProduct,
     toggleBestSeller,
+    toggleHot,
   };
 }

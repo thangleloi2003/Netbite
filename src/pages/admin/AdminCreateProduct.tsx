@@ -166,29 +166,50 @@ export default function AdminCreateProduct() {
             />
           </div>
 
-          {/* Best Seller Toggle */}
-          <div className="md:col-span-2">
-            <label className="flex items-center gap-4 cursor-pointer group w-fit">
-              <div className="relative">
-                <input
-                  type="checkbox"
-                  name="isBestSeller"
-                  checked={productForm.tags.includes("bestseller")}
-                  onChange={handleChange}
-                  className="sr-only peer"
-                />
-                <div className="w-14 h-8 bg-surface-container-highest rounded-full peer peer-checked:bg-secondary transition-all duration-300 border border-white/5"></div>
-                <div className="absolute left-1 top-1 w-6 h-6 bg-white rounded-full transition-all duration-300 peer-checked:translate-x-6 shadow-md"></div>
-              </div>
-              <div>
-                <span className="text-sm font-black uppercase tracking-widest text-on-surface transition-colors group-hover:text-secondary">
-                  Sản phẩm Best Seller
-                </span>
-                <p className="text-[10px] text-on-surface-variant font-bold uppercase tracking-tighter">
-                  Hiển thị huy hiệu nổi bật cho món ăn này
-                </p>
-              </div>
+          {/* Tags Section */}
+          <div className="md:col-span-2 space-y-4 pt-4 border-t border-white/5">
+            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
+              Nhãn sản phẩm (Tags)
             </label>
+            <div className="flex flex-wrap gap-6">
+              {/* Best Seller Checkbox */}
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <div className="relative flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    name="bestseller"
+                    checked={productForm.tags.includes("bestseller")}
+                    onChange={handleChange}
+                    className="w-6 h-6 rounded-lg bg-surface-container-high border border-white/10 checked:bg-secondary checked:border-secondary transition-all appearance-none cursor-pointer"
+                  />
+                  <span className="material-symbols-outlined absolute text-on-secondary text-sm pointer-events-none opacity-0 group-has-[:checked]:opacity-100 transition-opacity">
+                    check
+                  </span>
+                </div>
+                <span className="text-sm font-bold text-on-surface group-hover:text-secondary transition-colors">
+                  Best Seller
+                </span>
+              </label>
+
+              {/* Hot Checkbox */}
+              <label className="flex items-center gap-3 cursor-pointer group">
+                <div className="relative flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    name="hot"
+                    checked={productForm.tags.includes("hot")}
+                    onChange={handleChange}
+                    className="w-6 h-6 rounded-lg bg-surface-container-high border border-white/10 checked:bg-primary checked:border-primary transition-all appearance-none cursor-pointer"
+                  />
+                  <span className="material-symbols-outlined absolute text-on-primary text-sm pointer-events-none opacity-0 group-has-[:checked]:opacity-100 transition-opacity">
+                    check
+                  </span>
+                </div>
+                <span className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">
+                  Hot
+                </span>
+              </label>
+            </div>
           </div>
         </div>
 

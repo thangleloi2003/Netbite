@@ -14,7 +14,8 @@ export default function AdminProducts() {
     setPage,
     totalPages,
     deleteProduct, 
-    toggleBestSeller 
+    toggleBestSeller,
+    toggleHot
   } = useAdminProducts();
 
   return (
@@ -82,25 +83,44 @@ export default function AdminProducts() {
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden mb-4 bg-surface-container-highest">
                   <img className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src={product.image} alt={product.name} />
                   
-                  <button 
-                    onClick={() => toggleBestSeller(product.id)}
-                    className={`absolute top-3 right-3 w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-all ${
-                      product.tags.includes("bestseller") 
-                        ? "bg-secondary text-on-secondary shadow-[0_0_15px_rgba(255,193,7,0.4)]" 
-                        : "bg-black/20 text-white/70 hover:bg-black/40 hover:text-white"
-                    }`}
-                    title={product.tags.includes("bestseller") ? "Gỡ Best Seller" : "Đánh dấu Best Seller"}
-                  >
-                    <span className={`material-symbols-outlined text-[20px] ${product.tags.includes("bestseller") ? "fill-1" : ""}`} style={{ fontVariationSettings: product.tags.includes("bestseller") ? "'FILL' 1" : "" }}>
-                      star
-                    </span>
-                  </button>
+                  <div className="absolute top-3 right-3 flex flex-col gap-2">
+                    <button 
+                      onClick={() => toggleBestSeller(product.id)}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-all ${
+                        product.tags.includes("bestseller") 
+                          ? "bg-secondary text-on-secondary shadow-[0_0_15px_rgba(255,193,7,0.4)]" 
+                          : "bg-black/20 text-white/70 hover:bg-black/40 hover:text-white"
+                      }`}
+                      title={product.tags.includes("bestseller") ? "Gỡ Best Seller" : "Đánh dấu Best Seller"}
+                    >
+                      <span className={`material-symbols-outlined text-[20px] ${product.tags.includes("bestseller") ? "fill-1" : ""}`} style={{ fontVariationSettings: product.tags.includes("bestseller") ? "'FILL' 1" : "" }}>
+                        star
+                      </span>
+                    </button>
 
-                  {product.tags.includes("bestseller") && (
-                    <div className="absolute top-3 left-3">
-                      <span className="bg-secondary/90 backdrop-blur-sm text-on-secondary text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg">Bestseller</span>
-                    </div>
-                  )}
+                    <button 
+                      onClick={() => toggleHot(product.id)}
+                      className={`w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-md transition-all ${
+                        product.tags.includes("hot") 
+                          ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.4)]" 
+                          : "bg-black/20 text-white/70 hover:bg-black/40 hover:text-white"
+                      }`}
+                      title={product.tags.includes("hot") ? "Gỡ Hot" : "Đánh dấu Hot"}
+                    >
+                      <span className={`material-symbols-outlined text-[20px] ${product.tags.includes("hot") ? "fill-1" : ""}`} style={{ fontVariationSettings: product.tags.includes("hot") ? "'FILL' 1" : "" }}>
+                        local_fire_department
+                      </span>
+                    </button>
+                  </div>
+
+                  <div className="absolute top-3 left-3 flex flex-col gap-2">
+                    {product.tags.includes("bestseller") && (
+                      <span className="bg-secondary/90 backdrop-blur-sm text-on-secondary text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg w-fit">Bestseller</span>
+                    )}
+                    {product.tags.includes("hot") && (
+                      <span className="bg-primary/90 backdrop-blur-sm text-on-primary text-[10px] font-black px-3 py-1.5 rounded-full uppercase tracking-widest shadow-lg w-fit">Hot</span>
+                    )}
+                  </div>
                 </div>
                 <div className="flex-grow flex flex-col">
                   <h3 className="text-lg font-black tracking-tight mb-1 group-hover:text-primary transition-colors line-clamp-1">{product.name}</h3>

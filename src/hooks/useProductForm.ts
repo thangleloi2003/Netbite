@@ -36,7 +36,8 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
       setError("Tên sản phẩm phải có ít nhất 3 ký tự.");
       return false;
     }
-    if (!formData.price || Number(formData.price) <= 0) {
+    const priceVal = Number(formData.price);
+    if (formData.price === null || isNaN(priceVal) || priceVal <= 0) {
       setError("Giá sản phẩm phải lớn hơn 0.");
       return false;
     }
@@ -77,12 +78,12 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
     
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
-      if (name === "isBestSeller") {
+      if (name === "bestseller" || name === "hot") {
         setFormData((prev) => {
           const currentTags = prev.tags || [];
           const updatedTags = checked 
-            ? [...currentTags.filter(t => t !== "bestseller"), "bestseller"]
-            : currentTags.filter(t => t !== "bestseller");
+            ? [...currentTags.filter(t => t !== name), name]
+            : currentTags.filter(t => t !== name);
           return { ...prev, tags: updatedTags };
         });
         return;
@@ -91,7 +92,7 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
 
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "price" || name === "originalPrice" ? Number(value) : value,
+      [name]: name === "price" || name === "originalPrice" ? (value === "" ? null : Number(value)) : value,
     }));
   };
 
