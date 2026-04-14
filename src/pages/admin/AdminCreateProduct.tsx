@@ -19,6 +19,8 @@ export default function AdminCreateProduct() {
     updateTopping,
     addToppingOption,
     removeToppingOption,
+    setDiscount,
+    discountPercentage,
   } = useProductForm();
 
   const productForm = formData as Omit<Product, "id">;
@@ -132,6 +134,26 @@ export default function AdminCreateProduct() {
               placeholder="VD: 55000"
               className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
             />
+          </div>
+
+          {/* Giảm giá (%) */}
+          <div className="space-y-2">
+            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
+              Giảm giá (%)
+            </label>
+            <div className="relative group">
+              <input
+                type="number"
+                min="0"
+                max="100"
+                value={discountPercentage || ""}
+                onChange={(e) => setDiscount(Number(e.target.value))}
+                disabled={!productForm.originalPrice}
+                placeholder={!productForm.originalPrice ? "Nhập giá gốc trước" : "VD: 10"}
+                className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+              />
+              <span className="absolute right-6 top-1/2 -translate-y-1/2 text-on-surface-variant font-black">%</span>
+            </div>
           </div>
 
           {/* Hình ảnh URL */}

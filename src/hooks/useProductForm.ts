@@ -49,6 +49,10 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
       setError("Vui lòng nhập link hình ảnh hợp lệ.");
       return false;
     }
+    if (formData.originalPrice && Number(formData.originalPrice) <= Number(formData.price)) {
+      setError("Giá gốc phải lớn hơn giá bán hiện tại.");
+      return false;
+    }
     return true;
   };
 
@@ -194,6 +198,16 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
     });
   };
 
+  const setDiscount = (percentage: number) => {
+    if (!formData.originalPrice || percentage < 0 || percentage > 100) return;
+    const newPrice = Math.round(formData.originalPrice * (1 - percentage / 100));
+    setFormData(prev => ({ ...prev, price: newPrice }));
+  };
+
+  const discountPercentage = formData.originalPrice && formData.price && formData.originalPrice > formData.price
+    ? Math.round(((formData.originalPrice - formData.price) / formData.originalPrice) * 100)
+    : 0;
+
   return {
     formData,
     categories,
@@ -201,6 +215,7 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
     initialLoading,
     error,
     success,
+    discountPercentage,
     handleChange,
     handleSubmit,
     addTopping,
@@ -208,5 +223,6 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
     updateTopping,
     addToppingOption,
     removeToppingOption,
+    setDiscount,
   };
 }

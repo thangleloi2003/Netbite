@@ -15,7 +15,7 @@ export default function AdminDashboard() {
     .filter(o => o.status !== "cancelled")
     .reduce((sum, o) => sum + o.total, 0);
 
-  const activeUsersCount = users.length;
+  const activeUsersCount = users.filter(u => u.role !== 'admin').length;
 
   const topProducts = products
     .map(p => {
