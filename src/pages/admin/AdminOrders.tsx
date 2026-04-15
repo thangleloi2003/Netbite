@@ -5,6 +5,7 @@ import type { Order } from "../../types";
 
 export default function AdminOrders() {
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
+  
   const { 
     filteredOrders, 
     paginatedOrders,
@@ -21,6 +22,7 @@ export default function AdminOrders() {
     updateOrderStatus, 
     cancelOrder 
   } = useAdminOrders();
+  
   const { formatPrice, getInitials } = useFormat();
 
   const handleStatusChange = async (id: string, currentStatus: Order["status"]) => {
@@ -34,18 +36,22 @@ export default function AdminOrders() {
 
   const formatStatus = (status: string) => {
     switch (status) {
-      case "pending": return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-secondary/10 text-secondary uppercase tracking-widest border border-secondary/30 animate-pulse">Chờ xử lý</span>;
-      case "processing": return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-primary/10 text-primary uppercase tracking-widest border border-primary/30">Đang chuẩn bị</span>;
-      case "delivered": return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 uppercase tracking-widest border border-green-500/20">Hoàn thành</span>;
-      case "cancelled": return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-error/10 text-error uppercase tracking-widest border border-error/20">Đã hủy</span>;
-      default: return status;
+      case "pending": 
+        return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-secondary/10 text-secondary uppercase tracking-widest border border-secondary/30 animate-pulse">Chờ xử lý</span>;
+      case "processing": 
+        return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-primary/10 text-primary uppercase tracking-widest border border-primary/30">Đang chuẩn bị</span>;
+      case "delivered": 
+        return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 uppercase tracking-widest border border-green-500/20">Hoàn thành</span>;
+      case "cancelled": 
+        return <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-error/10 text-error uppercase tracking-widest border border-error/20">Đã hủy</span>;
+      default: 
+        return status;
     }
   };
 
-
-
   return (
     <main className="p-8 space-y-10 max-w-7xl mx-auto w-full">
+      {/* Header & Filters */}
       <div className="flex flex-col lg:flex-row justify-between lg:items-end gap-6">
         <div>
           <h2 className="text-4xl font-black tracking-tighter italic uppercase mb-2">QUẢN LÝ ĐƠN HÀNG</h2>
@@ -66,27 +72,28 @@ export default function AdminOrders() {
           </div>
 
           <div className="bg-surface-container-low p-1.5 rounded-full border border-white/5 flex flex-wrap gap-1 shadow-inner max-w-full overflow-x-auto no-scrollbar">
-          <button 
-            onClick={() => setFilter("all")}
-            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "all" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
-          >Tất cả</button>
-          <button 
-            onClick={() => setFilter("pending")}
-            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "pending" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,171,105,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
-          >Chờ xử lý</button>
-          <button 
-            onClick={() => setFilter("processing")}
-            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "processing" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
-          >Đang chuẩn bị</button>
-          <button 
-            onClick={() => setFilter("delivered")}
-            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "delivered" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(34,197,94,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
-          >Hoàn thành</button>
+            <button 
+              onClick={() => setFilter("all")}
+              className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "all" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+            >Tất cả</button>
+            <button 
+              onClick={() => setFilter("pending")}
+              className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "pending" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,171,105,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+            >Chờ xử lý</button>
+            <button 
+              onClick={() => setFilter("processing")}
+              className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "processing" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+            >Đang chuẩn bị</button>
+            <button 
+              onClick={() => setFilter("delivered")}
+              className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "delivered" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(34,197,94,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+            >Hoàn thành</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <section className="bg-surface-container-low rounded-3xl overflow-hidden border border-white/5 shadow-xl">
+      {/* Orders Table */}
+      <section className="bg-surface-container-low rounded-3xl overflow-hidden border border-white/5 shadow-xl">
         <div className="px-8 py-6 flex justify-between items-center border-b border-white/5 bg-surface-container/50">
           <div>
             <h2 className="text-2xl font-black tracking-tight">Danh sách đơn hàng</h2>
@@ -109,11 +116,11 @@ export default function AdminOrders() {
             <tbody className="divide-y divide-white/5">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-8 py-8 text-center text-on-surface-variant">Đang tải dữ liệu...</td>
+                  <td colSpan={6} className="px-8 py-8 text-center text-on-surface-variant font-medium">Đang tải dữ liệu đơn hàng...</td>
                 </tr>
               ) : filteredOrders.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-8 py-8 text-center text-on-surface-variant">Không có đơn hàng nào.</td>
+                  <td colSpan={6} className="px-8 py-8 text-center text-on-surface-variant font-medium">Không có đơn hàng nào.</td>
                 </tr>
               ) : (
                 paginatedOrders.map(order => {
@@ -141,8 +148,9 @@ export default function AdminOrders() {
                       <td className="px-8 py-6 text-sm text-on-surface-variant font-medium">
                         {order.items.length > 0 ? (
                           <>
-                            {order.items[0].productName} x{order.items[0].quantity}
-                            {order.items.length > 1 && "..."}
+                            <span className="font-bold text-on-surface">{order.items[0].productName}</span> 
+                            <span className="text-primary ml-1">x{order.items[0].quantity}</span>
+                            {order.items.length > 1 && <span className="ml-1 italic">...và {order.items.length - 1} món khác</span>}
                           </>
                         ) : "Không có món"}
                       </td>
@@ -178,6 +186,7 @@ export default function AdminOrders() {
           </table>
         </div>
 
+        {/* Pagination */}
         {totalPages > 0 && (
           <div className="px-8 py-6 flex items-center justify-between border-t border-white/5 bg-surface-container/30">
             <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
@@ -244,7 +253,7 @@ export default function AdminOrders() {
                   </div>
                   <div>
                     <p className="font-black text-xl">{getUser(selectedOrder.userId)?.name || "Khách Vãng Lai"}</p>
-                    <p className="text-sm text-on-surface-variant font-bold uppercase tracking-widest">{selectedOrder.machineNumber || "N/A"}</p>
+                    <p className="text-sm text-on-surface-variant font-bold uppercase tracking-widest">Giao tới: {selectedOrder.machineNumber || "N/A"}</p>
                   </div>
                 </div>
               </div>
@@ -275,7 +284,7 @@ export default function AdminOrders() {
                 </div>
                 <div className="text-right">
                   <p className="text-xs font-black uppercase tracking-widest text-on-surface-variant mb-1">Tổng cộng</p>
-                  <p className="text-4xl font-black text-primary tracking-tighter italic italic">{formatPrice(selectedOrder.total)}</p>
+                  <p className="text-4xl font-black text-primary tracking-tighter italic">{formatPrice(selectedOrder.total)}</p>
                 </div>
               </div>
               

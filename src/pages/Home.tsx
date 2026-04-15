@@ -6,6 +6,7 @@ import { useAuth } from '../hooks/useAuth';
 import { useFeaturedProducts } from '../hooks/useProducts';
 import { useCombos } from '../hooks/useCombos';
 import { productApi } from '../services/api';
+
 function formatPrice(p: number) {
   return p.toLocaleString('vi-VN') + 'đ';
 }
@@ -45,10 +46,10 @@ function ProductCard({ product }: { product: Product }) {
       <Link to={`/product/${product.id}`} className="block">
         <div className="aspect-[4/3] overflow-hidden relative">
           <img className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" src={product.image} alt={product.name} />
-          {product.tags.includes('hot') && (
+          {product.tags?.includes('hot') && (
             <div className="absolute top-3 left-3 bg-primary px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest text-on-primary shadow-lg z-10">Hot</div>
           )}
-          {product.tags.includes('bestseller') && (
+          {product.tags?.includes('bestseller') && (
             <div className="absolute top-3 right-3 bg-secondary px-3 py-1 rounded-sm text-[10px] font-bold uppercase tracking-widest text-on-secondary shadow-lg z-10">Bestseller</div>
           )}
         </div>
@@ -97,9 +98,14 @@ export default function Home() {
 
   const loading = productsLoading || combosLoading;
 
+  // LỌC DANH SÁCH BESTSELLER Ở ĐÂY:
+  // Lấy ra các sản phẩm có tag 'bestseller' và giới hạn hiển thị tối đa 4 sản phẩm
+  const bestsellerProducts = featuredProducts
+    .filter(p => p.tags?.includes('bestseller'))
+    .slice(0, 4);
+
   const handleComboOrder = useCallback(async (combo: Combo) => {
     if (combo.productIds && combo.productIds.length > 0) {
-      // Fetch product details for each productId in the combo
       const productDetails = await Promise.allSettled(
         combo.productIds.map(id => productApi.getById(id))
       );
@@ -110,7 +116,6 @@ export default function Home() {
         }
       });
     } else {
-      // Fallback: add combo itself as a single item
       addItem({ id: combo.id, name: combo.name, price: combo.price, image: '' });
     }
 
@@ -161,12 +166,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Products */}
+      {/* Featured Products (Chỉ hiển thị Bestseller) */}
       <section className="py-24 px-6 max-w-7xl mx-auto">
         <div className="flex justify-between items-end mb-12">
           <div>
             <h2 className="text-4xl font-black tracking-tight mb-2">Power-Up Platters</h2>
-            <p className="text-on-surface-variant">Chọn vật phẩm của bạn</p>
+            <p className="text-on-surface-variant">Top các vật phẩm bán chạy nhất</p>
           </div>
           <Link to="/menu" className="hidden md:flex items-center gap-1 text-primary font-bold hover:brightness-125 transition-all text-sm uppercase tracking-widest">
             Xem tất cả <span className="material-symbols-outlined text-base">arrow_forward</span>
@@ -175,7 +180,9 @@ export default function Home() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {loading
             ? Array(4).fill(0).map((_, i) => <ProductSkeleton key={i} />)
-            : featuredProducts.map(p => <ProductCard key={p.id} product={p} />)
+            : bestsellerProducts.length > 0 
+              ? bestsellerProducts.map(p => <ProductCard key={p.id} product={p} />)
+              : <div className="col-span-full text-center py-10 text-on-surface-variant bg-surface-container-low rounded-xl">Chưa có vật phẩm Bestseller nào được tìm thấy.</div>
           }
         </div>
       </section>

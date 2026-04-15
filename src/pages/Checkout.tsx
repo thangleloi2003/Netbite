@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../hooks/useCart';
+import { orderApi } from '../services/api'; 
+import { useAuth } from '../hooks/useAuth'; 
 
 function formatPrice(p: number) {
   return p.toLocaleString('vi-VN') + 'đ';
@@ -8,22 +10,58 @@ function formatPrice(p: number) {
 
 export default function Checkout() {
   const { items, totalCount, totalPrice, updateQty, removeItem, clearCart } = useCart();
+  const { user } = useAuth(); // Lấy user đang đăng nhập
   const [machine, setMachine] = useState('');
   const [phone, setPhone] = useState('');
   const [payment, setPayment] = useState<'cash' | 'qr'>('cash');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false); // State chống spam click
   const navigate = useNavigate();
 
   const DELIVERY_FEE = 5000;
   const total = totalPrice + DELIVERY_FEE;
 
-  const handleSubmit = () => {
+  // HÀM XỬ LÝ ĐẶT HÀNG THỰC TẾ
+  const handleSubmit = async () => {
     if (!machine.trim()) return alert('Vui lòng nhập số máy/bàn!');
-    setSubmitted(true);
-    setTimeout(() => {
-      clearCart();
-      navigate('/');
-    }, 2500);
+    
+    setIsSubmitting(true);
+
+    try {
+      // 1. Chuẩn bị dữ liệu Đơn hàng
+      const newOrder = {
+        userId: user?.id || `guest_${Date.now()}`,
+        machineNumber: machine,
+        phone: phone,
+        paymentMethod: payment,
+        total: total,
+        status: "pending" as const,
+        createdAt: new Date().toISOString(),
+        date: new Date().toISOString(), // 👉 THÊM DÒNG NÀY VÀO ĐỂ FIX LỖI TYPE
+        items: items.map(item => ({
+          productId: item.id,
+          productName: item.name,
+          quantity: item.quantity,
+          price: item.price,
+        }))
+      };
+
+      // 2. Gửi API lưu vào db.json
+      await orderApi.create(newOrder as any); // 👉 THÊM "as any" nếu Type Order có những trường khác mà UI không dùng đến
+
+      // 3. Hiển thị UI thành công
+      setSubmitted(true);
+      setTimeout(() => {
+        clearCart();
+        navigate('/');
+      }, 2500);
+
+    } catch (error) {
+      console.error("Lỗi đặt hàng:", error);
+      alert("Lỗi hệ thống! Không thể đặt hàng lúc này.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -192,11 +230,17 @@ export default function Checkout() {
               </div>
             </div>
 
+            {/* ĐỔI TEXT NÚT THÀNH ĐANG XỬ LÝ KHI SUBMIT */}
             <button
               onClick={handleSubmit}
-              className="w-full bg-primary py-5 text-on-primary rounded-full font-black text-xl tracking-tighter uppercase shadow-[0_0_20px_rgba(255,141,140,0.4)] hover:shadow-[0_0_30px_rgba(255,141,140,0.6)] flex items-center justify-center gap-3 hover:brightness-110 transition-all active:scale-[0.98] border border-white/10 relative z-10"
+              disabled={isSubmitting}
+              className={`w-full py-5 text-on-primary rounded-full font-black text-xl tracking-tighter uppercase flex items-center justify-center gap-3 transition-all relative z-10 border border-white/10 ${
+                isSubmitting 
+                  ? "bg-surface-container-highest text-on-surface-variant cursor-not-allowed"
+                  : "bg-primary shadow-[0_0_20px_rgba(255,141,140,0.4)] hover:shadow-[0_0_30px_rgba(255,141,140,0.6)] hover:brightness-110 active:scale-[0.98]"
+              }`}
             >
-              XÁC NHẬN ĐƠN HÀNG
+              {isSubmitting ? "ĐANG XỬ LÝ..." : "XÁC NHẬN ĐƠN HÀNG"}
             </button>
           </div>
         </div>

@@ -155,7 +155,10 @@
       ],
       "category": "food",
       "description": "Pizza đế mỏng với lớp phô mai mozzarella dày kéo căng, cùng pepperoni cay thơm, sốt cà chua đặc biệt và rau húng tươi. Dành cho cả đội 5 người leo rank cùng nhau!",
-      "tags": [],
+      "tags": [
+        "hot",
+        "bestseller"
+      ],
       "badges": [],
       "toppings": [
         {
@@ -190,7 +193,9 @@
       ],
       "category": "food",
       "description": "Sườn heo non nướng than hồng, phủ sốt BBQ ngọt mặn đặc trưng NetBite. Kèm theo khoai tây chiên giòn và coleslaw mát lạnh. Bữa ăn lý tưởng sau một trận đấu căng thẳng.",
-      "tags": [],
+      "tags": [
+        "bestseller"
+      ],
       "badges": [],
       "toppings": [
         {
@@ -219,7 +224,7 @@
       "category": "noodle",
       "description": "Mì cay hải sản siêu cấp with tôm, mực, bạch tuộc tươi ngon. Nước dùng cay đậm đà cùng độ cay tùy chọn từ Level 1-7. Cảnh báo: Level 7 chỉ dành cho những game thủ cứng!",
       "tags": [
-        "hot"
+        "bestseller"
       ],
       "badges": [],
       "toppings": [
@@ -265,10 +270,7 @@
       ],
       "category": "snack",
       "description": "Khoai tây chiên giòn khổng lồ size XL, chấm với tương ớt và mayonnaise đặc biệt của NetBite. Snack hoàn hảo giữa trận.",
-      "tags": [
-        "hot",
-        "bestseller"
-      ],
+      "tags": [],
       "badges": [],
       "toppings": [
         {
@@ -296,10 +298,7 @@
       ],
       "category": "drink",
       "description": "Coca-Cola Zero đựng trong cốc lớn đầy đá, mát lạnh giải khát tức thì. Phiên bản không đường hoàn hảo cho mọi game thủ.",
-      "tags": [
-        "hot",
-        "bestseller"
-      ],
+      "tags": [],
       "badges": [],
       "toppings": [
         {
@@ -610,9 +609,9 @@
       "discount": "-20% OFF",
       "discountColor": "primary",
       "items": [
-        "01 Burger Bò Full Buff",
-        "01 Khoai tây chiên",
-        "01 Coca-Cola Zero Ice"
+        "1x Burger Bò Full Buff",
+        "1x Khoai tây chiên",
+        "1x Coca-Cola Zero Ice"
       ],
       "productIds": [
         "p_d1yicwtv0",
@@ -633,9 +632,9 @@
       "discount": "-25% OFF",
       "discountColor": "secondary",
       "items": [
-        "02 Mì Cay Hải Sản Crit Dame",
-        "01 Takoyaki Nhật Bản (6 Viên)",
-        "02 Trà Đào Cam Sả Tươi Mát"
+        "2x Mì Cay Hải Sản Crit Dame",
+        "1x Takoyaki Nhật Bản (6 Viên)",
+        "2x Trà Đào Cam Sả Tươi Mát"
       ],
       "productIds": [
         "p_wd48jj258",
@@ -658,9 +657,9 @@
       "discount": "PRO CHOICE",
       "discountColor": "tertiary-fixed-dim",
       "items": [
-        "01 Pizza Pepperoni MVP",
-        "02 Takoyaki Nhật Bản (6 Viên)",
-        "01 Coca-Cola Zero Ice"
+        "1x Pizza Pepperoni MVP",
+        "2x Takoyaki Nhật Bản (6 Viên)",
+        "1x Coca-Cola Zero Ice"
       ],
       "productIds": [
         "p_34525rz62",
@@ -805,6 +804,75 @@
       "status": "delivered",
       "date": "2026-04-08",
       "machineNumber": "B05"
+    },
+    {
+      "userId": "u_5plh976s6",
+      "machineNumber": "1",
+      "phone": "",
+      "paymentMethod": "cash",
+      "total": 50000,
+      "status": "delivered",
+      "createdAt": "2026-04-15T04:12:23.090Z",
+      "date": "2026-04-15T04:12:23.090Z",
+      "items": [
+        {
+          "productId": "p_d1yicwtv0",
+          "productName": "Burger Bò Full Buff",
+          "quantity": 1,
+          "price": 45000
+        }
+      ],
+      "id": "LKqy4vs"
+    },
+    {
+      "userId": "u_3tcspx60e",
+      "machineNumber": "2",
+      "phone": "",
+      "paymentMethod": "cash",
+      "total": 60000,
+      "status": "delivered",
+      "createdAt": "2026-04-15T04:13:55.194Z",
+      "date": "2026-04-15T04:13:55.194Z",
+      "items": [
+        {
+          "productId": "p_wd48jj258",
+          "productName": "Mì Cay Hải Sản Crit Dame (Cấp 0)",
+          "quantity": 1,
+          "price": 55000
+        }
+      ],
+      "id": "_xVi-SY"
+    },
+    {
+      "userId": "u_3tcspx60e",
+      "machineNumber": "3",
+      "phone": "",
+      "paymentMethod": "cash",
+      "total": 264000,
+      "status": "delivered",
+      "createdAt": "2026-04-15T04:15:02.346Z",
+      "date": "2026-04-15T04:15:02.346Z",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        },
+        {
+          "productId": "p_9xz7rwgfr",
+          "productName": "Takoyaki Nhật Bản (6 Viên)",
+          "quantity": 2,
+          "price": 55000
+        },
+        {
+          "productId": "p_ci9rbs8ls",
+          "productName": "Coca-Cola Zero Ice",
+          "quantity": 1,
+          "price": 20000
+        }
+      ],
+      "id": "JOqy1_K"
     }
   ]
 }

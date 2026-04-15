@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { productApi, categoryApi, comboApi } from "../services/api";
 import type { Product, Category, Combo } from "../types";
-import { useCart } from '../hooks/useCart';
-import { useAuth } from '../hooks/useAuth';
+import { useCart } from "../hooks/useCart";
+import { useAuth } from "../hooks/useAuth";
 
 function formatPrice(p: number) {
   return p.toLocaleString("vi-VN") + "đ";
@@ -63,32 +63,76 @@ function ProductSkeleton() {
   );
 }
 
-function ComboCard({ combo, product, allProducts }: { combo?: Combo; product?: Product; allProducts: Product[] }) {
+// 3 color themes cycling for dynamic product combos
+const DYNAMIC_THEMES = [
+  {
+    borderColor: "border-primary",
+    iconColor: "primary",
+    discountColor: "primary",
+    badgeBg: "bg-primary text-on-primary border-primary/20",
+    btnClass: "bg-primary text-on-primary shadow-primary/20",
+    iconBg: "bg-primary/10",
+  },
+  {
+    borderColor: "border-secondary",
+    iconColor: "secondary",
+    discountColor: "secondary",
+    badgeBg: "bg-secondary text-on-secondary border-secondary/20",
+    btnClass: "bg-secondary text-on-secondary shadow-secondary/20",
+    iconBg: "bg-secondary/10",
+  },
+  {
+    borderColor: "border-tertiary-fixed-dim",
+    iconColor: "tertiary-fixed-dim",
+    discountColor: "tertiary-fixed-dim",
+    badgeBg: "bg-tertiary-fixed-dim text-on-tertiary-fixed border-tertiary-fixed-dim/40",
+    btnClass: "bg-tertiary-fixed-dim text-on-secondary",
+    iconBg: "bg-tertiary-fixed-dim/10",
+  },
+];
+
+function ComboCard({
+  combo,
+  product,
+  allProducts,
+  index = 0,
+}: {
+  combo?: Combo;
+  product?: Product;
+  allProducts: Product[];
+  index?: number;
+}) {
   const { addItem } = useCart();
   const { isAuthenticated } = useAuth();
   const [adding, setAdding] = useState(false);
 
   // Determine which data source to use
   const isDynamic = !!product;
+  const theme = DYNAMIC_THEMES[index % 3];
+
   const id = isDynamic ? product.id : combo!.id;
   const name = isDynamic ? product.name : combo!.name;
   const price = isDynamic ? product.price : combo!.price;
-  const originalPrice = isDynamic ? product.originalPrice : combo!.originalPrice;
+  const originalPrice = isDynamic
+    ? product.originalPrice
+    : combo!.originalPrice;
   const icon = isDynamic ? "auto_awesome" : combo!.icon;
-  const iconColor = isDynamic ? "primary" : combo!.iconColor;
-  const borderColor = isDynamic ? "border-primary" : combo!.borderColor;
-  const discountLabel = isDynamic 
-    ? (originalPrice ? `-${Math.round((1 - price / originalPrice) * 100)}% OFF` : "COMBO") 
+  const iconColor = isDynamic ? theme.iconColor : combo!.iconColor;
+  const borderColor = isDynamic ? theme.borderColor : combo!.borderColor;
+  const discountLabel = isDynamic
+    ? originalPrice
+      ? `-${Math.round((1 - price / originalPrice) * 100)}% OFF`
+      : "COMBO"
     : combo!.discount;
-  const discountColor = isDynamic ? "primary" : combo!.discountColor;
+  const discountColor = isDynamic ? theme.discountColor : combo!.discountColor;
   const badge = isDynamic ? "MỚI" : combo!.badge;
-  
+
   // Format items list
-  const items = isDynamic 
-    ? (product.comboItems?.map(item => {
-        const p = allProducts.find(ap => ap.id === item.productId);
-        return `${item.quantity}x ${p ? p.name : 'Sản phẩm'}`;
-      }) || [])
+  const items = isDynamic
+    ? product.comboItems?.map((item) => {
+        const p = allProducts.find((ap) => ap.id === item.productId);
+        return `${item.quantity}x ${p ? p.name : "Sản phẩm"}`;
+      }) || []
     : combo!.items;
 
   const handleAdd = async () => {
@@ -102,7 +146,10 @@ function ComboCard({ combo, product, allProducts }: { combo?: Combo; product?: P
           if (r.status === "fulfilled") {
             const p = r.value;
             const qty = product.comboItems![idx].quantity;
-            addItem({ id: p.id, name: p.name, price: p.price, image: p.image }, qty);
+            addItem(
+              { id: p.id, name: p.name, price: p.price, image: p.image },
+              qty,
+            );
           }
         });
       }
@@ -135,64 +182,71 @@ function ComboCard({ combo, product, allProducts }: { combo?: Combo; product?: P
   };
 
   const isPentakill = !isDynamic && id === "c3";
+  // Badge style: dynamic uses theme, static checks isPentakill
+  const resolvedBadgeBg = isDynamic
+    ? theme.badgeBg
+    : isPentakill
+      ? "bg-tertiary-fixed-dim text-on-tertiary-fixed border-tertiary-fixed-dim/40"
+      : "bg-secondary text-on-secondary border-secondary/20";
+  // Button style
+  const resolvedBtnClass = isDynamic
+    ? theme.btnClass
+    : isPentakill
+      ? "bg-tertiary-fixed-dim text-on-secondary"
+      : borderColor === "border-primary"
+        ? "bg-primary text-on-primary shadow-primary/20"
+        : "bg-secondary text-on-secondary shadow-secondary/20";
+  // Icon bg
+  const resolvedIconBg = isDynamic
+    ? theme.iconBg
+    : isPentakill ? "bg-tertiary-fixed-dim/10" : "bg-white/5";
 
   return (
     <div
-      className={`bg-surface-container-highest p-6 rounded-2xl relative border-l-[4px] ${
+      className={`bg-surface-container-highest p-4 rounded-2xl relative border-l-[4px] ${
         isPentakill ? "border-tertiary-fixed-dim" : borderColor
-      } hover:border-l-[8px] transition-all relative flex flex-col`}
+      } hover:border-l-[6px] transition-all relative flex flex-col gap-3`}
     >
       {badge && (
         <div
-          className={`absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-[9px] font-black tracking-widest z-10 shadow-lg border ${
-            isPentakill
-              ? "bg-tertiary-fixed-dim text-on-tertiary-fixed border-tertiary-fixed-dim/40 shadow-tertiary-fixed-dim/10"
-              : "bg-secondary text-on-secondary border-secondary/20 shadow-secondary/20"
-          }`}
+          className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[9px] font-black tracking-widest z-10 shadow-lg border ${resolvedBadgeBg}`}
         >
           {badge}
         </div>
       )}
 
-      <div className="flex justify-between mb-5">
+      {/* Icon + Discount */}
+      <div className="flex justify-between items-center">
         <div
-          className={`w-14 h-14 rounded-2xl flex items-center justify-center ${
-            isPentakill ? "bg-tertiary-fixed-dim/10" : "bg-white/5"
-          }`}
+          className={`w-10 h-10 rounded-xl flex items-center justify-center ${resolvedIconBg}`}
         >
           <span
-            className={`material-symbols-outlined text-4xl ${
-              isPentakill
-                ? "text-tertiary-fixed-dim"
-                : `text-${iconColor}`
-            }`}
+            className={`material-symbols-outlined text-2xl text-${iconColor}`}
           >
             {icon}
           </span>
         </div>
         <span
-          className={`px-3 py-1 rounded-full text-[10px] font-black tracking-wider self-start ${
-            isPentakill
-              ? "bg-tertiary-fixed-dim/20 text-tertiary-fixed-dim"
-              : `bg-${discountColor}/20 text-${discountColor}`
-          }`}
+          className={`px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider bg-${discountColor}/20 text-${discountColor}`}
         >
           {discountLabel}
         </span>
       </div>
 
-      <h3 className="text-xl font-black mb-4 tracking-tight leading-tight">
+      {/* Title */}
+      <h3 className="text-base font-black tracking-tight leading-snug">
         {name}
       </h3>
 
-      <ul className="space-y-2.5 mb-8 text-on-surface-variant flex-1">
+      {/* Items list */}
+      <ul className="space-y-1.5 flex-1">
         {items.map((item, i) => (
           <li
             key={i}
-            className="flex items-start gap-2 text-[11px] font-bold leading-normal"
+            className="flex items-start gap-1.5 text-[11px] font-bold text-on-surface-variant leading-normal"
           >
             <span
-              className={`material-symbols-outlined text-[14px] mt-0.5 ${isPentakill ? "text-tertiary-fixed-dim" : "text-secondary"}`}
+              className={`material-symbols-outlined text-[13px] mt-0.5 shrink-0 ${isPentakill ? "text-tertiary-fixed-dim" : "text-secondary"}`}
             >
               check_circle
             </span>
@@ -201,8 +255,9 @@ function ComboCard({ combo, product, allProducts }: { combo?: Combo; product?: P
         ))}
       </ul>
 
-      <div className="flex items-baseline gap-2 mb-6">
-        <span className="text-2xl font-black text-on-surface tracking-tighter">
+      {/* Price */}
+      <div className="flex items-baseline gap-1.5">
+        <span className="text-xl font-black text-on-surface tracking-tighter">
           {formatPrice(price)}
         </span>
         {originalPrice && originalPrice > price && (
@@ -212,16 +267,11 @@ function ComboCard({ combo, product, allProducts }: { combo?: Combo; product?: P
         )}
       </div>
 
+      {/* Button */}
       <button
         onClick={handleAdd}
         disabled={adding}
-        className={`w-full py-3.5 rounded-2xl font-black hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-2 active:scale-95 disabled:opacity-70 shadow-lg text-xs tracking-widest uppercase mb-1 ${
-          isPentakill
-            ? "bg-tertiary-fixed-dim text-on-secondary"
-            : borderColor === "border-primary"
-              ? "bg-primary text-on-primary shadow-primary/20"
-              : "bg-secondary text-on-secondary shadow-secondary/20"
-        }`}
+        className={`w-full py-2.5 rounded-xl font-black hover:brightness-110 transition-all duration-300 flex items-center justify-center gap-1.5 active:scale-95 disabled:opacity-70 shadow-md text-[10px] tracking-widest uppercase ${resolvedBtnClass}`}
       >
         <span className="material-symbols-outlined text-sm font-black">
           {adding ? "check" : "bolt"}
@@ -273,10 +323,14 @@ export default function Menu() {
 
   useEffect(() => {
     setLoading(true);
-    const params = (activeTab !== "all" && activeTab !== "combo") ? { category: activeTab } : undefined;
-    
+    const params =
+      activeTab !== "all" && activeTab !== "combo"
+        ? { category: activeTab }
+        : undefined;
+
     // When activeTab is "combo", we want to show products with category "combo"
-    const productParams = activeTab === "combo" ? { category: "combo" } : params;
+    const productParams =
+      activeTab === "combo" ? { category: "combo" } : params;
 
     productApi
       .getAll(productParams)
@@ -507,8 +561,8 @@ export default function Menu() {
                   <ComboCard key={c.id} combo={c} allProducts={allProducts} />
                 ))}
                 {/* Render product-based combos */}
-                {products.map((p) => (
-                  <ComboCard key={p.id} product={p} allProducts={allProducts} />
+                {products.map((p, i) => (
+                  <ComboCard key={p.id} product={p} allProducts={allProducts} index={i} />
                 ))}
               </div>
             </>
