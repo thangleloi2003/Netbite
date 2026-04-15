@@ -22,13 +22,11 @@ export default function Checkout() {
   const total = totalPrice + DELIVERY_FEE;
 
   // HÀM XỬ LÝ ĐẶT HÀNG THỰC TẾ
-  const handleSubmit = async () => {
+ const handleSubmit = async () => {
     if (!machine.trim()) return alert('Vui lòng nhập số máy/bàn!');
-    
     setIsSubmitting(true);
 
     try {
-      // 1. Chuẩn bị dữ liệu Đơn hàng
       const newOrder = {
         userId: user?.id || `guest_${Date.now()}`,
         machineNumber: machine,
@@ -37,19 +35,17 @@ export default function Checkout() {
         total: total,
         status: "pending" as const,
         createdAt: new Date().toISOString(),
-        date: new Date().toISOString(), // 👉 THÊM DÒNG NÀY VÀO ĐỂ FIX LỖI TYPE
+        date: new Date().toISOString(),
         items: items.map(item => ({
-          productId: item.id,
+          productId: item.id.split('__')[0], 
           productName: item.name,
           quantity: item.quantity,
           price: item.price,
         }))
       };
 
-      // 2. Gửi API lưu vào db.json
-      await orderApi.create(newOrder as any); // 👉 THÊM "as any" nếu Type Order có những trường khác mà UI không dùng đến
+      await orderApi.create(newOrder as any);
 
-      // 3. Hiển thị UI thành công
       setSubmitted(true);
       setTimeout(() => {
         clearCart();

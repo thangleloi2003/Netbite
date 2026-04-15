@@ -152,9 +152,16 @@ export default function ProductDetail() {
   const handleAddToCart = () => {
     if (!product) return;
     const toppingDetails = generateToppingDetails();
+    
+    // TẠO ID ĐỘC NHẤT DÀNH RIÊNG CHO GIỎ HÀNG
+    // Nếu có topping, gắn thêm chuỗi topping vào ID để giỏ hàng không gộp nhầm
+    const cartItemId = toppingDetails 
+      ? `${product.id}__${toppingDetails.replace(/\s+/g, '')}` 
+      : product.id;
+
     addItem(
       {
-        id: product.id,
+        id: cartItemId, // Sử dụng ID tổ hợp thay vì product.id gốc
         name: product.name + (toppingDetails ? ` (${toppingDetails})` : ""),
         price: product.price + toppingPrice,
         image: product.image,
@@ -170,9 +177,15 @@ export default function ProductDetail() {
   const handleBuyNow = () => {
     if (!product) return;
     const toppingDetails = generateToppingDetails();
+    
+    // TẠO ID ĐỘC NHẤT TƯƠNG TỰ BÊN TRÊN
+    const cartItemId = toppingDetails 
+      ? `${product.id}__${toppingDetails.replace(/\s+/g, '')}` 
+      : product.id;
+
     addItem(
       {
-        id: product.id,
+        id: cartItemId, // Sử dụng ID tổ hợp
         name: product.name + (toppingDetails ? ` (${toppingDetails})` : ""),
         price: product.price + toppingPrice,
         image: product.image,
