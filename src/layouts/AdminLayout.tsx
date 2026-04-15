@@ -106,9 +106,6 @@ export default function AdminLayout() {
                 <span className="text-sm font-black text-on-surface leading-none uppercase tracking-tighter italic">
                   {user?.name}
                 </span>
-                <span className="text-[10px] font-bold text-primary uppercase tracking-widest mt-1">
-                  Quản trị viên
-                </span>
               </div>
               <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-black border border-primary/30">
                 {user?.name?.charAt(0)}

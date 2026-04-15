@@ -1,8 +1,24 @@
 import { useNavigate } from "react-router-dom";
 import { useAdminProducts } from "../../hooks/useAdminProducts";
+import { useState, useRef, useEffect } from "react";
 
 export default function AdminProducts() {
   const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   const {
     paginatedProducts,
     categories,
@@ -27,41 +43,67 @@ export default function AdminProducts() {
           <div className="h-1.5 w-16 bg-secondary rounded-full mb-3"></div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-4">
-          <div className="relative group">
-            <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">search</span>
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <div className="relative group h-[50px] w-full sm:w-auto">
+            <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors text-[20px]">search</span>
             <input 
               type="text" 
               placeholder="Tìm kiếm món ăn..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="pl-12 pr-6 py-3 bg-surface-container-low border border-white/5 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium text-sm w-full sm:w-64"
+              className="pl-12 pr-6 h-full bg-surface-container-low border border-white/5 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium text-sm w-full sm:w-[280px]"
             />
           </div>
 
-          <div className="relative">
-            <select 
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              className="pl-6 pr-12 py-3 bg-surface-container-low border border-white/5 rounded-full focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-black text-xs uppercase tracking-widest appearance-none cursor-pointer w-full sm:w-48"
+          <div className="relative w-full sm:w-[260px]" ref={dropdownRef}>
+            <button 
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="pl-6 pr-5 h-[50px] w-full bg-surface-container-low border border-white/5 rounded-full focus:outline-none transition-all font-black text-xs uppercase tracking-widest cursor-pointer text-on-surface flex items-center justify-between shadow-inner focus:ring-2 focus:ring-primary/40 hover:bg-surface-container-high"
             >
-              <option value="all">Tất cả danh mục</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.slug}>
-                  {cat.name.toUpperCase()}
-                </option>
-              ))}
-            </select>
-            <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
-              keyboard_arrow_down
-            </span>
+              <span className="truncate">{filter === 'all' ? 'TẤT CẢ DANH MỤC' : categories.find(c => c.slug === filter)?.name.toUpperCase() || 'DANH MỤC'}</span>
+              <span className={`material-symbols-outlined text-[20px] text-primary transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}>
+                keyboard_arrow_down
+              </span>
+            </button>
+
+            <div 
+              className={`absolute top-[calc(100%+8px)] left-0 w-full bg-[#2c131a] border border-white/10 rounded-[20px] shadow-[0_15px_40px_rgba(0,0,0,0.6)] z-[60] overflow-hidden transition-all duration-300 origin-top flex flex-col ${isDropdownOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'}`}
+            >
+              {[
+                { value: "all", label: "TẤT CẢ DANH MỤC" },
+                ...categories.map(c => ({ value: c.slug, label: c.name.toUpperCase() }))
+              ].map((opt) => {
+                const isSelected = opt.value === filter;
+                return (
+                  <button
+                    key={opt.value}
+                    onClick={() => {
+                      setFilter(opt.value);
+                      setIsDropdownOpen(false);
+                    }}
+                    className={`w-full text-left px-5 py-3.5 flex items-center gap-3 transition-colors ${
+                      isSelected 
+                        ? 'bg-[#FF8D8C] text-[#2c131a] font-black'
+                        : 'text-[#eac2c9] font-bold hover:bg-white/5 hover:text-white'
+                    }`}
+                  >
+                    {isSelected ? (
+                      <span className="material-symbols-outlined text-[18px] font-black">check</span>
+                    ) : (
+                      <span className="w-[18px]"></span>
+                    )}
+                    <span className="text-xs uppercase tracking-widest">{opt.label}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           <button 
             onClick={() => navigate("create")}
-            className="px-8 py-3 bg-secondary text-on-secondary text-sm font-black rounded-full shadow-[0_0_20px_rgba(255,193,7,0.3)] hover:shadow-[0_0_30px_rgba(255,193,7,0.5)] hover:-translate-y-1 transition-all uppercase tracking-wider flex items-center justify-center gap-2"
+            className="px-8 h-[50px] shrink-0 bg-secondary text-on-secondary text-sm font-black rounded-full shadow-[0_0_20px_rgba(255,193,7,0.3)] hover:shadow-[0_0_30px_rgba(255,193,7,0.5)] hover:-translate-y-0.5 active:translate-y-0 transition-all uppercase tracking-widest flex items-center justify-center gap-2 w-full sm:w-auto"
           >
-            <span className="material-symbols-outlined font-black">add</span>
+            <span className="material-symbols-outlined font-black text-[20px]">add</span>
             Thêm sản phẩm
           </button>
         </div>

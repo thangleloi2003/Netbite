@@ -72,7 +72,7 @@ export default function AdminOrders() {
           >Tất cả</button>
           <button 
             onClick={() => setFilter("pending")}
-            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "pending" ? "bg-secondary text-on-secondary shadow-[0_0_15px_rgba(255,171,105,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "pending" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,171,105,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
           >Chờ xử lý</button>
           <button 
             onClick={() => setFilter("processing")}
@@ -80,7 +80,7 @@ export default function AdminOrders() {
           >Đang chuẩn bị</button>
           <button 
             onClick={() => setFilter("delivered")}
-            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "delivered" ? "bg-green-500 text-white shadow-[0_0_15px_rgba(34,197,94,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
+            className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${filter === "delivered" ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(34,197,94,0.3)]" : "text-on-surface-variant hover:text-white hover:bg-white/5"}`}
           >Hoàn thành</button>
         </div>
       </div>

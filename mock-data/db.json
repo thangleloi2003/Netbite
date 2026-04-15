@@ -63,13 +63,6 @@
       "name": "Enter",
       "role": "customer",
       "password": "1234@Abcd"
-    },
-    {
-      "id": "u_68ws5za8b",
-      "username": "f123",
-      "name": "FUCK",
-      "role": "customer",
-      "password": "1234Abc@"
     }
   ],
   "categories": [
@@ -121,24 +114,7 @@
         "hot",
         "bestseller"
       ],
-      "badges": [
-        {
-          "icon": "local_fire_department",
-          "label": "Cay nồng"
-        },
-        {
-          "icon": "restaurant",
-          "label": "Nhiều đạm"
-        },
-        {
-          "icon": "timer",
-          "label": "Giao nhanh"
-        },
-        {
-          "icon": "thermostat",
-          "label": "Luôn nóng"
-        }
-      ],
+      "badges": [],
       "toppings": [
         {
           "id": "t1",
@@ -180,16 +156,7 @@
       "category": "food",
       "description": "Pizza đế mỏng với lớp phô mai mozzarella dày kéo căng, cùng pepperoni cay thơm, sốt cà chua đặc biệt và rau húng tươi. Dành cho cả đội 5 người leo rank cùng nhau!",
       "tags": [],
-      "badges": [
-        {
-          "icon": "restaurant",
-          "label": "Chia sẻ"
-        },
-        {
-          "icon": "timer",
-          "label": "Giao nhanh"
-        }
-      ],
+      "badges": [],
       "toppings": [
         {
           "id": "t1",
@@ -224,16 +191,7 @@
       "category": "food",
       "description": "Sườn heo non nướng than hồng, phủ sốt BBQ ngọt mặn đặc trưng NetBite. Kèm theo khoai tây chiên giòn và coleslaw mát lạnh. Bữa ăn lý tưởng sau một trận đấu căng thẳng.",
       "tags": [],
-      "badges": [
-        {
-          "icon": "restaurant",
-          "label": "Nhiều đạm"
-        },
-        {
-          "icon": "thermostat",
-          "label": "Luôn nóng"
-        }
-      ],
+      "badges": [],
       "toppings": [
         {
           "id": "t5",
@@ -263,20 +221,7 @@
       "tags": [
         "hot"
       ],
-      "badges": [
-        {
-          "icon": "local_fire_department",
-          "label": "Rất cay"
-        },
-        {
-          "icon": "restaurant",
-          "label": "Hải sản tươi"
-        },
-        {
-          "icon": "timer",
-          "label": "Giao nhanh"
-        }
-      ],
+      "badges": [],
       "toppings": [
         {
           "id": "t6",
@@ -457,12 +402,7 @@
       "category": "noodle",
       "description": "Mì udon Nhật Bản dày sợi xào cùng thịt bò Úc thái lát mỏng, sốt tiêu đen đậm đà và rau củ tươi. Bữa ăn no nê cho mọi game session dài.",
       "tags": [],
-      "badges": [
-        {
-          "icon": "restaurant",
-          "label": "Nhiều đạm"
-        }
-      ],
+      "badges": [],
       "toppings": [
         {
           "id": "t7",
@@ -606,7 +546,10 @@
       "images": [],
       "category": "combo",
       "description": "Combo hủy diệt vị giác",
-      "tags": [],
+      "tags": [
+        "hot",
+        "bestseller"
+      ],
       "badges": [],
       "toppings": [],
       "relatedIds": [],
@@ -621,6 +564,37 @@
         },
         {
           "productId": "p_ktzltm6yr",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": "p_rqgox74iv",
+      "name": "Combo Game Thủ",
+      "price": 33999,
+      "originalPrice": 34000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
+      "images": [],
+      "category": "combo",
+      "description": "abcd",
+      "tags": [
+        "bestseller",
+        "hot"
+      ],
+      "badges": [],
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
+        {
+          "productId": "p_x2vwcxjcb",
+          "quantity": 1
+        },
+        {
+          "productId": "p_wfnfz00n0",
+          "quantity": 1
+        },
+        {
+          "productId": "p_tz9qki7g7",
           "quantity": 1
         }
       ]
@@ -724,6 +698,94 @@
     },
     {
       "id": "ORD002",
+      "userId": "u_5plh976s6",
+      "items": [
+        {
+          "productId": "p_wd48jj258",
+          "productName": "Mì Cay Hải Sản Crit Dame",
+          "quantity": 1,
+          "price": 55000
+        },
+        {
+          "productId": "p_ktzltm6yr",
+          "productName": "Trà Đào Cam Sả Tươi Mát",
+          "quantity": 1,
+          "price": 45000
+        }
+      ],
+      "total": 100000,
+      "status": "delivered",
+      "date": "2026-04-08",
+      "machineNumber": "B05"
+    },
+    {
+      "id": "ORD003",
+      "userId": "u_5plh976s6",
+      "items": [
+        {
+          "productId": "p_wd48jj258",
+          "productName": "Mì Cay Hải Sản Crit Dame",
+          "quantity": 1,
+          "price": 55000
+        },
+        {
+          "productId": "p_ktzltm6yr",
+          "productName": "Trà Đào Cam Sả Tươi Mát",
+          "quantity": 1,
+          "price": 45000
+        }
+      ],
+      "total": 100000,
+      "status": "delivered",
+      "date": "2026-04-08",
+      "machineNumber": "B05"
+    },
+    {
+      "id": "ORD004",
+      "userId": "u_5plh976s6",
+      "items": [
+        {
+          "productId": "p_wd48jj258",
+          "productName": "Mì Cay Hải Sản Crit Dame",
+          "quantity": 1,
+          "price": 55000
+        },
+        {
+          "productId": "p_ktzltm6yr",
+          "productName": "Trà Đào Cam Sả Tươi Mát",
+          "quantity": 1,
+          "price": 45000
+        }
+      ],
+      "total": 100000,
+      "status": "delivered",
+      "date": "2026-04-08",
+      "machineNumber": "B05"
+    },
+    {
+      "id": "ORD005",
+      "userId": "u_5plh976s6",
+      "items": [
+        {
+          "productId": "p_wd48jj258",
+          "productName": "Mì Cay Hải Sản Crit Dame",
+          "quantity": 1,
+          "price": 55000
+        },
+        {
+          "productId": "p_ktzltm6yr",
+          "productName": "Trà Đào Cam Sả Tươi Mát",
+          "quantity": 1,
+          "price": 45000
+        }
+      ],
+      "total": 100000,
+      "status": "delivered",
+      "date": "2026-04-08",
+      "machineNumber": "B05"
+    },
+    {
+      "id": "ORD006",
       "userId": "u_5plh976s6",
       "items": [
         {
