@@ -41,28 +41,6 @@
       "name": "C",
       "role": "customer",
       "password": "1234@Abcd"
-    },
-    {
-      "id": "u_gc7wmnsi0",
-      "username": "d",
-      "name": "D",
-      "role": "customer",
-      "password": "1234@Abcd"
-    },
-    {
-      "id": "u_64ofdu1nc",
-      "username": "e",
-      "email": "e@gmail.com",
-      "name": "e",
-      "role": "customer",
-      "password": "1234@Abcd"
-    },
-    {
-      "id": "u_hzv10ud1b",
-      "username": "enter96",
-      "name": "Enter",
-      "role": "customer",
-      "password": "1234@Abcd"
     }
   ],
   "categories": [
@@ -597,6 +575,34 @@
           "quantity": 1
         }
       ]
+    },
+    {
+      "id": "p_bkf9tf0vw",
+      "name": "Warrior đỏ",
+      "price": 10000,
+      "originalPrice": null,
+      "image": "https://batos.vn/images/products/2021/08/24/27812c1a9daf68f131be-147.jpg",
+      "images": [],
+      "category": "drink",
+      "description": "Ngon mê say",
+      "tags": [
+        "hot"
+      ],
+      "badges": [],
+      "toppings": [
+        {
+          "id": "t1776242910773",
+          "label": "Tẩy Đá",
+          "price": 0,
+          "icon": "restaurant",
+          "type": "level",
+          "options": [
+            "Ít đá",
+            "Nhiều đá"
+          ]
+        }
+      ],
+      "relatedIds": []
     }
   ],
   "combos": [

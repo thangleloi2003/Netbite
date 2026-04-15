@@ -118,7 +118,7 @@ export default function AdminCreateProduct() {
             </label>
             <input
               required
-              type="number"
+              type="text"
               name="price"
               value={productForm.price}
               onChange={handleChange}
@@ -133,7 +133,7 @@ export default function AdminCreateProduct() {
               Giá gốc (nếu có)
             </label>
             <input
-              type="number"
+              type="text"
               name="originalPrice"
               value={productForm.originalPrice || ""}
               onChange={handleChange}
@@ -149,16 +149,20 @@ export default function AdminCreateProduct() {
             </label>
             <div className="relative group">
               <input
-                type="number"
+                type="text"
                 min="0"
                 max="100"
                 value={discountPercentage || ""}
                 onChange={(e) => setDiscount(Number(e.target.value))}
                 disabled={!productForm.originalPrice}
-                placeholder={!productForm.originalPrice ? "Nhập giá gốc trước" : "VD: 10"}
+                placeholder={
+                  !productForm.originalPrice ? "Nhập giá gốc trước" : "VD: 10"
+                }
                 className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               />
-              <span className="absolute right-6 top-1/2 -translate-y-1/2 text-on-surface-variant font-black">%</span>
+              <span className="absolute right-6 top-1/2 -translate-y-1/2 text-on-surface-variant font-black">
+                %
+              </span>
             </div>
           </div>
 
@@ -247,12 +251,20 @@ export default function AdminCreateProduct() {
             <div className="md:col-span-2 space-y-6 pt-6 border-t border-white/10 bg-primary/5 p-6 rounded-[32px]">
               <div className="flex items-center justify-between">
                 <div>
-                  <h3 className="text-lg font-black uppercase tracking-tight text-primary">Xây dựng Combo</h3>
-                  <p className="text-[10px] font-medium text-on-surface-variant uppercase tracking-widest mt-1">Chọn các món ăn có trong combo này</p>
+                  <h3 className="text-lg font-black uppercase tracking-tight text-primary">
+                    Xây dựng Combo
+                  </h3>
+                  <p className="text-[10px] font-medium text-on-surface-variant uppercase tracking-widest mt-1">
+                    Chọn các món ăn có trong combo này
+                  </p>
                 </div>
                 <div className="bg-surface-container-high px-4 py-2 rounded-2xl border border-white/5">
-                  <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant block mb-0.5">Tổng giá trị gốc</span>
-                  <span className="text-lg font-black text-on-surface">{formatPrice(productForm.originalPrice || 0)}</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant block mb-0.5">
+                    Tổng giá trị gốc
+                  </span>
+                  <span className="text-lg font-black text-on-surface">
+                    {formatPrice(productForm.originalPrice || 0)}
+                  </span>
                 </div>
               </div>
 
@@ -268,28 +280,42 @@ export default function AdminCreateProduct() {
                     >
                       <option value="">+ Thêm món vào combo...</option>
                       {allProducts
-                        .filter(p => p.category !== 'combo')
-                        .map(p => (
-                          <option key={p.id} value={p.id}>{p.name} - {formatPrice(p.price)}</option>
-                        ))
-                      }
+                        .filter((p) => p.category !== "combo")
+                        .map((p) => (
+                          <option key={p.id} value={p.id}>
+                            {p.name} - {formatPrice(p.price)}
+                          </option>
+                        ))}
                     </select>
-                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">add_circle</span>
+                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
+                      add_circle
+                    </span>
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 gap-3">
                   {productForm.comboItems?.map((item) => {
-                    const product = allProducts.find(p => p.id === item.productId);
+                    const product = allProducts.find(
+                      (p) => p.id === item.productId,
+                    );
                     if (!product) return null;
 
                     return (
-                      <div key={item.productId} className="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-white/5 group hover:border-primary/30 transition-all">
+                      <div
+                        key={item.productId}
+                        className="flex items-center justify-between bg-surface-container-low p-4 rounded-2xl border border-white/5 group hover:border-primary/30 transition-all"
+                      >
                         <div className="flex items-center gap-4">
-                          <img src={product.image} className="w-12 h-12 rounded-xl object-cover" alt="" />
+                          <img
+                            src={product.image}
+                            className="w-12 h-12 rounded-xl object-cover"
+                            alt=""
+                          />
                           <div>
                             <p className="font-bold text-sm">{product.name}</p>
-                            <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">{formatPrice(product.price)} / món</p>
+                            <p className="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+                              {formatPrice(product.price)} / món
+                            </p>
                           </div>
                         </div>
 
@@ -297,23 +323,41 @@ export default function AdminCreateProduct() {
                           <div className="flex items-center bg-surface-container-high rounded-full p-1 border border-white/5">
                             <button
                               type="button"
-                              onClick={() => updateComboItemQuantity(item.productId, item.quantity - 1)}
+                              onClick={() =>
+                                updateComboItemQuantity(
+                                  item.productId,
+                                  item.quantity - 1,
+                                )
+                              }
                               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-primary/10 text-primary transition-colors"
                             >
-                              <span className="material-symbols-outlined text-sm">remove</span>
+                              <span className="material-symbols-outlined text-sm">
+                                remove
+                              </span>
                             </button>
-                            <span className="w-8 text-center text-sm font-black">{item.quantity}</span>
+                            <span className="w-8 text-center text-sm font-black">
+                              {item.quantity}
+                            </span>
                             <button
                               type="button"
-                              onClick={() => updateComboItemQuantity(item.productId, item.quantity + 1)}
+                              onClick={() =>
+                                updateComboItemQuantity(
+                                  item.productId,
+                                  item.quantity + 1,
+                                )
+                              }
                               className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-primary/10 text-primary transition-colors"
                             >
-                              <span className="material-symbols-outlined text-sm">add</span>
+                              <span className="material-symbols-outlined text-sm">
+                                add
+                              </span>
                             </button>
                           </div>
 
                           <div className="text-right min-w-[100px]">
-                            <p className="font-black text-on-surface">{formatPrice(product.price * item.quantity)}</p>
+                            <p className="font-black text-on-surface">
+                              {formatPrice(product.price * item.quantity)}
+                            </p>
                           </div>
 
                           <button
@@ -321,7 +365,9 @@ export default function AdminCreateProduct() {
                             onClick={() => removeComboItem(item.productId)}
                             className="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-error hover:text-white transition-all"
                           >
-                            <span className="material-symbols-outlined text-sm">delete</span>
+                            <span className="material-symbols-outlined text-sm">
+                              delete
+                            </span>
                           </button>
                         </div>
                       </div>
@@ -350,7 +396,9 @@ export default function AdminCreateProduct() {
                 onClick={addTopping}
                 className="px-4 py-2 bg-secondary text-on-secondary text-[10px] font-black rounded-full hover:bg-secondary/80 transition-all uppercase tracking-widest flex items-center gap-2 shadow-lg"
               >
-                <span className="material-symbols-outlined text-[16px]">add</span>{" "}
+                <span className="material-symbols-outlined text-[16px]">
+                  add
+                </span>{" "}
                 Thêm tùy chọn
               </button>
             </div>
@@ -391,7 +439,7 @@ export default function AdminCreateProduct() {
                         Giá thêm (VNĐ)
                       </label>
                       <input
-                        type="number"
+                        type="text"
                         value={topping.price}
                         onChange={(e) =>
                           updateTopping(index, "price", Number(e.target.value))
@@ -410,9 +458,9 @@ export default function AdminCreateProduct() {
                         }
                         className="w-full bg-surface-container-high border border-white/5 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-secondary/50 transition-all text-sm font-bold appearance-none"
                       >
-                        <option value="quantifiable">Số lượng +/- (Quantifiable)</option>
-                        <option value="binary">Chọn có/không (Binary)</option>
-                        <option value="level">Chọn cấp độ cho mì cay (Level)</option>
+                        <option value="quantifiable">Số lượng +/-</option>
+                        <option value="binary">Chọn có/không</option>
+                        <option value="level">Optional (mì cay, tẩy đá)</option>
                       </select>
                     </div>
                   </div>
@@ -469,7 +517,10 @@ export default function AdminCreateProduct() {
                             type="button"
                             onClick={() => {
                               addToppingOption(index, newOption[index] || "");
-                              setNewOption((prev) => ({ ...prev, [index]: "" }));
+                              setNewOption((prev) => ({
+                                ...prev,
+                                [index]: "",
+                              }));
                             }}
                             className="w-7 h-7 rounded-full bg-surface-container-highest flex items-center justify-center hover:bg-secondary hover:text-on-secondary transition-all"
                           >

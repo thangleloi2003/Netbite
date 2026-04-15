@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { productApi, categoryApi } from "../services/api";
 import type { Category, Product } from "../types";
+import { useAdmin } from "../context/AdminContext";
 
 interface UseProductFormProps {
   productId?: string;
@@ -25,6 +26,7 @@ const initialFormState: Omit<Product, "id"> = {
 
 export function useProductForm({ productId, onSuccess }: UseProductFormProps = {}) {
   const navigate = useNavigate();
+  const { refreshData } = useAdmin();
   const [categories, setCategories] = useState<Category[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
@@ -151,6 +153,7 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
         await productApi.create(productToCreate);
       }
       
+      await refreshData();
       setSuccess(true);
       
       if (onSuccess) {

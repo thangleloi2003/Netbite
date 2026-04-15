@@ -181,52 +181,6 @@ export default function AdminEditProduct() {
             />
           </div>
 
-          {/* Tags Section */}
-          <div className="md:col-span-2 space-y-4 pt-4 border-t border-white/5">
-            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
-              Nhãn sản phẩm (Tags)
-            </label>
-            <div className="flex flex-wrap gap-6">
-              {/* Best Seller Checkbox */}
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <div className="relative flex items-center justify-center">
-                  <input
-                    type="checkbox"
-                    name="bestseller"
-                    checked={productForm.tags?.includes("bestseller") || false}
-                    onChange={handleChange}
-                    className="w-6 h-6 rounded-lg bg-surface-container-high border border-white/10 checked:bg-secondary checked:border-secondary transition-all appearance-none cursor-pointer"
-                  />
-                  <span className="material-symbols-outlined absolute text-on-secondary text-sm pointer-events-none opacity-0 group-has-[:checked]:opacity-100 transition-opacity">
-                    check
-                  </span>
-                </div>
-                <span className="text-sm font-bold text-on-surface group-hover:text-secondary transition-colors">
-                  Best Seller
-                </span>
-              </label>
-
-              {/* Hot Checkbox */}
-              <label className="flex items-center gap-3 cursor-pointer group">
-                <div className="relative flex items-center justify-center">
-                  <input
-                    type="checkbox"
-                    name="hot"
-                    checked={productForm.tags?.includes("hot") || false}
-                    onChange={handleChange}
-                    className="w-6 h-6 rounded-lg bg-surface-container-high border border-white/10 checked:bg-primary checked:border-primary transition-all appearance-none cursor-pointer"
-                  />
-                  <span className="material-symbols-outlined absolute text-on-primary text-sm pointer-events-none opacity-0 group-has-[:checked]:opacity-100 transition-opacity">
-                    check
-                  </span>
-                </div>
-                <span className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">
-                  Hot
-                </span>
-              </label>
-            </div>
-          </div>
-
           {/* Combo Builder (Only for Combo Category) */}
           {productForm.category === "combo" && (
             <div className="md:col-span-2 space-y-6 pt-6 border-t border-white/10 bg-primary/5 p-6 rounded-[32px]">

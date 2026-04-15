@@ -10,18 +10,16 @@ function formatPrice(p: number) {
 
 export default function Checkout() {
   const { items, totalCount, totalPrice, updateQty, removeItem, clearCart } = useCart();
-  const { user } = useAuth(); // Lấy user đang đăng nhập
+  const { user } = useAuth(); 
   const [machine, setMachine] = useState('');
-  const [phone, setPhone] = useState('');
-  const [payment, setPayment] = useState<'cash' | 'qr'>('cash');
+  const [payment, setPayment] = useState('cash');
   const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false); // State chống spam click
+  const [isSubmitting, setIsSubmitting] = useState(false); 
   const navigate = useNavigate();
 
   const DELIVERY_FEE = 5000;
   const total = totalPrice + DELIVERY_FEE;
 
-  // HÀM XỬ LÝ ĐẶT HÀNG THỰC TẾ
  const handleSubmit = async () => {
     if (!machine.trim()) return alert('Vui lòng nhập số máy/bàn!');
     setIsSubmitting(true);
@@ -30,7 +28,6 @@ export default function Checkout() {
       const newOrder = {
         userId: user?.id || `guest_${Date.now()}`,
         machineNumber: machine,
-        phone: phone,
         paymentMethod: payment,
         total: total,
         status: "pending" as const,
@@ -174,39 +171,38 @@ export default function Checkout() {
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-2">Số điện thoại liên hệ</label>
-                <div className="relative group">
-                  <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">call</span>
-                  <input
-                    value={phone}
-                    onChange={e => setPhone(e.target.value)}
-                    className="w-full bg-surface-container-highest pl-12 pr-4 py-4 rounded-full border border-white/5 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface font-bold placeholder:text-white/20 transition-all outline-none"
-                    placeholder="090 123 4567"
-                    type="tel"
-                  />
-                </div>
-              </div>
             </div>
 
             {/* Payment Method */}
             <div className="space-y-4 mt-8 relative z-10">
-              <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-2">Phương thức thanh toán</label>
-              <div className="grid grid-cols-2 gap-4">
+              <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-4 ml-2">Phương thức thanh toán</label>
+              
+              <div className="flex flex-col gap-3">
                 <button
                   onClick={() => setPayment('cash')}
-                  className={`p-5 rounded-2xl transition-all text-center hover:-translate-y-1 border ${payment === 'cash' ? 'bg-primary border-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]' : 'bg-surface-container-highest border-white/5'}`}
+                  className={`w-full relative flex items-center justify-between p-4 rounded-2xl transition-all border overflow-hidden group ${
+                    payment === 'cash' 
+                      ? 'bg-primary/10 border-primary shadow-[0_0_20px_rgba(255,141,140,0.15)] scale-[1.02]' 
+                      : 'bg-surface-container-highest border-white/5 hover:bg-white/5 hover:border-white/10'
+                  }`}
                 >
-                  <span className={`material-symbols-outlined block mb-2 text-3xl ${payment === 'cash' ? 'text-white' : 'text-on-surface-variant'}`}>payments</span>
-                  <span className={`text-sm font-black ${payment === 'cash' ? 'text-white' : 'text-on-surface'}`}>Tiền mặt</span>
+                  {payment === 'cash' && <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-primary shadow-[0_0_10px_rgba(255,141,140,0.8)]"></div>}
+                  
+                  <div className="flex items-center gap-4 relative z-10 ml-2">
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center transition-colors ${payment === 'cash' ? 'bg-primary text-on-primary' : 'bg-white/5 text-on-surface-variant group-hover:text-white'}`}>
+                      <span className="material-symbols-outlined text-2xl">payments</span>
+                    </div>
+                    <div className="text-left">
+                      <span className={`block text-base font-black transition-colors ${payment === 'cash' ? 'text-primary' : 'text-on-surface'}`}>Tiền mặt tại máy</span>
+                      <span className="block text-[11px] font-bold text-on-surface-variant mt-1 uppercase tracking-wider">Thanh toán trực tiếp cho nhân viên</span>
+                    </div>
+                  </div>
+
+                  {payment === 'cash' && (
+                    <span className="material-symbols-outlined text-primary text-3xl font-bold pr-2 animate-bounce">check_circle</span>
+                  )}
                 </button>
-                <button
-                  onClick={() => setPayment('qr')}
-                  className={`p-5 rounded-2xl transition-all text-center hover:-translate-y-1 border ${payment === 'qr' ? 'bg-secondary border-secondary shadow-[0_0_15px_rgba(255,171,105,0.3)]' : 'bg-surface-container-highest border-white/5'}`}
-                >
-                  <span className={`material-symbols-outlined block mb-2 text-3xl ${payment === 'qr' ? 'text-on-secondary' : 'text-on-surface-variant'}`}>qr_code_2</span>
-                  <span className={`text-sm font-black ${payment === 'qr' ? 'text-on-secondary' : 'text-on-surface'}`}>Quét QR</span>
-                </button>
+
               </div>
             </div>
 
@@ -226,7 +222,6 @@ export default function Checkout() {
               </div>
             </div>
 
-            {/* ĐỔI TEXT NÚT THÀNH ĐANG XỬ LÝ KHI SUBMIT */}
             <button
               onClick={handleSubmit}
               disabled={isSubmitting}

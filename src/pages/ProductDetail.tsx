@@ -16,7 +16,7 @@ function RelatedCard({ product }: { product: Product }) {
       className="min-w-[240px] snap-start group cursor-pointer bg-surface-container-low rounded-xl p-4 transition-all duration-300 hover:translate-y-[-8px] hover:bg-surface-container-high border border-outline-variant/10"
       onClick={() => {
         navigate(`/product/${product.id}`);
-        window.scrollTo({ top: 0, behavior: 'smooth' }); // Tự động cuộn lên đầu khi chọn món mới
+        window.scrollTo({ top: 0, behavior: 'smooth' }); 
       }}
     >
       <div className="aspect-[4/3] rounded-xl overflow-hidden mb-4 relative">
@@ -56,13 +56,10 @@ export default function ProductDetail() {
   const [selectedToppings, setSelectedToppings] = useState<Record<string, number | string>>({});
   const [added, setAdded] = useState(false);
   
-  // Ref dùng để điều khiển thanh trượt Slider
   const sliderRef = useRef<HTMLDivElement>(null);
 
-  // Hàm xử lý trượt Slider
   const scrollSlider = (direction: "left" | "right") => {
     if (sliderRef.current) {
-      // Cuộn 1 khoảng bằng 80% chiều rộng của khung hiển thị hiện tại
       const scrollAmount = sliderRef.current.clientWidth * 0.8;
       sliderRef.current.scrollBy({
         left: direction === "left" ? -scrollAmount : scrollAmount,
@@ -91,10 +88,8 @@ export default function ProductDetail() {
         });
         setSelectedToppings(defaults);
 
-        // Fetch TOÀN BỘ sản phẩm cho Slider "Vật phẩm đi kèm"
         try {
-          const allProds = await productApi.getAll(); // Chắc chắn api.ts của bạn có hàm getAll()
-          // Lọc bỏ sản phẩm hiện tại đang xem
+          const allProds = await productApi.getAll(); 
           const filtered = allProds.filter((item: Product) => item.id !== id);
           setAllProducts(filtered);
         } catch (error) {
@@ -194,7 +189,7 @@ export default function ProductDetail() {
     );
     
     if (!isAuthenticated) {
-      return; // CartContext will show login prompt
+      return; 
     }
     navigate("/checkout");
   };
@@ -235,7 +230,6 @@ export default function ProductDetail() {
 
   return (
     <>
-      {/* CSS ẩn thanh cuộn nhưng vẫn trượt được */}
       <style>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
