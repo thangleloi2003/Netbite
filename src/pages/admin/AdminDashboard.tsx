@@ -4,7 +4,17 @@ import { useAdminCustomers } from "../../hooks/useAdminCustomers";
 import { useFormat } from "../../hooks/useFormat";
 
 export default function AdminDashboard() {
-  const { orders, users, loading: ordersLoading, todayOrdersCount, getUser } = useAdminOrders();
+  const {
+    orders,
+    users,
+    paginatedOrders,
+    page,
+    setPage,
+    totalPages,
+    loading: ordersLoading,
+    todayOrdersCount,
+    getUser,
+  } = useAdminOrders();
   const { products, loading: productsLoading } = useAdminProducts();
   const { getCustomerTotalSpend, loading: customersLoading } = useAdminCustomers();
   const { formatPrice, getInitials } = useFormat();
@@ -68,9 +78,6 @@ export default function AdminDashboard() {
             <div className="p-3 rounded-full bg-primary/10">
               <span className="material-symbols-outlined text-primary text-3xl">receipt_long</span>
             </div>
-            <span className="bg-primary/20 text-primary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-              <span className="material-symbols-outlined text-xs">trending_up</span> +12%
-            </span>
           </div>
           <p className="text-on-surface-variant font-bold uppercase tracking-widest text-xs mb-1">Đơn hàng hôm nay</p>
           <h3 className="text-4xl font-black text-on-surface">{todayOrdersCount}</h3>
@@ -81,9 +88,6 @@ export default function AdminDashboard() {
             <div className="p-3 rounded-full bg-secondary/10">
               <span className="material-symbols-outlined text-secondary text-3xl">payments</span>
             </div>
-            <span className="bg-secondary/20 text-secondary px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-              <span className="material-symbols-outlined text-xs">trending_up</span> +8.4%
-            </span>
           </div>
           <p className="text-on-surface-variant font-bold uppercase tracking-widest text-xs mb-1">Tổng doanh thu</p>
           <h3 className="text-4xl font-black text-on-surface">{formatPrice(totalRevenue).replace('đ', '')} <span className="text-lg text-on-surface-variant">đ</span></h3>
@@ -94,9 +98,6 @@ export default function AdminDashboard() {
             <div className="p-3 rounded-full bg-tertiary-fixed-dim/10">
               <span className="material-symbols-outlined text-tertiary-fixed-dim text-3xl" style={{ fontVariationSettings: "'FILL' 1" }}>groups</span>
             </div>
-            <span className="bg-error/20 text-error px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
-              <span className="material-symbols-outlined text-xs">trending_down</span> -2%
-            </span>
           </div>
           <p className="text-on-surface-variant font-bold uppercase tracking-widest text-xs mb-1">Người dùng HĐ</p>
           <h3 className="text-4xl font-black text-on-surface">{activeUsersCount}</h3>
@@ -107,7 +108,6 @@ export default function AdminDashboard() {
         <div className="px-8 py-6 flex justify-between items-center border-b border-white/5 bg-surface-container/50">
           <div>
             <h2 className="text-2xl font-black tracking-tight">Đơn hàng mới nhất</h2>
-            <p className="text-xs uppercase tracking-widest text-on-surface-variant font-bold mt-1">Cập nhật thời gian thực</p>
           </div>
 
         </div>
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {orders.slice(0, 10).map(order => {
+              {paginatedOrders.map(order => {
                 const user = getUser(order.userId);
                 const userName = user?.name || "Khách Vãng Lai";
                 
@@ -174,13 +174,35 @@ export default function AdminDashboard() {
 
         {orders.length > 0 && (
           <div className="px-8 py-6 flex items-center justify-between border-t border-white/5 bg-surface-container/30">
-            <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Hiển thị 1-{Math.min(10, orders.length)} của {orders.length} đơn</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+              Hiển thị {(page - 1) * 5 + 1}-{Math.min(page * 5, orders.length)} của {orders.length} đơn
+            </p>
             <div className="flex gap-2">
-              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer text-on-surface disabled:opacity-50" disabled>
+              <button
+                onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer text-on-surface disabled:opacity-50"
+                disabled={page === 1}
+              >
                 <span className="material-symbols-outlined text-sm">chevron_left</span>
               </button>
-              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-primary text-on-primary font-black shadow-[0_0_15px_rgba(255,141,140,0.3)]">1</button>
-              <button className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer text-on-surface disabled:opacity-50" disabled>
+              {[...Array(totalPages)].map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setPage(index + 1)}
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-black transition-all ${
+                    page === index + 1
+                      ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]"
+                      : "bg-surface-container hover:bg-surface-container-highest text-on-surface"
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button
+                onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+                className="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container hover:bg-surface-container-highest transition-colors cursor-pointer text-on-surface disabled:opacity-50"
+                disabled={page === totalPages}
+              >
                 <span className="material-symbols-outlined text-sm">chevron_right</span>
               </button>
             </div>

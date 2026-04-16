@@ -546,37 +546,6 @@
       ]
     },
     {
-      "id": "p_rqgox74iv",
-      "name": "Combo Game Thủ",
-      "price": 33999,
-      "originalPrice": 34000,
-      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
-      "images": [],
-      "category": "combo",
-      "description": "abcd",
-      "tags": [
-        "bestseller",
-        "hot"
-      ],
-      "badges": [],
-      "toppings": [],
-      "relatedIds": [],
-      "comboItems": [
-        {
-          "productId": "p_x2vwcxjcb",
-          "quantity": 1
-        },
-        {
-          "productId": "p_wfnfz00n0",
-          "quantity": 1
-        },
-        {
-          "productId": "p_tz9qki7g7",
-          "quantity": 1
-        }
-      ]
-    },
-    {
       "id": "p_bkf9tf0vw",
       "name": "Warrior đỏ",
       "price": 10000,

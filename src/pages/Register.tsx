@@ -62,14 +62,13 @@ export default function Register() {
       
       const nextId = "u_" + Math.random().toString(36).substr(2, 9);
 
-      const user = await authApi.register({
-        id: nextId,
+      const { user, token } = await authApi.register({
         username: formData.username,
         name: formData.name,
         role: 'customer',
         password: formData.password
       } as any);
-      login(user);
+      login(user, token);
       navigate('/');
     } catch (err: any) {
       setError(err.message || 'Đăng ký thất bại. Vui lòng thử lại.');

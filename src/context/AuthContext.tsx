@@ -1,10 +1,11 @@
 import { createContext, useState, useEffect, type ReactNode } from 'react';
 import { type User } from '../types';
+import { authApi } from '../services/api';
 
 type AuthContextType = {
   user: User | null;
   loading: boolean;
-  login: (u: User) => void;
+  login: (u: User, token: string) => void;
   logout: () => void;
   isAuthenticated: boolean;
   isAdmin: boolean;
@@ -24,26 +25,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const saved = sessionStorage.getItem('netbite_user');
-    if (saved) {
+    const validateSession = async () => {
       try {
-        setUser(JSON.parse(saved));
+        const validatedUser = await authApi.verifyToken();
+        if (validatedUser) {
+          setUser(validatedUser);
+        } else {
+          setUser(null);
+        }
       } catch (e) {
-        console.error("Failed to parse user from sessionStorage", e);
-        sessionStorage.removeItem('netbite_user');
+        console.error("Session validation failed", e);
+        setUser(null);
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    validateSession();
   }, []);
 
-  const login = (u: User) => {
+  const login = (u: User, token: string) => {
     setUser(u);
-    sessionStorage.setItem('netbite_user', JSON.stringify(u));
+    // Token is already stored in localStorage by authApi.login
   };
 
   const logout = () => {
     setUser(null);
-    sessionStorage.removeItem('netbite_user');
+    authApi.logout();
   };
 
   const isAuthenticated = !!user;

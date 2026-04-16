@@ -19,8 +19,8 @@ export default function Login() {
     setLoading(true);
 
     try {
-      const user = await authApi.login({ username, password });
-      login(user);
+      const { user, token } = await authApi.login({ username, password });
+      login(user, token);
       
       const searchParams = new URLSearchParams(location.search);
       const redirectUrl = searchParams.get('redirect');
