@@ -8,7 +8,6 @@ export interface Product {
   category: string;
   description: string;
   tags: string[];
-  badges: { icon: string; label: string }[];
   toppings: {
     id: string;
     label: string;

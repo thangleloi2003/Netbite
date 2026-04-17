@@ -513,16 +513,6 @@ export default function ProductDetail() {
           <h3 className="text-3xl font-black tracking-tighter italic">CHI TIẾT VẬT PHẨM</h3>
           <div className="h-1.5 w-16 bg-secondary rounded-full" />
           <p className="text-on-surface-variant leading-relaxed text-lg">{product.description}</p>
-          {product.badges.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-4">
-              {product.badges.map((b, i) => (
-                <div key={i} className="p-4 rounded-xl bg-surface-container-low flex flex-col items-center gap-2 text-center hover:bg-surface-container-high transition-colors">
-                  <span className="material-symbols-outlined text-primary text-3xl">{b.icon}</span>
-                  <span className="text-xs font-bold uppercase tracking-widest">{b.label}</span>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
 
         {/* RELATED PRODUCTS SLIDER */}

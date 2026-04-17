@@ -210,15 +210,6 @@ export default function Home() {
                 ))
               : combos.map((combo) => (
                   <div key={combo.id} className={`bg-surface-container-highest p-8 rounded-2xl border-l-4 ${combo.borderColor} hover:border-l-8 transition-all relative flex flex-col`}>
-                    {combo.badge && (
-                      <div className={`absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-bold shadow-lg ${
-                        combo.id === 'c3' 
-                          ? "bg-tertiary-fixed-dim text-on-tertiary-fixed" 
-                          : "bg-secondary text-on-secondary"
-                      }`}>
-                        {combo.badge}
-                      </div>
-                    )}
                     <div className="flex justify-between mb-6">
                       <span className={`material-symbols-outlined text-${combo.iconColor} text-5xl`}>{combo.icon}</span>
                       <span className={`bg-${combo.discountColor}/20 text-${combo.discountColor} px-3 py-1 rounded-full text-xs font-bold self-start`}>

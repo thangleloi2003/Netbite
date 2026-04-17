@@ -69,7 +69,6 @@ const DYNAMIC_THEMES = [
     borderColor: "border-primary",
     iconColor: "primary",
     discountColor: "primary",
-    badgeBg: "bg-primary text-on-primary border-primary/20",
     btnClass: "bg-primary text-on-primary shadow-primary/20",
     iconBg: "bg-primary/10",
   },
@@ -77,7 +76,6 @@ const DYNAMIC_THEMES = [
     borderColor: "border-secondary",
     iconColor: "secondary",
     discountColor: "secondary",
-    badgeBg: "bg-secondary text-on-secondary border-secondary/20",
     btnClass: "bg-secondary text-on-secondary shadow-secondary/20",
     iconBg: "bg-secondary/10",
   },
@@ -85,7 +83,6 @@ const DYNAMIC_THEMES = [
     borderColor: "border-tertiary-fixed-dim",
     iconColor: "tertiary-fixed-dim",
     discountColor: "tertiary-fixed-dim",
-    badgeBg: "bg-tertiary-fixed-dim text-on-tertiary-fixed border-tertiary-fixed-dim/40",
     btnClass: "bg-tertiary-fixed-dim text-on-secondary",
     iconBg: "bg-tertiary-fixed-dim/10",
   },
@@ -125,7 +122,6 @@ function ComboCard({
       : "COMBO"
     : combo!.discount;
   const discountColor = isDynamic ? theme.discountColor : combo!.discountColor;
-  const badge = isDynamic ? "MỚI" : combo!.badge;
 
   // Format items list
   const items = isDynamic
@@ -182,12 +178,6 @@ function ComboCard({
   };
 
   const isPentakill = !isDynamic && id === "c3";
-  // Badge style: dynamic uses theme, static checks isPentakill
-  const resolvedBadgeBg = isDynamic
-    ? theme.badgeBg
-    : isPentakill
-      ? "bg-tertiary-fixed-dim text-on-tertiary-fixed border-tertiary-fixed-dim/40"
-      : "bg-secondary text-on-secondary border-secondary/20";
   // Button style
   const resolvedBtnClass = isDynamic
     ? theme.btnClass
@@ -207,14 +197,6 @@ function ComboCard({
         isPentakill ? "border-tertiary-fixed-dim" : borderColor
       } hover:border-l-[6px] transition-all relative flex flex-col gap-3`}
     >
-      {badge && (
-        <div
-          className={`absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full text-[9px] font-black tracking-widest z-10 shadow-lg border ${resolvedBadgeBg}`}
-        >
-          {badge}
-        </div>
-      )}
-
       {/* Icon + Discount */}
       <div className="flex justify-between items-center">
         <div

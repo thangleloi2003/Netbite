@@ -18,7 +18,6 @@ const initialFormState: Omit<Product, "id"> = {
   category: "",
   description: "",
   tags: [],
-  badges: [],
   toppings: [],
   relatedIds: [],
   comboItems: [],

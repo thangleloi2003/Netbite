@@ -92,7 +92,6 @@
         "hot",
         "bestseller"
       ],
-      "badges": [],
       "toppings": [
         {
           "id": "t1",
@@ -137,7 +136,6 @@
         "hot",
         "bestseller"
       ],
-      "badges": [],
       "toppings": [
         {
           "id": "t1",
@@ -174,7 +172,6 @@
       "tags": [
         "bestseller"
       ],
-      "badges": [],
       "toppings": [
         {
           "id": "t5",
@@ -204,7 +201,6 @@
       "tags": [
         "bestseller"
       ],
-      "badges": [],
       "toppings": [
         {
           "id": "t6",
@@ -249,7 +245,6 @@
       "category": "snack",
       "description": "Khoai tây chiên giòn khổng lồ size XL, chấm với tương ớt và mayonnaise đặc biệt của NetBite. Snack hoàn hảo giữa trận.",
       "tags": [],
-      "badges": [],
       "toppings": [
         {
           "id": "t5",
@@ -277,7 +272,6 @@
       "category": "drink",
       "description": "Coca-Cola Zero đựng trong cốc lớn đầy đá, mát lạnh giải khát tức thì. Phiên bản không đường hoàn hảo cho mọi game thủ.",
       "tags": [],
-      "badges": [],
       "toppings": [
         {
           "id": "t8",
@@ -311,7 +305,6 @@
       "category": "drink",
       "description": "Trà đào kết hợp cam và sả tươi, pha trong đá bào mịn. Hương vị thanh mát, giải nhiệt tức thì sau những pha gank căng thẳng.",
       "tags": [],
-      "badges": [],
       "toppings": [
         {
           "id": "t8",
@@ -351,7 +344,6 @@
       "category": "snack",
       "description": "6 viên bánh bạch tuộc Nhật Bản nóng hổi, phủ sốt Takoyaki, rắc bonito flakes và rong biển sấy khô. Snack mang phong cách anime cho mọi weeb gamer!",
       "tags": [],
-      "badges": [],
       "toppings": [
         {
           "id": "t5",
@@ -379,7 +371,6 @@
       "category": "noodle",
       "description": "Mì udon Nhật Bản dày sợi xào cùng thịt bò Úc thái lát mỏng, sốt tiêu đen đậm đà và rau củ tươi. Bữa ăn no nê cho mọi game session dài.",
       "tags": [],
-      "badges": [],
       "toppings": [
         {
           "id": "t7",
@@ -407,7 +398,6 @@
       "category": "drink",
       "description": "Matcha latte Uji Nhật Bản đắng nhẹ, pha sữa tươi béo ngậy, phủ kem mặn tan chảy. Thức uống chiều lòng mọi game thủ sành điệu.",
       "tags": [],
-      "badges": [],
       "toppings": [
         {
           "id": "t10",
@@ -435,7 +425,6 @@
       "tags": [
         "bestseller"
       ],
-      "badges": [],
       "toppings": [
         {
           "id": "t1776046997094",
@@ -468,7 +457,6 @@
       "tags": [
         "bestseller"
       ],
-      "badges": [],
       "toppings": [],
       "relatedIds": []
     },
@@ -484,7 +472,6 @@
       "tags": [
         "bestseller"
       ],
-      "badges": [],
       "toppings": [
         {
           "id": "t1776050721587",
@@ -510,7 +497,6 @@
       "category": "snack",
       "description": "ăn ngay đã mồm liền",
       "tags": [],
-      "badges": [],
       "toppings": [],
       "relatedIds": []
     },
@@ -527,7 +513,6 @@
         "hot",
         "bestseller"
       ],
-      "badges": [],
       "toppings": [],
       "relatedIds": [],
       "comboItems": [
@@ -557,7 +542,6 @@
       "tags": [
         "hot"
       ],
-      "badges": [],
       "toppings": [
         {
           "id": "t1776242910773",
@@ -603,7 +587,6 @@
       "icon": "groups",
       "iconColor": "secondary",
       "borderColor": "border-secondary",
-      "badge": "BEST SELLER",
       "discount": "-25% OFF",
       "discountColor": "secondary",
       "items": [
@@ -628,7 +611,6 @@
       "icon": "stars",
       "iconColor": "tertiary-fixed-dim",
       "borderColor": "border-tertiary-fixed-dim",
-      "badge": "PRO CHOICE",
       "discount": "PRO CHOICE",
       "discountColor": "tertiary-fixed-dim",
       "items": [

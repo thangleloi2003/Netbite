@@ -4,7 +4,6 @@ export interface Combo {
   icon: string;
   iconColor: string;
   borderColor: string;
-  badge?: string;
   discount: string;
   discountColor: string;
   items: string[];
