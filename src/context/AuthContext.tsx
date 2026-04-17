@@ -29,12 +29,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         const validatedUser = await authApi.verifyToken();
         if (validatedUser) {
+          console.log("Session validated:", validatedUser.username, validatedUser.role);
           setUser(validatedUser);
         } else {
           setUser(null);
         }
       } catch (e) {
-        console.error("Session validation failed", e);
+        console.error("Session validation failed:", e);
         setUser(null);
       } finally {
         setLoading(false);

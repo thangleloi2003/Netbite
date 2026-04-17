@@ -131,7 +131,19 @@ export const authApi = {
       const user = await api.get<User>(`/users/${decoded.id}`).then((r) => r.data);
       const { password: _password, ...userWithoutPassword } = user;
       return userWithoutPassword;
-    } catch (e) {
+    } catch (e: any) {
+      // Handle server restart/network error
+      if (!e.response && !e.status) {
+        console.warn("Server unreachable, using token payload as fallback session");
+        // Return minimal user info from token to maintain session during restart
+        return { 
+          id: decoded.id, 
+          role: decoded.role as "admin" | "customer",
+          username: "Session", 
+          name: "User" 
+        } as User;
+      }
+      
       localStorage.removeItem(TOKEN_KEY);
       return null;
     }
