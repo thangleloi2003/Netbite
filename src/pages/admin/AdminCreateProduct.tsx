@@ -137,8 +137,13 @@ export default function AdminCreateProduct() {
               name="originalPrice"
               value={productForm.originalPrice || ""}
               onChange={handleChange}
-              placeholder="VD: 55000"
-              className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium"
+              disabled={productForm.category === "combo"}
+              placeholder={
+                productForm.category === "combo"
+                  ? "Tự động tính từ các món"
+                  : "VD: 55000"
+              }
+              className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -154,9 +159,13 @@ export default function AdminCreateProduct() {
                 max="100"
                 value={discountPercentage || ""}
                 onChange={(e) => setDiscount(Number(e.target.value))}
-                disabled={!productForm.originalPrice}
+                disabled={!productForm.originalPrice || productForm.category === "combo"}
                 placeholder={
-                  !productForm.originalPrice ? "Nhập giá gốc trước" : "VD: 10"
+                  productForm.category === "combo"
+                    ? "Tự động tính"
+                    : !productForm.originalPrice 
+                      ? "Nhập giá gốc trước" 
+                      : "VD: 10"
                 }
                 className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed"
               />
@@ -184,21 +193,23 @@ export default function AdminCreateProduct() {
             </div>
           )}
 
-          {/* Mô tả */}
-          <div className="md:col-span-2 space-y-2">
-            <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
-              Mô tả sản phẩm
-            </label>
-            <textarea
-              required
-              name="description"
-              value={productForm.description}
-              onChange={handleChange}
-              rows={4}
-              placeholder="Nhập mô tả chi tiết về sản phẩm..."
-              className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium resize-none"
-            />
-          </div>
+          {/* Mô tả (Chỉ hiển thị cho sản phẩm không phải combo) */}
+          {productForm.category !== "combo" && (
+            <div className="md:col-span-2 space-y-2">
+              <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">
+                Mô tả sản phẩm
+              </label>
+              <textarea
+                required
+                name="description"
+                value={productForm.description}
+                onChange={handleChange}
+                rows={4}
+                placeholder="Nhập mô tả chi tiết về sản phẩm..."
+                className="w-full bg-surface-container-high border border-white/5 rounded-2xl px-6 py-4 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-medium resize-none"
+              />
+            </div>
+          )}
 
           {/* Tags Section */}
           <div className="md:col-span-2 space-y-4 pt-4 border-t border-white/5">

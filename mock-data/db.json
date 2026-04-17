@@ -5,42 +5,48 @@
       "username": "admin",
       "name": "Quản trị viên",
       "role": "admin",
-      "password": "12345"
+      "password": "12345",
+      "status": "active"
     },
     {
       "id": "u_5plh976s6",
       "username": "customer",
       "name": "Tuấn Kiệt",
       "role": "customer",
-      "password": "123"
+      "password": "123",
+      "status": "active"
     },
     {
       "id": "u_3tcspx60e",
       "username": "vanA",
       "name": "nguyen van A",
       "role": "customer",
-      "password": "123"
+      "password": "123",
+      "status": "active"
     },
     {
       "id": "u_59xn9080a",
       "username": "B",
       "name": "Dinh Van B",
       "role": "customer",
-      "password": "Abc1234@"
+      "password": "Abc1234@",
+      "status": "active"
     },
     {
       "id": "u_65fphv5ur",
       "username": "thang",
       "name": "Thang Nguyen",
       "role": "customer",
-      "password": "12345@Thang"
+      "password": "12345@Thang",
+      "status": "active"
     },
     {
       "id": "u_b95bhmj02",
       "username": "C",
       "name": "C",
       "role": "customer",
-      "password": "1234@Abcd"
+      "password": "1234@Abcd",
+      "status": "active"
     }
   ],
   "categories": [

@@ -132,10 +132,20 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
       const dataToSubmit = { ...formData };
       if (dataToSubmit.category !== "combo") {
         delete dataToSubmit.comboItems;
+        // Provide a default description for non-combo products if empty
+        if (!dataToSubmit.description) {
+          dataToSubmit.description = `${dataToSubmit.name} - Sản phẩm chất lượng từ NetBite.`;
+        }
       } else {
         // Set default generic image for combo
         if (dataToSubmit.category === "combo") {
           dataToSubmit.image = "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop";
+          // ALWAYS auto-generate description for combos to keep them consistent
+          const itemNames = (dataToSubmit.comboItems || [])
+            .map(item => allProducts.find(p => p.id === item.productId)?.name)
+            .filter(Boolean)
+            .join(", ");
+          dataToSubmit.description = `Combo bao gồm: ${itemNames || "nhiều món hấp dẫn"}.`;
         }
         // Combo doesn't need toppings
         dataToSubmit.toppings = [];

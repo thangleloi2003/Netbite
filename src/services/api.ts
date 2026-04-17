@@ -153,6 +153,9 @@ export const authApi = {
     localStorage.removeItem(TOKEN_KEY);
   },
 
+  updateUser: (id: string, data: Partial<User>) => 
+    api.patch<User>(`/users/${id}`, data).then((r) => r.data),
+
   deleteUser: (id: string) => api.delete(`/users/${id}`).then((r) => r.data),
 };
 

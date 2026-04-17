@@ -3,6 +3,7 @@ export interface User {
   username: string;
   name: string;
   role: "admin" | "customer";
+  status: "active" | "inactive";
   password?: string;
 }
 

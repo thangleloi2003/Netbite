@@ -121,14 +121,13 @@ export default function AdminDashboard() {
                 <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Món</th>
                 <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Tổng tiền</th>
                 <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Trạng thái</th>
-                <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Hành động</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
               {paginatedOrders.map(order => {
                 const user = getUser(order.userId);
                 const userName = user?.name || "Khách Vãng Lai";
-                
+
                 return (
                   <tr key={order.id} className="hover:bg-surface-container-high transition-colors group cursor-pointer">
                     <td className="px-8 py-5 text-sm font-mono text-primary font-bold">#{order.id}</td>
@@ -151,12 +150,6 @@ export default function AdminDashboard() {
                     <td className="px-8 py-5 text-sm font-black text-on-surface">{formatPrice(order.total)}</td>
                     <td className="px-8 py-5">
                       {formatStatus(order.status)}
-                    </td>
-                    <td className="px-8 py-5 text-right">
-                      <div className="flex justify-end gap-2">
-                        <button className="p-2 bg-surface-container rounded-full hover:bg-primary hover:text-on-primary transition-colors"><span className="material-symbols-outlined text-sm">edit</span></button>
-                        <button className="p-2 bg-surface-container rounded-full hover:bg-error hover:text-white transition-colors"><span className="material-symbols-outlined text-sm">delete</span></button>
-                      </div>
                     </td>
                   </tr>
                 );
@@ -189,11 +182,10 @@ export default function AdminDashboard() {
                 <button
                   key={index}
                   onClick={() => setPage(index + 1)}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-black transition-all ${
-                    page === index + 1
+                  className={`w-10 h-10 rounded-full flex items-center justify-center font-black transition-all ${page === index + 1
                       ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]"
                       : "bg-surface-container hover:bg-surface-container-highest text-on-surface"
-                  }`}
+                    }`}
                 >
                   {index + 1}
                 </button>

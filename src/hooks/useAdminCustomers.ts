@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useAdmin } from "../context/AdminContext";
+import type { User } from "../types";
 
 export function useAdminCustomers() {
   const { 
@@ -7,17 +8,18 @@ export function useAdminCustomers() {
     orders, 
     loading, 
     error, 
-    deleteUser: contextDeleteUser,
+    updateUser: contextUpdateUser,
     refreshData 
   } = useAdmin();
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const itemsPerPage = 8;
+  const [filter, setFilter] = useState<"all" | "active" | "inactive">("all");
+  const itemsPerPage = 5;
 
   useEffect(() => {
     setPage(1);
-  }, [search]);
+  }, [search, filter]);
 
   const getCustomerTotalSpend = (userId: string) => {
     return orders
@@ -25,29 +27,34 @@ export function useAdminCustomers() {
       .reduce((sum, o) => sum + o.total, 0);
   };
 
-  const deleteUser = async (id: string) => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa tài khoản người dùng này?")) {
-      try {
-        await contextDeleteUser(id);
-        return true;
-      } catch (err) {
-        console.error("Failed to delete user:", err);
-        return false;
-      }
+  const getCustomerOrderCount = (userId: string) => {
+    return orders.filter(o => o.userId === userId).length;
+  };
+
+  const toggleUserStatus = async (id: string, currentStatus: User["status"]) => {
+    const nextStatus: User["status"] = currentStatus === "active" ? "inactive" : "active";
+    try {
+      await contextUpdateUser(id, { status: nextStatus });
+      return true;
+    } catch (err) {
+      console.error("Failed to toggle user status:", err);
+      return false;
     }
-    return false;
   };
 
   const filteredUsers = useMemo(() => {
     return users.filter(u => {
       const matchesSearch = u.name.toLowerCase().includes(search.toLowerCase()) || 
                             u.username.toLowerCase().includes(search.toLowerCase());
+      
+      const matchesFilter = filter === "all" || u.status === filter;
                             
-      return u.role !== 'admin' && matchesSearch;
+      return u.role !== 'admin' && matchesSearch && matchesFilter;
     });
-  }, [users, search]);
+  }, [users, search, filter]);
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  
   const paginatedUsers = useMemo(() => {
     const start = (page - 1) * itemsPerPage;
     return filteredUsers.slice(start, start + itemsPerPage);
@@ -61,11 +68,14 @@ export function useAdminCustomers() {
     error,
     search,
     setSearch,
+    filter,
+    setFilter,
     page,
     setPage,
     totalPages,
     getCustomerTotalSpend,
-    deleteUser,
+    getCustomerOrderCount,
+    toggleUserStatus,
     refreshCustomers: refreshData,
   };
 }
