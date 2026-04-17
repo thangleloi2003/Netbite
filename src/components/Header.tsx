@@ -71,9 +71,16 @@ export default function Header() {
                 )}
               </button>
               <div className="flex gap-4 items-center">
-                <Link
-                  to={user.role === 'admin' ? '/admin' : '/'}
-                  className="text-slate-300 hover:text-white font-bold hidden sm:block">{user.name}</Link>
+                <div className="hidden sm:flex flex-col items-end">
+                  <Link
+                    to={user.role === 'admin' ? '/admin' : '/'}
+                    className="text-slate-300 hover:text-white font-bold leading-none">{user.name}</Link>
+                  {user.role !== 'admin' && user.machineId && (
+                    <span className="text-[10px] font-black uppercase tracking-widest text-primary mt-1">
+                      Máy: {user.machineId}
+                    </span>
+                  )}
+                </div>
                 <button 
                   onClick={handleLogout} 
                   className="bg-surface-container hover:bg-error/20 text-error px-4 py-2 rounded-full font-bold transition-all duration-300 active:scale-95 border border-error/20"

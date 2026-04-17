@@ -6,7 +6,6 @@ import About from '../pages/About'
 import Menu from '../pages/Menu'
 import ProductDetail from '../pages/ProductDetail'
 import Login from '../pages/Login'
-import Register from '../pages/Register'
 import Checkout from '../pages/Checkout'
 import ProtectedRoute from '../components/ProtectedRoute'
 
@@ -21,7 +20,6 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="login" element={<Login />} />
-      <Route path="register" element={<Register />} />
 
       <Route path="/" element={<Layout />}>
         <Route index element={<Home />} />

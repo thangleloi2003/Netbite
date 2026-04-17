@@ -4,21 +4,15 @@ import { authApi } from '../services/api';
 
 type AuthContextType = {
   user: User | null;
-  loading: boolean;
-  login: (u: User, token: string) => void;
+  login: (user: User) => void;
+  guestLogin: () => Promise<void>;
   logout: () => void;
+  loading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
 };
 
-export const AuthContext = createContext<AuthContextType>({
-  user: null,
-  loading: true,
-  login: () => {},
-  logout: () => {},
-  isAuthenticated: false,
-  isAdmin: false,
-});
+export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -45,9 +39,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     validateSession();
   }, []);
 
-  const login = (u: User, token: string) => {
+  const login = (u: User) => {
     setUser(u);
     // Token is already stored in localStorage by authApi.login
+  };
+
+  const guestLogin = async () => {
+    try {
+      const { user: guestUser } = await authApi.guestAccess();
+      setUser(guestUser);
+    } catch (err) {
+      console.error("Guest login failed:", err);
+      throw err;
+    }
   };
 
   const logout = () => {
@@ -59,7 +63,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAdmin = user?.role === 'admin';
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated, isAdmin }}>
+    <AuthContext.Provider value={{ user, login, guestLogin, logout, loading, isAuthenticated, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

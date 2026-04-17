@@ -4,6 +4,8 @@ export interface User {
   name: string;
   role: "admin" | "customer";
   status: "active" | "inactive";
+  machineId?: string;
+  isGuest?: boolean;
   password?: string;
 }
 

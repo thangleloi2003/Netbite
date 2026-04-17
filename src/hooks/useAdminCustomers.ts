@@ -8,6 +8,7 @@ export function useAdminCustomers() {
     orders, 
     loading, 
     error, 
+    createUser: contextCreateUser,
     updateUser: contextUpdateUser,
     refreshData 
   } = useAdmin();
@@ -44,8 +45,10 @@ export function useAdminCustomers() {
 
   const filteredUsers = useMemo(() => {
     return users.filter(u => {
-      const matchesSearch = u.name.toLowerCase().includes(search.toLowerCase()) || 
-                            u.username.toLowerCase().includes(search.toLowerCase());
+      const searchLower = search.toLowerCase();
+      const matchesSearch = u.name.toLowerCase().includes(searchLower) || 
+                            u.username.toLowerCase().includes(searchLower) ||
+                            (u.machineId && u.machineId.toLowerCase().includes(searchLower));
       
       const matchesFilter = filter === "all" || u.status === filter;
                             
@@ -76,6 +79,7 @@ export function useAdminCustomers() {
     getCustomerTotalSpend,
     getCustomerOrderCount,
     toggleUserStatus,
+    createUser: contextCreateUser,
     refreshCustomers: refreshData,
   };
 }

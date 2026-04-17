@@ -11,6 +11,23 @@ const TOKEN_KEY = "netbite_auth_token";
 const SECRET_KEY = "netbite_secret_signature_key_2026"; 
 
 /**
+ * Hardware Simulation: Detects or assigns a fixed Machine ID for this specific browser/PC.
+ */
+const HARDWARE_ID_KEY = "netbite_physical_machine_id";
+const getSimulatedHardwareId = (): string => {
+  let hardwareId = localStorage.getItem(HARDWARE_ID_KEY);
+  if (!hardwareId) {
+    // Simulate assigning a machine ID from a pool (e.g., Zone A, B, C)
+    const zones = ["A", "B", "C", "VIP"];
+    const zone = zones[Math.floor(Math.random() * zones.length)];
+    const num = Math.floor(Math.random() * 20) + 1;
+    hardwareId = `${zone}-${num.toString().padStart(2, "0")}`;
+    localStorage.setItem(HARDWARE_ID_KEY, hardwareId);
+  }
+  return hardwareId;
+};
+
+/**
  * Base64Url Encoding (Standard for JWT)
  */
 const base64UrlEncode = (str: string) => {
@@ -45,6 +62,8 @@ const generateSimulatedJWT = (user: User) => {
     sub: user.id,
     username: user.username,
     role: user.role,
+    machineId: user.machineId,
+    isGuest: user.isGuest,
     iat: Math.floor(Date.now() / 1000),
     exp: Math.floor(Date.now() / 1000) + (24 * 60 * 60), // 24 hours
   });
@@ -56,7 +75,7 @@ const generateSimulatedJWT = (user: User) => {
   return `${encodedHeader}.${encodedPayload}.${signature}`;
 };
 
-const verifySimulatedJWT = (token: string): { id: string; role: string } | null => {
+const verifySimulatedJWT = (token: string): { id: string; role: string; machineId?: string; isGuest?: boolean } | null => {
   try {
     const [header, payload, signature] = token.split(".");
     if (!header || !payload || !signature) return null;
@@ -76,7 +95,12 @@ const verifySimulatedJWT = (token: string): { id: string; role: string } | null 
       return null;
     }
 
-    return { id: decodedPayload.sub, role: decodedPayload.role };
+    return { 
+      id: decodedPayload.sub, 
+      role: decodedPayload.role,
+      machineId: decodedPayload.machineId,
+      isGuest: decodedPayload.isGuest
+    };
   } catch (e) {
     return null;
   }
@@ -94,28 +118,73 @@ api.interceptors.request.use((config) => {
 export const authApi = {
   getAllUsers: () => api.get<User[]>("/users").then((r) => r.data),
   
+  /**
+   * Internal helper to ensure a machine ID is only used by one account at a time.
+   * If another user is at this machine, they are "unbound" from it.
+   */
+  _claimMachineId: async (userId: string, machineId: string) => {
+    const allUsers = await api.get<User[]>("/users").then(r => r.data);
+    const otherUserAtMachine = allUsers.find(u => u.machineId === machineId && u.id !== userId);
+    
+    if (otherUserAtMachine) {
+      // "Unbind" the previous user from this machine
+      await api.patch(`/users/${otherUserAtMachine.id}`, { machineId: null });
+    }
+    
+    return api.patch<User>(`/users/${userId}`, { machineId }).then(r => r.data);
+  },
+
   login: (credentials: Pick<User, "username" | "password">) =>
     api
       .get<User[]>("/users", { params: { username: credentials.username } })
-      .then((r) => {
+      .then(async (r) => {
         const user = r.data.find((u) => u.password === credentials.password);
         if (!user) throw new Error("Tài khoản hoặc mật khẩu không chính xác");
         
-        const token = generateSimulatedJWT(user);
+        let updatedUser = user;
+        
+        // Only customers (and guests) are bound to a physical machine ID.
+        // Admins have global access and don't "claim" a station.
+        if (user.role !== "admin") {
+          const machineId = getSimulatedHardwareId();
+          updatedUser = await authApi._claimMachineId(user.id, machineId);
+        }
+
+        const token = generateSimulatedJWT(updatedUser);
         localStorage.setItem(TOKEN_KEY, token);
 
-        const { password: _password, ...userWithoutPassword } = user;
+        const { password: _password, ...userWithoutPassword } = updatedUser;
         return { user: userWithoutPassword, token };
       }),
 
-  register: (user: Omit<User, "id">) =>
-    api.post<User>("/users", user).then((r) => {
-      const token = generateSimulatedJWT(r.data);
-      localStorage.setItem(TOKEN_KEY, token);
+  guestAccess: async () => {
+    const machineId = getSimulatedHardwareId();
+    
+    // Check if there's already an active guest for this machine to reuse or create new
+    const allUsers = await api.get<User[]>("/users").then(r => r.data);
+    let guestUser = allUsers.find(u => u.machineId === machineId && u.isGuest);
 
-      const { password: _password, ...userWithoutPassword } = r.data;
-      return { user: userWithoutPassword, token };
-    }),
+    if (!guestUser) {
+      const newGuest: Omit<User, "id"> = {
+        username: `guest_${Date.now()}`,
+        name: `Khách máy ${machineId}`,
+        role: "customer",
+        status: "active",
+        machineId,
+        isGuest: true
+      };
+      // Ensure exclusivity even for new guests
+      const created = await api.post<User>("/users", newGuest).then(r => r.data);
+      guestUser = await authApi._claimMachineId(created.id, machineId);
+    } else {
+      // Ensure the existing guest at this machine is active
+      guestUser = await authApi._claimMachineId(guestUser.id, machineId);
+    }
+
+    const token = generateSimulatedJWT(guestUser);
+    localStorage.setItem(TOKEN_KEY, token);
+    return { user: guestUser, token };
+  },
 
   verifyToken: async () => {
     const token = localStorage.getItem(TOKEN_KEY);
@@ -140,7 +209,9 @@ export const authApi = {
           id: decoded.id, 
           role: decoded.role as "admin" | "customer",
           username: "Session", 
-          name: "User" 
+          name: "User",
+          machineId: decoded.machineId,
+          isGuest: decoded.isGuest
         } as User;
       }
       
@@ -155,6 +226,9 @@ export const authApi = {
 
   updateUser: (id: string, data: Partial<User>) => 
     api.patch<User>(`/users/${id}`, data).then((r) => r.data),
+
+  createUser: (user: Omit<User, "id">) =>
+    api.post<User>("/users", { ...user, status: "active" }).then((r) => r.data),
 
   deleteUser: (id: string) => api.delete(`/users/${id}`).then((r) => r.data),
 };

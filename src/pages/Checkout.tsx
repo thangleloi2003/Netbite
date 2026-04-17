@@ -11,7 +11,7 @@ function formatPrice(p: number) {
 export default function Checkout() {
   const { items, totalCount, totalPrice, updateQty, removeItem, clearCart } = useCart();
   const { user } = useAuth(); 
-  const [machine, setMachine] = useState('');
+  const [machine, setMachine] = useState(user?.machineId || '');
   const [payment, setPayment] = useState('cash');
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); 

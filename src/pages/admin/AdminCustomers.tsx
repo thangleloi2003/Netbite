@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useAdminCustomers } from "../../hooks/useAdminCustomers";
 import { useFormat } from "../../hooks/useFormat";
 
@@ -16,9 +17,38 @@ export default function AdminCustomers() {
     getCustomerTotalSpend,
     getCustomerOrderCount,
     toggleUserStatus,
+    createUser,
   } = useAdminCustomers();
 
   const { formatPrice, getInitials } = useFormat();
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [newUserData, setNewUserData] = useState({
+    name: "",
+    username: "",
+    password: "",
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  const handleAddUser = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
+
+    try {
+      await createUser({
+        ...newUserData,
+        role: "customer",
+        status: "active",
+      });
+      setShowAddModal(false);
+      setNewUserData({ name: "", username: "", password: "" });
+    } catch (err: any) {
+      setError(err.message || "Không thể tạo tài khoản. Vui lòng thử lại.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const formatStatus = (status: string) => {
     if (status === "active") {
@@ -100,7 +130,7 @@ export default function AdminCustomers() {
 
       {/* Customers Table */}
       <section className="bg-surface-container-low rounded-3xl overflow-hidden border border-white/5 shadow-xl">
-        <div className="px-8 py-6 flex justify-between items-center border-b border-white/5 bg-surface-container/50">
+        <div className="px-8 py-6 flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-white/5 bg-surface-container/50">
           <div>
             <h2 className="text-2xl font-black tracking-tight">
               Danh sách khách hàng
@@ -109,7 +139,111 @@ export default function AdminCustomers() {
               Tổng cộng {filteredUsers.length} người dùng
             </p>
           </div>
+          <button
+            onClick={() => setShowAddModal(true)}
+            className="flex items-center justify-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-full font-black text-xs uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-[0_0_15px_rgba(255,141,140,0.3)]"
+          >
+            <span className="material-symbols-outlined text-sm">person_add</span>
+            Thêm khách hàng
+          </button>
         </div>
+
+        {/* Modal Thêm Khách Hàng */}
+        {showAddModal && (
+          <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+            <div className="bg-surface-container-low border border-white/5 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl animate-in zoom-in-95 duration-200">
+              <div className="px-8 py-6 border-b border-white/5 flex justify-between items-center bg-surface-container/50">
+                <h3 className="text-xl font-black tracking-tight uppercase italic">
+                  Tạo tài khoản mới
+                </h3>
+                <button
+                  onClick={() => setShowAddModal(false)}
+                  className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 transition-colors text-on-surface-variant hover:text-white"
+                >
+                  <span className="material-symbols-outlined">close</span>
+                </button>
+              </div>
+
+              <form onSubmit={handleAddUser} className="p-8 space-y-5">
+                {error && (
+                  <div className="p-4 rounded-2xl bg-error/10 border border-error/20 text-error text-xs font-bold flex items-center gap-3">
+                    <span className="material-symbols-outlined text-sm">
+                      error
+                    </span>
+                    {error}
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-on-surface-variant ml-4">
+                    Họ và tên
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="VD: Nguyễn Văn A"
+                    value={newUserData.name}
+                    onChange={(e) =>
+                      setNewUserData((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
+                    className="w-full bg-surface-container-highest border border-white/5 rounded-full px-6 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-bold text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-on-surface-variant ml-4">
+                    Tên tài khoản
+                  </label>
+                  <input
+                    required
+                    type="text"
+                    placeholder="VD: vanA_123"
+                    value={newUserData.username}
+                    onChange={(e) =>
+                      setNewUserData((prev) => ({
+                        ...prev,
+                        username: e.target.value,
+                      }))
+                    }
+                    className="w-full bg-surface-container-highest border border-white/5 rounded-full px-6 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-bold text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-black uppercase tracking-widest text-on-surface-variant ml-4">
+                    Mật khẩu
+                  </label>
+                  <input
+                    required
+                    type="password"
+                    placeholder="••••••••"
+                    value={newUserData.password}
+                    onChange={(e) =>
+                      setNewUserData((prev) => ({
+                        ...prev,
+                        password: e.target.value,
+                      }))
+                    }
+                    className="w-full bg-surface-container-highest border border-white/5 rounded-full px-6 py-3.5 focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all font-bold text-sm"
+                  />
+                </div>
+
+                <div className="pt-4">
+                  <button
+                    disabled={isSubmitting}
+                    type="submit"
+                    className="w-full bg-primary text-on-primary py-4 rounded-full font-black uppercase tracking-widest shadow-[0_0_20px_rgba(255,141,140,0.3)] hover:brightness-110 active:scale-[0.98] transition-all disabled:opacity-50"
+                  >
+                    {isSubmitting ? "Đang xử lý..." : "Tạo tài khoản"}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse min-w-[800px]">
@@ -120,6 +254,9 @@ export default function AdminCustomers() {
                 </th>
                 <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                   Tài khoản
+                </th>
+                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                  Số máy
                 </th>
                 <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                   Đơn hàng
@@ -177,6 +314,9 @@ export default function AdminCustomers() {
                     </td>
                     <td className="px-8 py-6 text-sm font-mono text-primary font-black">
                       @{user.username}
+                    </td>
+                    <td className="px-8 py-6 text-sm font-black text-secondary uppercase tracking-widest">
+                      {user.machineId || 'N/A'}
                     </td>
                     <td className="px-8 py-6 text-sm text-on-surface-variant font-black">
                       {getCustomerOrderCount(user.id)} đơn
