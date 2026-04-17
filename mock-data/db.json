@@ -49,7 +49,8 @@
       "name": "C",
       "role": "customer",
       "password": "1234@Abcd",
-      "status": "active"
+      "status": "inactive",
+      "machineId": "A-06"
     },
     {
       "username": "guest_1776435684781",
@@ -65,7 +66,7 @@
       "name": "Khách máy A-06",
       "role": "customer",
       "status": "active",
-      "machineId": "A-06",
+      "machineId": null,
       "isGuest": true,
       "id": "T2MBCq7"
     }

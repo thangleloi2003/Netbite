@@ -115,6 +115,20 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// Response interceptor to handle session invalidation
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    // If the server returns a 404 for a user request, it might mean the user was deleted
+    if (error.config?.url?.includes('/users/') && error.response?.status === 404) {
+      console.error("User no longer exists, clearing session");
+      localStorage.removeItem(TOKEN_KEY);
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
 export const authApi = {
   getAllUsers: () => api.get<User[]>("/users").then((r) => r.data),
   
@@ -141,6 +155,10 @@ export const authApi = {
         const user = r.data.find((u) => u.password === credentials.password);
         if (!user) throw new Error("Tài khoản hoặc mật khẩu không chính xác");
         
+        if (user.status === "inactive") {
+          throw new Error("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ quản trị viên.");
+        }
+
         let updatedUser = user;
         
         // Only customers (and guests) are bound to a physical machine ID.
@@ -198,12 +216,21 @@ export const authApi = {
     
     try {
       const user = await api.get<User>(`/users/${decoded.id}`).then((r) => r.data);
+      
+      if (user.status === "inactive") {
+        console.warn("User account is inactive, clearing session");
+        localStorage.removeItem(TOKEN_KEY);
+        return null;
+      }
+
       const { password: _password, ...userWithoutPassword } = user;
       return userWithoutPassword;
     } catch (e: any) {
-      // Handle server restart/network error
-      if (!e.response && !e.status) {
-        console.warn("Server unreachable, using token payload as fallback session");
+      // Handle server restart/network error (ECONNREFUSED or no response)
+      const isNetworkError = !e.response && (e.code === 'ECONNREFUSED' || e.message === 'Network Error' || !e.status);
+      
+      if (isNetworkError) {
+        console.warn("Server unreachable, maintaining session using token payload");
         // Return minimal user info from token to maintain session during restart
         return { 
           id: decoded.id, 
@@ -211,10 +238,13 @@ export const authApi = {
           username: "Session", 
           name: "User",
           machineId: decoded.machineId,
-          isGuest: decoded.isGuest
+          isGuest: decoded.isGuest,
+          status: "active" // Assume active if we can't check
         } as User;
       }
       
+      // If it's a 404 or other actual API error, the token is stale
+      console.error("Token verification failed (Stale/Invalid):", e.message);
       localStorage.removeItem(TOKEN_KEY);
       return null;
     }
