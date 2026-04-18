@@ -19,24 +19,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const validateSession = async () => {
+    const validateSession = async (isBackground = false) => {
       try {
+        if (!isBackground) setLoading(true);
         const validatedUser = await authApi.verifyToken();
         if (validatedUser) {
-          console.log("Session validated:", validatedUser.username, validatedUser.role);
+          // If the user's status has changed to inactive, they will be logged out by verifyToken logic
           setUser(validatedUser);
         } else {
           setUser(null);
         }
       } catch (e) {
         console.error("Session validation failed:", e);
-        setUser(null);
+        if (!isBackground) setUser(null);
       } finally {
-        setLoading(false);
+        if (!isBackground) setLoading(false);
       }
     };
 
     validateSession();
+
+    // Set up background polling to detect real-time status changes (e.g., admin deactivating account)
+    // Only poll if a user is logged in
+    const interval = setInterval(() => {
+      if (localStorage.getItem("netbite_auth_token")) {
+        validateSession(true);
+      }
+    }, 10000); // Check every 10 seconds
+
+    return () => clearInterval(interval);
   }, []);
 
   const login = (u: User) => {

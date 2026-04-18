@@ -53,40 +53,13 @@
       "machineId": null
     },
     {
-      "username": "guest_1776435684781",
-      "name": "Khách máy A-06",
+      "username": "guest_b_13",
+      "name": "Máy B-13",
       "role": "customer",
       "status": "active",
-      "machineId": null,
+      "machineId": "B-13",
       "isGuest": true,
-      "id": "2B3rSIK"
-    },
-    {
-      "username": "guest_1776436200565",
-      "name": "Khách máy A-06",
-      "role": "customer",
-      "status": "active",
-      "machineId": null,
-      "isGuest": true,
-      "id": "T2MBCq7"
-    },
-    {
-      "username": "guest_1776491361746",
-      "name": "Khách máy A-06",
-      "role": "customer",
-      "status": "active",
-      "machineId": null,
-      "isGuest": true,
-      "id": "AGuyuZD"
-    },
-    {
-      "username": "guest_1776491371888",
-      "name": "Khách máy B-13",
-      "role": "customer",
-      "status": "active",
-      "machineId": null,
-      "isGuest": true,
-      "id": "jlgSHmu"
+      "id": "xWCgic2"
     }
   ],
   "categories": [
@@ -896,40 +869,40 @@
       "id": "zsobZjA"
     },
     {
-      "userId": "T2MBCq7",
-      "machineNumber": "A-06",
-      "paymentMethod": "cash",
-      "total": 105000,
-      "status": "delivered",
-      "createdAt": "2026-04-17T14:31:11.422Z",
-      "date": "2026-04-17T14:31:11.422Z",
-      "items": [
-        {
-          "productId": "p_zlj9s6213",
-          "productName": "Gà rán KFC",
-          "quantity": 2,
-          "price": 50000
-        }
-      ],
-      "id": "2G0kqtK"
-    },
-    {
-      "userId": "jlgSHmu",
+      "userId": "xWCgic2",
       "machineNumber": "B-13",
       "paymentMethod": "cash",
-      "total": 60000,
+      "total": 190000,
       "status": "delivered",
-      "createdAt": "2026-04-18T05:53:15.018Z",
-      "date": "2026-04-18T05:53:15.018Z",
+      "createdAt": "2026-04-18T06:24:10.231Z",
+      "date": "2026-04-18T06:24:10.231Z",
       "items": [
         {
-          "productId": "p_9xz7rwgfr",
-          "productName": "Takoyaki Nhật Bản (6 Viên)",
+          "productId": "p_pzei3e03l",
+          "productName": "Sườn Nướng BBQ Gank",
           "quantity": 1,
-          "price": 55000
+          "price": 185000
         }
       ],
-      "id": "b-gj0fC"
+      "id": "VtMviof"
+    },
+    {
+      "userId": "xWCgic2",
+      "machineNumber": "B-13",
+      "paymentMethod": "cash",
+      "total": 50000,
+      "status": "delivered",
+      "createdAt": "2026-04-18T06:32:04.805Z",
+      "date": "2026-04-18T06:32:04.805Z",
+      "items": [
+        {
+          "productId": "p_ktzltm6yr",
+          "productName": "Trà Đào Cam Sả Tươi Mát (0% đường)",
+          "quantity": 1,
+          "price": 45000
+        }
+      ],
+      "id": "uj-wbQe"
     }
   ]
 }

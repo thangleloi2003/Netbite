@@ -55,8 +55,8 @@ export function useAdminCustomers() {
         matchesFilter = !!u.machineId;
       }
 
-      // Hide guest accounts that are not currently online to keep management clean
-      if (u.isGuest && !u.machineId && filter !== "all") return false;
+      // Only show real member accounts (exclude guests)
+      if (u.isGuest) return false;
                             
       return u.role !== 'admin' && matchesSearch && matchesFilter;
     });

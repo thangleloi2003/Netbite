@@ -26,7 +26,7 @@ export default function Checkout() {
 
     try {
       const newOrder = {
-        userId: user?.id || `guest_${Date.now()}`,
+        userId: user?.id,
         machineNumber: machine,
         paymentMethod: payment,
         total: total,

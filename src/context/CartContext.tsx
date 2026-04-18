@@ -30,9 +30,10 @@ export const CartContext = createContext<CartContextType | null>(null);
 const STORAGE_KEY = "netbite_cart";
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [showAuthWarning, setShowAuthWarning] = useState(false);
+  const [prevUserId, setPrevUserId] = useState<string | null>(user?.id || null);
 
   const [items, setItems] = useState<CartItem[]>(() => {
     try {
@@ -45,6 +46,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
   });
 
   const [pendingProductId, setPendingProductId] = useState<string | null>(null);
+
+  // Clear cart whenever user changes (login, logout, switch account)
+  useEffect(() => {
+    if (user?.id !== prevUserId) {
+      console.log("User changed, resetting cart for clean data session");
+      setItems([]);
+      setPrevUserId(user?.id || null);
+    }
+  }, [user?.id, prevUserId]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));

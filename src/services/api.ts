@@ -177,27 +177,28 @@ export const authApi = {
 
   guestAccess: async () => {
     const machineId = getSimulatedHardwareId();
+    // Use a fixed username format for machine-specific guest accounts
+    const guestUsername = `guest_${machineId.replace(/-/g, "_").toLowerCase()}`;
     
-    // Check if there's already an active guest for this machine to reuse or create new
+    // Check if there's already a fixed guest account for this machine
     const allUsers = await api.get<User[]>("/users").then(r => r.data);
-    let guestUser = allUsers.find(u => u.machineId === machineId && u.isGuest);
+    let guestUser = allUsers.find(u => u.username === guestUsername);
 
     if (!guestUser) {
       const newGuest: Omit<User, "id"> = {
-        username: `guest_${Date.now()}`,
-        name: `Khách máy ${machineId}`,
+        username: guestUsername,
+        name: `Máy ${machineId}`,
         role: "customer",
         status: "active",
         machineId,
         isGuest: true
       };
-      // Ensure exclusivity even for new guests
-      const created = await api.post<User>("/users", newGuest).then(r => r.data);
-      guestUser = await authApi._claimMachineId(created.id, machineId);
-    } else {
-      // Ensure the existing guest at this machine is active
-      guestUser = await authApi._claimMachineId(guestUser.id, machineId);
+      // Create the fixed guest account
+      guestUser = await api.post<User>("/users", newGuest).then(r => r.data);
     }
+    
+    // Always "claim" the machine to ensure exclusivity (unbinds anyone else)
+    guestUser = await authApi._claimMachineId(guestUser.id, machineId);
 
     const token = generateSimulatedJWT(guestUser);
     localStorage.setItem(TOKEN_KEY, token);

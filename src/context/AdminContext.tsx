@@ -30,9 +30,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [actionLoading, setActionLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (isBackground = false) => {
     try {
-      setLoading(true);
+      if (!isBackground) setLoading(true);
       setError(null);
 
       const [productsData, categoriesData, ordersData, usersData] = await Promise.all([
@@ -44,18 +44,25 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       setProducts(productsData);
       setCategories(categoriesData);
-      setOrders([...ordersData].reverse()); // ✅ FIXED
+      setOrders([...ordersData].reverse()); 
       setUsers(usersData);
     } catch (err) {
       console.error("Admin data fetch error:", err);
-      setError("Failed to fetch admin data");
+      if (!isBackground) setError("Failed to fetch admin data");
     } finally {
-      setLoading(false);
+      if (!isBackground) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
     fetchData();
+
+    // Set up real-time polling (every 5 seconds)
+    const interval = setInterval(() => {
+      fetchData(true);
+    }, 5000);
+
+    return () => clearInterval(interval);
   }, [fetchData]);
 
   const updateProduct = async (id: string, data: Partial<Product>) => {
