@@ -903,6 +903,24 @@
         }
       ],
       "id": "uj-wbQe"
+    },
+    {
+      "userId": "u_59xn9080a",
+      "machineNumber": "A-06",
+      "paymentMethod": "cash",
+      "total": 134000,
+      "status": "pending",
+      "createdAt": "2026-04-18T06:39:49.175Z",
+      "date": "2026-04-18T06:39:49.175Z",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        }
+      ],
+      "id": "vOsysvl"
     }
   ]
 }

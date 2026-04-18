@@ -10,7 +10,7 @@ function formatPrice(p: number) {
 
 export default function Checkout() {
   const { items, totalCount, totalPrice, updateQty, removeItem, clearCart } = useCart();
-  const { user } = useAuth(); 
+  const { user, isAdmin } = useAuth(); 
   const [machine, setMachine] = useState(user?.machineId || '');
   const [payment, setPayment] = useState('cash');
   const [submitted, setSubmitted] = useState(false);
@@ -164,10 +164,14 @@ export default function Checkout() {
                   <input
                     value={machine}
                     onChange={e => setMachine(e.target.value)}
-                    className="w-full bg-surface-container-highest pl-12 pr-4 py-4 rounded-full border border-white/5 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface font-bold placeholder:text-white/20 transition-all outline-none"
-                    placeholder="VD: Máy VIP 05..."
+                    readOnly={!isAdmin}
+                    className={`w-full bg-surface-container-highest pl-12 pr-4 py-4 rounded-full border border-white/5 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface font-bold placeholder:text-white/20 transition-all outline-none ${!isAdmin ? 'cursor-not-allowed opacity-70' : ''}`}
+                    placeholder={isAdmin ? "VD: Máy VIP 05..." : "Số máy đã được cố định"}
                     type="text"
                   />
+                  {!isAdmin && (
+                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 text-sm">lock</span>
+                  )}
                 </div>
               </div>
 
