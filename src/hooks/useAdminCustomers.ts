@@ -15,7 +15,7 @@ export function useAdminCustomers() {
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [filter, setFilter] = useState<"all" | "active" | "inactive">("all");
+  const [filter, setFilter] = useState<"all" | "active" | "inactive" | "online">("all");
   const itemsPerPage = 5;
 
   useEffect(() => {
@@ -50,7 +50,13 @@ export function useAdminCustomers() {
                             u.username.toLowerCase().includes(searchLower) ||
                             (u.machineId && u.machineId.toLowerCase().includes(searchLower));
       
-      const matchesFilter = filter === "all" || u.status === filter;
+      let matchesFilter = filter === "all" || u.status === filter;
+      if (filter === "online") {
+        matchesFilter = !!u.machineId;
+      }
+
+      // Hide guest accounts that are not currently online to keep management clean
+      if (u.isGuest && !u.machineId && filter !== "all") return false;
                             
       return u.role !== 'admin' && matchesSearch && matchesFilter;
     });

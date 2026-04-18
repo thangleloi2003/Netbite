@@ -250,7 +250,14 @@ export const authApi = {
     }
   },
 
-  logout: () => {
+  logout: async (userId?: string) => {
+    if (userId) {
+      try {
+        await api.patch(`/users/${userId}`, { machineId: null });
+      } catch (e) {
+        console.warn("Could not unbind machine during logout (server might be down)");
+      }
+    }
     localStorage.removeItem(TOKEN_KEY);
   },
 

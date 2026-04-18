@@ -105,6 +105,16 @@ export default function AdminCustomers() {
               Tất cả
             </button>
             <button
+              onClick={() => setFilter("online")}
+              className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${
+                filter === "online"
+                  ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(34,197,94,0.3)]"
+                  : "text-on-surface-variant hover:text-white hover:bg-white/5"
+              }`}
+            >
+              Đang Online
+            </button>
+            <button
               onClick={() => setFilter("active")}
               className={`px-5 py-2.5 text-xs font-bold rounded-full transition-all uppercase tracking-wider whitespace-nowrap ${
                 filter === "active"
@@ -299,13 +309,23 @@ export default function AdminCustomers() {
                   >
                     <td className="px-8 py-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-xs font-black text-secondary border border-secondary/30">
-                          {getInitials(user.name)}
+                        <div className="relative">
+                          <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-xs font-black text-secondary border border-secondary/30">
+                            {getInitials(user.name)}
+                          </div>
+                          {user.machineId && (
+                            <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-green-500 border-2 border-surface-container-low rounded-full"></span>
+                          )}
                         </div>
                         <div>
-                          <span className="text-sm font-bold block">
-                            {user.name}
-                          </span>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-bold block">
+                              {user.name}
+                            </span>
+                            {user.isGuest && (
+                              <span className="text-[9px] px-1.5 py-0.5 bg-white/10 text-white/60 rounded font-black uppercase tracking-tighter">Guest</span>
+                            )}
+                          </div>
                           <span className="text-[10px] text-on-surface-variant uppercase tracking-widest">
                             ID: {user.id}
                           </span>

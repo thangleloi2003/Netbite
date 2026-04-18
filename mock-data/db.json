@@ -33,7 +33,7 @@
       "role": "customer",
       "password": "Abc1234@",
       "status": "active",
-      "machineId": "C-11"
+      "machineId": null
     },
     {
       "id": "u_65fphv5ur",
@@ -50,7 +50,7 @@
       "role": "customer",
       "password": "1234@Abcd",
       "status": "inactive",
-      "machineId": "A-06"
+      "machineId": null
     },
     {
       "username": "guest_1776435684781",
@@ -69,6 +69,24 @@
       "machineId": null,
       "isGuest": true,
       "id": "T2MBCq7"
+    },
+    {
+      "username": "guest_1776491361746",
+      "name": "Khách máy A-06",
+      "role": "customer",
+      "status": "active",
+      "machineId": null,
+      "isGuest": true,
+      "id": "AGuyuZD"
+    },
+    {
+      "username": "guest_1776491371888",
+      "name": "Khách máy B-13",
+      "role": "customer",
+      "status": "active",
+      "machineId": null,
+      "isGuest": true,
+      "id": "jlgSHmu"
     }
   ],
   "categories": [
@@ -894,6 +912,24 @@
         }
       ],
       "id": "2G0kqtK"
+    },
+    {
+      "userId": "jlgSHmu",
+      "machineNumber": "B-13",
+      "paymentMethod": "cash",
+      "total": 60000,
+      "status": "delivered",
+      "createdAt": "2026-04-18T05:53:15.018Z",
+      "date": "2026-04-18T05:53:15.018Z",
+      "items": [
+        {
+          "productId": "p_9xz7rwgfr",
+          "productName": "Takoyaki Nhật Bản (6 Viên)",
+          "quantity": 1,
+          "price": 55000
+        }
+      ],
+      "id": "b-gj0fC"
     }
   ]
 }

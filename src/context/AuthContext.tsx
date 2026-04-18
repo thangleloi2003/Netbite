@@ -54,9 +54,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const userId = user?.id;
     setUser(null);
-    authApi.logout();
+    await authApi.logout(userId);
   };
 
   const isAuthenticated = !!user;
