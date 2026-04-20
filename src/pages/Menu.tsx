@@ -122,35 +122,23 @@ function ComboCard({
       return `${item.quantity}x ${p ? p.name : "Sản phẩm"}`;
     }) || [];
 
-  const handleAdd = async () => {
-    if (product.comboItems && product.comboItems.length > 0) {
-      const results = await Promise.allSettled(
-        product.comboItems.map((item) => productApi.getById(item.productId)),
+    const handleAdd = () => {
+      const comboDetails = items.join(", ");
+      
+      addItem(
+        { 
+          id: product.id, 
+          name: `${product.name} ${comboDetails ? `(${comboDetails})` : ''}`, 
+          price: product.price, 
+          image: product.image 
+        },
       );
-      results.forEach((r, idx) => {
-        if (r.status === "fulfilled") {
-          const p = r.value;
-          const qty = product.comboItems![idx].quantity;
-          addItem(
-            { id: p.id, name: p.name, price: p.price, image: p.image },
-            qty,
-          );
-        }
-      });
-    } else {
-      addItem({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        image: product.image,
-      });
-    }
-
-    if (isAuthenticated) {
-      setAdding(true);
-      setTimeout(() => setAdding(false), 1000);
-    }
-  };
+  
+      if (isAuthenticated) {
+        setAdding(true);
+        setTimeout(() => setAdding(false), 1000);
+      }
+    };
 
   const resolvedBtnClass = theme.btnClass;
   const resolvedIconBg = theme.iconBg;
