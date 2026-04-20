@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { productApi, categoryApi, orderApi, authApi } from "../services/api";
-import type { Product, Category, Order, User } from "../types";
+import { productApi, categoryApi, orderApi, authApi, comboApi } from "../services/api";
+import type { Product, Category, Order, User, Combo } from "../types";
 
 interface AdminContextType {
   products: Product[];
   categories: Category[];
+  combos: Combo[];
   orders: Order[];
   users: User[];
   loading: boolean;
@@ -24,6 +25,7 @@ const AdminContext = createContext<AdminContextType | undefined>(undefined);
 export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [combos, setCombos] = useState<Combo[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
@@ -35,15 +37,17 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
       if (!isBackground) setLoading(true);
       setError(null);
 
-      const [productsData, categoriesData, ordersData, usersData] = await Promise.all([
+      const [productsData, categoriesData, combosData, ordersData, usersData] = await Promise.all([
         productApi.getAll(),
         categoryApi.getAll(),
+        comboApi.getAll(),
         orderApi.getAll(),
         authApi.getAllUsers(),
       ]);
 
       setProducts(productsData);
       setCategories(categoriesData);
+      setCombos(combosData);
       setOrders([...ordersData].reverse()); 
       setUsers(usersData);
     } catch (err) {
@@ -150,6 +154,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const value: AdminContextType = {
     products,
     categories,
+    combos,
     orders,
     users,
     loading,

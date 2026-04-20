@@ -227,9 +227,7 @@ export default function AdminCreateProduct() {
                     onChange={handleChange}
                     className="w-6 h-6 rounded-lg bg-surface-container-high border border-white/10 checked:bg-secondary checked:border-secondary transition-all appearance-none cursor-pointer"
                   />
-                  <span className="material-symbols-outlined absolute text-on-secondary text-sm pointer-events-none opacity-0 group-has-[:checked]:opacity-100 transition-opacity">
-                    check
-                  </span>
+
                 </div>
                 <span className="text-sm font-bold text-on-surface group-hover:text-secondary transition-colors">
                   Best Seller
@@ -246,9 +244,7 @@ export default function AdminCreateProduct() {
                     onChange={handleChange}
                     className="w-6 h-6 rounded-lg bg-surface-container-high border border-white/10 checked:bg-primary checked:border-primary transition-all appearance-none cursor-pointer"
                   />
-                  <span className="material-symbols-outlined absolute text-on-primary text-sm pointer-events-none opacity-0 group-has-[:checked]:opacity-100 transition-opacity">
-                    check
-                  </span>
+
                 </div>
                 <span className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">
                   Hot
@@ -298,9 +294,7 @@ export default function AdminCreateProduct() {
                           </option>
                         ))}
                     </select>
-                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">
-                      add_circle
-                    </span>
+
                   </div>
                 </div>
 

@@ -6,6 +6,16 @@ const api = axios.create({ baseURL: API_BASE });
 
 import type { Product, Category, Combo, Order, User } from "../types";
 
+/**
+ * Utility: Tạo ID ngẫu nhiên với prefix tùy chỉnh.
+ * Ví dụ: generateId('p') => 'p_xk3mcd9a'
+ * Đặt ID ở đây giúp đảm bảo trường 'id' luôn ở đầu trong db.json.
+ */
+const generateId = (prefix?: string): string => {
+  const rand = Math.random().toString(36).substring(2, 11);
+  return prefix ? `${prefix}_${rand}` : rand;
+};
+
 // Simulated JWT Standard Logic (Header.Payload.Signature)
 const TOKEN_KEY = "netbite_auth_token";
 const SECRET_KEY = "netbite_secret_signature_key_2026"; 
@@ -185,7 +195,8 @@ export const authApi = {
     let guestUser = allUsers.find(u => u.username === guestUsername);
 
     if (!guestUser) {
-      const newGuest: Omit<User, "id"> = {
+      const newGuest: User = {
+        id: Math.random().toString(36).substring(2, 9),
         username: guestUsername,
         name: `Máy ${machineId}`,
         role: "customer",
@@ -266,7 +277,7 @@ export const authApi = {
     api.patch<User>(`/users/${id}`, data).then((r) => r.data),
 
   createUser: (user: Omit<User, "id">) =>
-    api.post<User>("/users", { ...user, status: "active" }).then((r) => r.data),
+    api.post<User>("/users", { id: generateId('u'), ...user, status: "active" }).then((r) => r.data),
 
   deleteUser: (id: string) => api.delete(`/users/${id}`).then((r) => r.data),
 };
@@ -284,7 +295,7 @@ export const productApi = {
       .then((r) => r.data),
 
   create: (product: Omit<Product, "id">) =>
-    api.post<Product>("/products", product).then((r) => r.data),
+    api.post<Product>("/products", { id: generateId('p'), ...product }).then((r) => r.data),
 
   update: (id: string, product: Partial<Product>) =>
     api.patch<Product>(`/products/${id}`, product).then((r) => r.data),
@@ -307,7 +318,7 @@ export const orderApi = {
     api.get<Order[]>("/orders", { params: { userId } }).then((r) => r.data),
 
   create: (order: Omit<Order, "id">) =>
-    api.post<Order>("/orders", order).then((r) => r.data),
+    api.post<Order>("/orders", { id: generateId('ord'), ...order }).then((r) => r.data),
     
   update: (id: string, order: Partial<Order>) =>
     api.patch<Order>(`/orders/${id}`, order).then((r) => r.data),

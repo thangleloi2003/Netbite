@@ -171,7 +171,7 @@ export default function About() {
                   </span>
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-primary mb-2 uppercase tracking-widest">Khoảng giá / Địa chỉ</p>
+                  <p className="text-xs font-bold text-primary mb-2 uppercase tracking-widest">Địa chỉ</p>
                   <p className="text-on-surface text-lg font-medium leading-relaxed">
                     123 Đường Công Nghệ, Quận 1, Thành phố Hồ Chí Minh
                   </p>

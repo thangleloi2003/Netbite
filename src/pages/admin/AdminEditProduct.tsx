@@ -109,7 +109,7 @@ export default function AdminEditProduct() {
             <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">Giá bán (VNĐ)</label>
             <input
               required
-              type="number"
+              type="text"
               name="price"
               value={productForm.price || 0}
               onChange={handleChange}
@@ -122,7 +122,7 @@ export default function AdminEditProduct() {
           <div className="space-y-2">
             <label className="text-sm font-black uppercase tracking-widest text-on-surface-variant ml-1">Giá gốc (nếu có)</label>
             <input
-              type="number"
+              type="text"
               name="originalPrice"
               value={productForm.originalPrice || ""}
               onChange={handleChange}
@@ -143,7 +143,7 @@ export default function AdminEditProduct() {
             </label>
             <div className="relative group">
               <input
-                type="number"
+                type="text"
                 min="0"
                 max="100"
                 value={discountPercentage || ""}
@@ -226,7 +226,6 @@ export default function AdminEditProduct() {
                         ))
                       }
                     </select>
-                    <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">add_circle</span>
                   </div>
                 </div>
 
@@ -327,7 +326,7 @@ export default function AdminEditProduct() {
                     <div className="space-y-1">
                       <label className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant ml-1">Giá thêm (VNĐ)</label>
                       <input
-                        type="number"
+                        type="text"
                         value={topping.price}
                         onChange={(e) => updateTopping(index, "price", Number(e.target.value))}
                         className="w-full bg-surface-container-high border border-white/5 rounded-xl px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-secondary/50 transition-all text-sm font-bold"

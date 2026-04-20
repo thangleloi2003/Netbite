@@ -25,14 +25,15 @@ export default function Checkout() {
     setIsSubmitting(true);
 
     try {
+      const now = new Date();
       const newOrder = {
         userId: user?.id,
         machineNumber: machine,
         paymentMethod: payment,
         total: total,
         status: "pending" as const,
-        createdAt: new Date().toISOString(),
-        date: new Date().toISOString(),
+        createdAt: now.toISOString(),
+        date: now.toISOString().split('T')[0], // Định dạng YYYY-MM-DD chuẩn xác
         items: items.map(item => ({
           productId: item.id.split('__')[0], 
           productName: item.name,

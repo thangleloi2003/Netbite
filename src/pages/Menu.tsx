@@ -113,7 +113,9 @@ function ComboCard({
   const originalPrice = isDynamic
     ? product.originalPrice
     : combo!.originalPrice;
-  const icon = isDynamic ? "auto_awesome" : combo!.icon;
+  const DYNAMIC_ICONS = ['local_fire_department', 'bolt', 'celebration', 'military_tech', 'workspace_premium', 'emoji_events', 'diamond', 'auto_awesome'];
+  const dynamicIcon = product?.icon || (() => { const h = (product?.id || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0); return DYNAMIC_ICONS[h % DYNAMIC_ICONS.length]; })();
+  const icon = isDynamic ? dynamicIcon : combo!.icon;
   const iconColor = isDynamic ? theme.iconColor : combo!.iconColor;
   const borderColor = isDynamic ? theme.borderColor : combo!.borderColor;
   const discountLabel = isDynamic
@@ -189,7 +191,9 @@ function ComboCard({
   // Icon bg
   const resolvedIconBg = isDynamic
     ? theme.iconBg
-    : isPentakill ? "bg-tertiary-fixed-dim/10" : "bg-white/5";
+    : isPentakill
+      ? "bg-tertiary-fixed-dim/10"
+      : "bg-white/5";
 
   return (
     <div
@@ -209,7 +213,7 @@ function ComboCard({
           </span>
         </div>
         <span
-          className={`px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider bg-${discountColor}/20 text-${discountColor}`}
+          className={`px-2.5 py-0.5 rounded-full text-[10px] font-black tracking-wider bg-${discountColor}/10 text-${discountColor}`}
         >
           {discountLabel}
         </span>
@@ -340,6 +344,9 @@ export default function Menu() {
 
   const filteredAndSorted = [...products]
     .filter((p) => {
+      // Hidden products with category "combo" when in "all" tab
+      if (activeTab === "all" && p.category === "combo") return false;
+
       // Bestseller filter
       if (sortBy === "bestseller" && !p.tags.includes("bestseller"))
         return false;
@@ -410,8 +417,8 @@ export default function Menu() {
                 onClick={() => setActiveTab("combo")}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl font-bold text-xs ${
                   activeTab === "combo"
-                    ? "bg-secondary/10 text-primary border border-secondary/20"
-                    : "text-on-surface-variant hover:bg-surface-container-high"
+                    ? "bg-primary/10 text-primary border border-primary/20"
+                    : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
                 }`}
               >
                 Combo
@@ -429,7 +436,7 @@ export default function Menu() {
                     className={`w-full flex items-center justify-between px-3 py-2 rounded-xl font-bold text-xs ${
                       activeTab === cat.slug
                         ? "bg-primary/10 text-primary border border-primary/20"
-                        : "text-on-surface-variant hover:bg-surface-container-high"
+                        : "text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface"
                     }`}
                   >
                     {cat.name}
@@ -544,7 +551,12 @@ export default function Menu() {
                 ))}
                 {/* Render product-based combos */}
                 {products.map((p, i) => (
-                  <ComboCard key={p.id} product={p} allProducts={allProducts} index={i} />
+                  <ComboCard
+                    key={p.id}
+                    product={p}
+                    allProducts={allProducts}
+                    index={i}
+                  />
                 ))}
               </div>
             </>

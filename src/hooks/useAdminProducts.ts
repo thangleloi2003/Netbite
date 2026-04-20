@@ -5,6 +5,7 @@ export function useAdminProducts() {
   const { 
     products, 
     categories, 
+    combos,
     loading, 
     error, 
     deleteProduct: contextDeleteProduct,
@@ -88,6 +89,7 @@ export function useAdminProducts() {
   return {
     products,
     categories,
+    combos,
     filteredProducts,
     paginatedProducts,
     loading,

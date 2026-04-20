@@ -152,9 +152,21 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
       }
 
       if (productId) {
+        // Khi edit, nếu là combo và chưa có icon thì set icon
+        if (dataToSubmit.category === "combo" && !dataToSubmit.icon) {
+          const COMBO_ICONS = ['local_fire_department', 'bolt', 'celebration', 'military_tech', 'workspace_premium', 'emoji_events', 'diamond', 'auto_awesome'];
+          const h = productId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+          dataToSubmit.icon = COMBO_ICONS[h % COMBO_ICONS.length];
+        }
         await productApi.update(productId, dataToSubmit);
       } else {
         const nextId = "p_" + Math.random().toString(36).substr(2, 9);
+        // Tự động gán icon cho combo mới
+        if (dataToSubmit.category === "combo" && !dataToSubmit.icon) {
+          const COMBO_ICONS = ['local_fire_department', 'bolt', 'celebration', 'military_tech', 'workspace_premium', 'emoji_events', 'diamond', 'auto_awesome'];
+          const h = nextId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+          dataToSubmit.icon = COMBO_ICONS[h % COMBO_ICONS.length];
+        }
         const productToCreate = {
           id: nextId,
           ...dataToSubmit,

@@ -60,9 +60,12 @@ export function useAdminOrders() {
   }, [filteredOrders, page]);
 
   const todayOrdersCount = useMemo(() => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
     return orders.filter(o => {
-      return o.date === today || o.date.startsWith(today);
+      
+      // So sánh chuẩn xác, cả 2 định dạng: YYYY-MM-DD và ISO đầy đủ
+      const orderDate = o.date?.split("T")[0];
+      return orderDate === today;
     }).length;
   }, [orders]);
 

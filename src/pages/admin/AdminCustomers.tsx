@@ -53,13 +53,15 @@ export default function AdminCustomers() {
   const formatStatus = (status: string) => {
     if (status === "active") {
       return (
-        <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 uppercase tracking-widest border border-green-500/20">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 uppercase tracking-widest border border-green-500/20">
+          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
           Hoạt động
         </span>
       );
     }
     return (
-      <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-error/10 text-error uppercase tracking-widest border border-error/20">
+      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black bg-error/10 text-error uppercase tracking-widest border border-error/20">
+        <span className="w-1.5 h-1.5 rounded-full bg-error"></span>
         Đã khóa
       </span>
     );
@@ -259,25 +261,25 @@ export default function AdminCustomers() {
           <table className="w-full text-left border-collapse min-w-[800px]">
             <thead>
               <tr className="bg-surface-container-highest/30">
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                   Khách hàng
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                   Tài khoản
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center">
                   Số máy
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center">
                   Đơn hàng
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center">
                   Tổng chi tiêu
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center">
                   Trạng thái
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">
+                <th className="px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">
                   Thao tác
                 </th>
               </tr>
@@ -307,7 +309,7 @@ export default function AdminCustomers() {
                     key={user.id}
                     className="hover:bg-surface-container-high transition-colors group"
                   >
-                    <td className="px-8 py-6">
+                    <td className="px-6 py-6">
                       <div className="flex items-center gap-3">
                         <div className="relative">
                           <div className="w-10 h-10 rounded-full bg-secondary/20 flex items-center justify-center text-xs font-black text-secondary border border-secondary/30">
@@ -332,29 +334,42 @@ export default function AdminCustomers() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-8 py-6 text-sm font-mono text-primary font-black">
-                      @{user.username}
+                    <td className="px-6 py-6">
+                      <div 
+                        className="text-sm font-mono text-primary font-black truncate max-w-[140px]" 
+                        title={`@${user.username}`}
+                      >
+                        @{user.username}
+                      </div>
                     </td>
-                    <td className="px-8 py-6 text-sm font-black text-secondary uppercase tracking-widest">
-                      {user.machineId || 'N/A'}
+                    <td className="px-6 py-6 text-sm font-black text-secondary uppercase tracking-widest text-center">
+                      {user.machineId || '---'}
                     </td>
-                    <td className="px-8 py-6 text-sm text-on-surface-variant font-black">
-                      {getCustomerOrderCount(user.id)} đơn
+                    <td className="px-6 py-6 text-sm text-on-surface-variant font-black text-center">
+                      {getCustomerOrderCount(user.id)}
                     </td>
-                    <td className="px-8 py-6 text-sm font-black text-on-surface text-lg tracking-tighter">
+                    <td className="px-6 py-6 text-sm font-black text-on-surface text-lg tracking-tighter text-center">
                       {formatPrice(getCustomerTotalSpend(user.id))}
                     </td>
-                    <td className="px-8 py-6">{formatStatus(user.status)}</td>
-                    <td className="px-8 py-6 text-right">
+                    <td className="px-6 py-6 text-center">
+                      <div className="flex justify-center">
+                        {formatStatus(user.status)}
+                      </div>
+                    </td>
+                    <td className="px-6 py-6 text-right">
                       <button
                         onClick={() => toggleUserStatus(user.id, user.status)}
-                        className={`px-4 py-2 text-[10px] font-black uppercase tracking-widest rounded-full transition-all border ${
+                        className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-[10px] font-black uppercase tracking-widest rounded-full transition-all border ${
                           user.status === "active"
                             ? "bg-error/10 text-error border-error/20 hover:bg-error hover:text-white"
                             : "bg-green-500/10 text-green-400 border-green-500/20 hover:bg-green-500 hover:text-white"
                         }`}
+                        title={user.status === "active" ? "Khóa tài khoản" : "Mở khóa tài khoản"}
                       >
-                        {user.status === "active" ? "Khóa tài khoản" : "Mở khóa"}
+                        <span className="material-symbols-outlined text-[14px]">
+                          {user.status === "active" ? 'block' : 'lock_open'}
+                        </span>
+                        <span>{user.status === "active" ? "Khóa" : "Mở khóa"}</span>
                       </button>
                     </td>
                   </tr>

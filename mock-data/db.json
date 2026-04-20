@@ -15,16 +15,8 @@
       "name": "Tuấn Kiệt",
       "role": "customer",
       "password": "123",
-      "status": "active"
-    },
-    {
-      "id": "u_3tcspx60e",
-      "username": " ",
-      "name": "nguyen van A",
-      "role": "customer",
-      "password": "123",
       "status": "active",
-      "machineId": null
+      "machineId": "B-01"
     },
     {
       "id": "u_59xn9080a",
@@ -53,13 +45,48 @@
       "machineId": null
     },
     {
+      "id": "xWCgic2",
       "username": "guest_b_13",
       "name": "Máy B-13",
       "role": "customer",
       "status": "active",
       "machineId": "B-13",
-      "isGuest": true,
-      "id": "xWCgic2"
+      "isGuest": true
+    },
+    {
+      "id": "oa5aCS0",
+      "username": "guest_c_12",
+      "name": "Máy C-12",
+      "role": "customer",
+      "status": "active",
+      "machineId": null,
+      "isGuest": true
+    },
+    {
+      "id": "804fly6",
+      "username": "guest_vip_14",
+      "name": "Máy VIP-14",
+      "role": "customer",
+      "status": "active",
+      "machineId": null,
+      "isGuest": true
+    },
+    {
+      "id": "6cad38f",
+      "username": "guest_a_16",
+      "name": "Máy A-16",
+      "role": "customer",
+      "status": "active",
+      "machineId": null,
+      "isGuest": true
+    },
+    {
+      "id": "KQ9aBfl",
+      "name": "Ennter",
+      "username": "enter",
+      "password": "123456",
+      "role": "customer",
+      "status": "active"
     }
   ],
   "categories": [
@@ -476,7 +503,19 @@
       "tags": [
         "bestseller"
       ],
-      "toppings": [],
+      "toppings": [
+        {
+          "id": "t1776482930500",
+          "label": "Tẩy đá",
+          "price": 0,
+          "icon": "restaurant",
+          "type": "level",
+          "options": [
+            "Ít đá",
+            "Nhiều đá"
+          ]
+        }
+      ],
       "relatedIds": []
     },
     {
@@ -520,14 +559,108 @@
       "relatedIds": []
     },
     {
-      "id": "p_h3mdd1uxd",
-      "name": "Combo Destroyer Galaxy",
-      "price": 108000,
-      "originalPrice": 135000,
-      "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBeP-6roJ3eWOYUYpiJ7VPVareHErGFmPEabg6YkNcLR-POaUlMwQK5J4X_cupfvh8vFMQg2FxL0_3sXU5bDnB1WZ3dtyRRzUD4q6_S8i6p5mwpp9rwCvafvBd_FsQ7t0nMXwU0UDWUDu5goBV2O2BkoC703-HO8PgOmO7l-1xltWs77q-xN74Q43TKZlwoEupFCgR9ygbuQunD-SWcj9cvxqh5shP5tdczLqyywW2uMtvTymWwDbTo4PADtBnCY0QL7at7V46duvIz",
+      "id": "c1",
+      "name": "Combo Leo Rank",
+      "icon": "workspace_premium",
+      "price": 85000,
+      "originalPrice": 110000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
       "images": [],
       "category": "combo",
-      "description": "Combo hủy diệt vị giác",
+      "description": "Combo bao gồm: 1x Burger Bò Full Buff, 1x Khoai tây chiên, 1x Coca-Cola Zero Ice",
+      "tags": [
+        "hot",
+        "bestseller"
+      ],
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
+        {
+          "productId": "p_d1yicwtv0",
+          "quantity": 1
+        },
+        {
+          "productId": "p_ha8hrnfsk",
+          "quantity": 1
+        },
+        {
+          "productId": "p_ci9rbs8ls",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "name": "Combo Duo Combat",
+      "icon": "emoji_events",
+      "price": 155000,
+      "originalPrice": 205000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
+      "images": [],
+      "category": "combo",
+      "description": "Combo bao gồm: 2x Mì Cay Hải Sản Crit Dame, 1x Takoyaki Nhật Bản (6 Viên), 2x Trà Đào Cam Sả Tươi Mát",
+      "tags": [
+        "bestseller",
+        "hot"
+      ],
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
+        {
+          "productId": "p_wd48jj258",
+          "quantity": 2
+        },
+        {
+          "productId": "p_9xz7rwgfr",
+          "quantity": 1
+        },
+        {
+          "productId": "p_ktzltm6yr",
+          "quantity": 2
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "name": "Combo Pentakill",
+      "icon": "diamond",
+      "price": 225000,
+      "originalPrice": 280000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
+      "images": [],
+      "category": "combo",
+      "description": "Combo bao gồm: 1x Pizza Pepperoni MVP, 2x Takoyaki Nhật Bản (6 Viên), 1x Coca-Cola Zero Ice",
+      "tags": [
+        "hot",
+        "bestseller"
+      ],
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
+        {
+          "productId": "p_34525rz62",
+          "quantity": 1
+        },
+        {
+          "productId": "p_9xz7rwgfr",
+          "quantity": 2
+        },
+        {
+          "productId": "p_ci9rbs8ls",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": "p_h3mdd1uxd",
+      "name": "Combo Destroyer Galaxy",
+      "icon": "bolt",
+      "price": 108000,
+      "originalPrice": 140000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
+      "images": [],
+      "category": "combo",
+      "description": "Combo bao gồm: Mì Cay Hải Sản Crit Dame, Khoai tây chiên, Gà rán KFC.",
       "tags": [
         "hot",
         "bestseller"
@@ -544,7 +677,7 @@
           "quantity": 1
         },
         {
-          "productId": "p_ktzltm6yr",
+          "productId": "p_zlj9s6213",
           "quantity": 1
         }
       ]
@@ -575,213 +708,130 @@
         }
       ],
       "relatedIds": []
-    }
-  ],
-  "combos": [
-    {
-      "id": "c1",
-      "name": "Combo Leo Rank",
-      "icon": "rocket_launch",
-      "iconColor": "primary",
-      "borderColor": "border-primary",
-      "discount": "-20% OFF",
-      "discountColor": "primary",
-      "items": [
-        "1x Burger Bò Full Buff",
-        "1x Khoai tây chiên",
-        "1x Coca-Cola Zero Ice"
-      ],
-      "productIds": [
-        "p_d1yicwtv0",
-        "p_ha8hrnfsk",
-        "p_ci9rbs8ls"
-      ],
-      "price": 85000,
-      "originalPrice": 110000,
-      "buttonStyle": "bg-on-surface text-surface"
     },
     {
-      "id": "c2",
-      "name": "Combo Duo Combat",
-      "icon": "groups",
-      "iconColor": "secondary",
-      "borderColor": "border-secondary",
-      "discount": "-25% OFF",
-      "discountColor": "secondary",
-      "items": [
-        "2x Mì Cay Hải Sản Crit Dame",
-        "1x Takoyaki Nhật Bản (6 Viên)",
-        "2x Trà Đào Cam Sả Tươi Mát"
+      "id": "p_r0x7mecch",
+      "name": "Combo Huyền Thoại",
+      "icon": "star",
+      "price": 50000,
+      "originalPrice": 67000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
+      "images": [],
+      "category": "combo",
+      "description": "Combo bao gồm: Mì cay Hảo Hảo, Tài lộc quá lớn vàng , Trà Đào Cam Sả Tươi Mát.",
+      "tags": [
+        "bestseller",
+        "hot"
       ],
-      "productIds": [
-        "p_wd48jj258",
-        "p_wd48jj258",
-        "p_9xz7rwgfr",
-        "p_ktzltm6yr",
-        "p_ktzltm6yr"
-      ],
-      "price": 155000,
-      "originalPrice": 205000,
-      "buttonStyle": "bg-secondary text-on-secondary"
-    },
-    {
-      "id": "c3",
-      "name": "Combo Pentakill",
-      "icon": "stars",
-      "iconColor": "tertiary-fixed-dim",
-      "borderColor": "border-tertiary-fixed-dim",
-      "discount": "PRO CHOICE",
-      "discountColor": "tertiary-fixed-dim",
-      "items": [
-        "1x Pizza Pepperoni MVP",
-        "2x Takoyaki Nhật Bản (6 Viên)",
-        "1x Coca-Cola Zero Ice"
-      ],
-      "productIds": [
-        "p_34525rz62",
-        "p_9xz7rwgfr",
-        "p_9xz7rwgfr",
-        "p_ci9rbs8ls"
-      ],
-      "price": 225000,
-      "originalPrice": 280000,
-      "buttonStyle": "bg-on-surface text-surface"
-    }
-  ],
-  "orders": [
-    {
-      "id": "ORD001",
-      "userId": "u_5plh976s6",
-      "items": [
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
         {
-          "productId": "p_d1yicwtv0",
-          "productName": "Burger Bò Full Buff",
-          "quantity": 1,
-          "price": 45000
+          "productId": "p_x2vwcxjcb",
+          "quantity": 1
+        },
+        {
+          "productId": "p_tz9qki7g7",
+          "quantity": 1
+        },
+        {
+          "productId": "p_ktzltm6yr",
+          "quantity": 1
+        }
+      ]
+    },
+    {
+      "id": "p_loyl2apl8",
+      "name": "Combo Rẻ",
+      "icon": "rocket_launch",
+      "price": 100000,
+      "originalPrice": 110000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
+      "images": [],
+      "category": "combo",
+      "description": "Combo bao gồm: Takoyaki Nhật Bản (6 Viên), Khoai tây chiên, Coca-Cola Zero Ice.",
+      "tags": [
+        "hot",
+        "bestseller"
+      ],
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
+        {
+          "productId": "p_9xz7rwgfr",
+          "quantity": 1
+        },
+        {
+          "productId": "p_ha8hrnfsk",
+          "quantity": 1
         },
         {
           "productId": "p_ci9rbs8ls",
-          "productName": "Coca-Cola Zero Ice",
-          "quantity": 2,
-          "price": 20000
+          "quantity": 1
         }
-      ],
-      "total": 85000,
-      "status": "delivered",
-      "date": "2026-04-07",
-      "machineNumber": "A12"
+      ]
     },
     {
-      "id": "ORD002",
-      "userId": "u_5plh976s6",
-      "items": [
+      "id": "p_wc758rb5y",
+      "name": "Kabuto Driver",
+      "icon": "military_tech",
+      "price": 150000,
+      "originalPrice": 190000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
+      "images": [],
+      "category": "combo",
+      "description": "Combo bao gồm: Gà rán KFC, Udon Xào Bò Sốt Tiêu Đen, Trà Đào Cam Sả Tươi Mát.",
+      "tags": [],
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
         {
-          "productId": "p_wd48jj258",
-          "productName": "Mì Cay Hải Sản Crit Dame",
-          "quantity": 1,
-          "price": 55000
+          "productId": "p_zlj9s6213",
+          "quantity": 1
+        },
+        {
+          "productId": "p_0qjhrjd18",
+          "quantity": 1
         },
         {
           "productId": "p_ktzltm6yr",
-          "productName": "Trà Đào Cam Sả Tươi Mát",
-          "quantity": 1,
-          "price": 45000
+          "quantity": 1
         }
-      ],
-      "total": 100000,
-      "status": "delivered",
-      "date": "2026-04-08",
-      "machineNumber": "B05"
+      ]
     },
     {
-      "id": "ORD003",
-      "userId": "u_5plh976s6",
-      "items": [
+      "id": "p_w7lm7wv9t",
+      "name": "asd",
+      "price": 50000,
+      "originalPrice": 150000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
+      "images": [],
+      "category": "combo",
+      "description": "Combo bao gồm: Gà rán KFC, Takoyaki Nhật Bản (6 Viên), Trà Đào Cam Sả Tươi Mát.",
+      "tags": [],
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
         {
-          "productId": "p_wd48jj258",
-          "productName": "Mì Cay Hải Sản Crit Dame",
-          "quantity": 1,
-          "price": 55000
+          "productId": "p_zlj9s6213",
+          "quantity": 1
+        },
+        {
+          "productId": "p_9xz7rwgfr",
+          "quantity": 1
         },
         {
           "productId": "p_ktzltm6yr",
-          "productName": "Trà Đào Cam Sả Tươi Mát",
-          "quantity": 1,
-          "price": 45000
+          "quantity": 1
         }
       ],
-      "total": 100000,
-      "status": "delivered",
-      "date": "2026-04-08",
-      "machineNumber": "B05"
-    },
+      "icon": "auto_awesome"
+    }
+  ],
+  "combos": [],
+  "orders": [
     {
-      "id": "ORD004",
-      "userId": "u_5plh976s6",
-      "items": [
-        {
-          "productId": "p_wd48jj258",
-          "productName": "Mì Cay Hải Sản Crit Dame",
-          "quantity": 1,
-          "price": 55000
-        },
-        {
-          "productId": "p_ktzltm6yr",
-          "productName": "Trà Đào Cam Sả Tươi Mát",
-          "quantity": 1,
-          "price": 45000
-        }
-      ],
-      "total": 100000,
-      "status": "delivered",
-      "date": "2026-04-08",
-      "machineNumber": "B05"
-    },
-    {
-      "id": "ORD005",
-      "userId": "u_5plh976s6",
-      "items": [
-        {
-          "productId": "p_wd48jj258",
-          "productName": "Mì Cay Hải Sản Crit Dame",
-          "quantity": 1,
-          "price": 55000
-        },
-        {
-          "productId": "p_ktzltm6yr",
-          "productName": "Trà Đào Cam Sả Tươi Mát",
-          "quantity": 1,
-          "price": 45000
-        }
-      ],
-      "total": 100000,
-      "status": "delivered",
-      "date": "2026-04-08",
-      "machineNumber": "B05"
-    },
-    {
-      "id": "ORD006",
-      "userId": "u_5plh976s6",
-      "items": [
-        {
-          "productId": "p_wd48jj258",
-          "productName": "Mì Cay Hải Sản Crit Dame",
-          "quantity": 1,
-          "price": 55000
-        },
-        {
-          "productId": "p_ktzltm6yr",
-          "productName": "Trà Đào Cam Sả Tươi Mát",
-          "quantity": 1,
-          "price": 45000
-        }
-      ],
-      "total": 100000,
-      "status": "delivered",
-      "date": "2026-04-08",
-      "machineNumber": "B05"
-    },
-    {
+      "id": "LKqy4vs",
       "userId": "u_5plh976s6",
       "machineNumber": "1",
       "phone": "",
@@ -797,60 +847,10 @@
           "quantity": 1,
           "price": 45000
         }
-      ],
-      "id": "LKqy4vs"
+      ]
     },
     {
-      "userId": "u_3tcspx60e",
-      "machineNumber": "2",
-      "phone": "",
-      "paymentMethod": "cash",
-      "total": 60000,
-      "status": "delivered",
-      "createdAt": "2026-04-15T04:13:55.194Z",
-      "date": "2026-04-15T04:13:55.194Z",
-      "items": [
-        {
-          "productId": "p_wd48jj258",
-          "productName": "Mì Cay Hải Sản Crit Dame (Cấp 0)",
-          "quantity": 1,
-          "price": 55000
-        }
-      ],
-      "id": "_xVi-SY"
-    },
-    {
-      "userId": "u_3tcspx60e",
-      "machineNumber": "3",
-      "phone": "",
-      "paymentMethod": "cash",
-      "total": 264000,
-      "status": "delivered",
-      "createdAt": "2026-04-15T04:15:02.346Z",
-      "date": "2026-04-15T04:15:02.346Z",
-      "items": [
-        {
-          "productId": "p_34525rz62",
-          "productName": "Pizza Pepperoni MVP",
-          "quantity": 1,
-          "price": 129000
-        },
-        {
-          "productId": "p_9xz7rwgfr",
-          "productName": "Takoyaki Nhật Bản (6 Viên)",
-          "quantity": 2,
-          "price": 55000
-        },
-        {
-          "productId": "p_ci9rbs8ls",
-          "productName": "Coca-Cola Zero Ice",
-          "quantity": 1,
-          "price": 20000
-        }
-      ],
-      "id": "JOqy1_K"
-    },
-    {
+      "id": "zsobZjA",
       "userId": "u_59xn9080a",
       "machineNumber": "A-06",
       "paymentMethod": "cash",
@@ -865,10 +865,10 @@
           "quantity": 1,
           "price": 55000
         }
-      ],
-      "id": "zsobZjA"
+      ]
     },
     {
+      "id": "VtMviof",
       "userId": "xWCgic2",
       "machineNumber": "B-13",
       "paymentMethod": "cash",
@@ -883,10 +883,10 @@
           "quantity": 1,
           "price": 185000
         }
-      ],
-      "id": "VtMviof"
+      ]
     },
     {
+      "id": "uj-wbQe",
       "userId": "xWCgic2",
       "machineNumber": "B-13",
       "paymentMethod": "cash",
@@ -901,15 +901,15 @@
           "quantity": 1,
           "price": 45000
         }
-      ],
-      "id": "uj-wbQe"
+      ]
     },
     {
+      "id": "vOsysvl",
       "userId": "u_59xn9080a",
       "machineNumber": "A-06",
       "paymentMethod": "cash",
       "total": 134000,
-      "status": "pending",
+      "status": "delivered",
       "createdAt": "2026-04-18T06:39:49.175Z",
       "date": "2026-04-18T06:39:49.175Z",
       "items": [
@@ -919,8 +919,25 @@
           "quantity": 1,
           "price": 129000
         }
-      ],
-      "id": "vOsysvl"
+      ]
+    },
+    {
+      "id": "WWdga5y",
+      "userId": "u_5plh976s6",
+      "machineNumber": "VIP-14",
+      "paymentMethod": "cash",
+      "total": 134000,
+      "status": "delivered",
+      "createdAt": "2026-04-20T02:52:48.831Z",
+      "date": "2026-04-20T02:52:48.832Z",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        }
+      ]
     }
   ]
 }

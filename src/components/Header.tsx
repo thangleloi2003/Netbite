@@ -10,6 +10,7 @@ export default function Header() {
   const navigate = useNavigate();
   const { totalCount } = useCart();
   const [cartOpen, setCartOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -42,8 +43,16 @@ export default function Header() {
       <CartDrawer open={cartOpen} onClose={() => setCartOpen(false)} />
 
       <header className="fixed top-0 w-full z-30 glass-header bg-[#24020c]/80 no-line-rule">
-        <div className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto">
-          <Link to="/" className="text-2xl font-black italic tracking-tighter text-red-600 dark:text-red-500">NETBITE</Link>
+        <div className="flex justify-between items-center px-4 sm:px-6 py-3 sm:py-4 max-w-7xl mx-auto">
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+            <button 
+              className="md:hidden text-slate-300 hover:text-white flex items-center justify-center transition-transform active:scale-95"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            >
+              <span className="material-symbols-outlined text-[24px] sm:text-[28px]">{mobileMenuOpen ? 'close' : 'menu'}</span>
+            </button>
+            <Link to="/" className="text-xl sm:text-2xl font-black italic tracking-tighter text-red-600 dark:text-red-500">NETBITE</Link>
+          </div>
 
           <nav className="hidden md:flex gap-8 items-center">
             <Link
@@ -71,10 +80,19 @@ export default function Header() {
                 )}
               </button>
               <div className="flex gap-4 items-center">
-                <div className="hidden sm:flex flex-col items-end">
-                  <Link
-                    to={user.role === 'admin' ? '/admin' : '/'}
-                    className="text-slate-300 hover:text-white font-bold leading-none">{user.name}</Link>
+                <div className="hidden sm:flex flex-col items-center">
+                  {user.role === 'admin' ? (
+                    <Link
+                      to="/admin"
+                      className="text-slate-300 hover:text-white font-bold leading-none"
+                    >
+                      {user.name}
+                    </Link>
+                  ) : (
+                    <span className="text-slate-300 font-bold leading-none">
+                      {user.name}
+                    </span>
+                  )}
                   {user.role !== 'admin' && user.machineId && (
                     <span className="text-[10px] font-black uppercase tracking-widest text-primary mt-1">
                       Máy: {user.machineId}
@@ -83,9 +101,12 @@ export default function Header() {
                 </div>
                 <button 
                   onClick={handleLogout} 
-                  className="bg-surface-container hover:bg-error/20 text-error px-4 py-2 rounded-full font-bold transition-all duration-300 active:scale-95 border border-error/20"
+                  className="flex items-center gap-1 sm:gap-2 px-2 sm:px-4 py-2 sm:py-2.5 rounded-xl text-on-surface-variant 
+                  hover:text-white hover:bg-surface-container-highest transition-all duration-300 active:scale-95"
+                  title="Đăng xuất"
                 >
-                  Đăng xuất
+                  <span className="material-symbols-outlined text-[24px] sm:text-[24px] transition-transform">logout</span>
+                  <span className="font-bold text-md sm:text-md hidden lg:block">Đăng xuất</span>
                 </button>
               </div>
             </div>
@@ -98,6 +119,24 @@ export default function Header() {
             </Link>
           )}
         </div>
+
+        {/* Mobile Navigation Dropdown */}
+        {mobileMenuOpen && (
+          <nav className="md:hidden border-t border-white/10 bg-[#24020c]/95 backdrop-blur-xl flex flex-col px-6 py-4 gap-4 shadow-2xl animate-fade-in-down origin-top">
+            <Link
+              onClick={() => setMobileMenuOpen(false)}
+              className={`text-lg transition-colors font-headline ${location.pathname === '/' ? 'text-red-500 font-bold' : 'text-slate-300 hover:text-red-400'}`}
+              to="/">Trang Chủ</Link>
+            <Link
+              onClick={() => setMobileMenuOpen(false)}
+              className={`text-lg transition-colors font-headline ${location.pathname === '/menu' || location.pathname.startsWith('/product/') ? 'text-red-500 font-bold' : 'text-slate-300 hover:text-red-400'}`}
+              to="/menu">Thực Đơn</Link>
+            <Link
+              onClick={() => setMobileMenuOpen(false)}
+              className={`text-lg transition-colors font-headline ${location.pathname === '/about' ? 'text-red-500 font-bold' : 'text-slate-300 hover:text-red-400'}`}
+              to="/about">Về Chúng Tôi</Link>
+          </nav>
+        )}
       </header>
     </>
   );
