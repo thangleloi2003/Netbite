@@ -153,23 +153,38 @@ export function useProductForm({ productId, onSuccess }: UseProductFormProps = {
 
       if (productId) {
         // Khi edit, nếu là combo và chưa có icon thì set icon
-        if (dataToSubmit.category === "combo" && !dataToSubmit.icon) {
+        let updatedIcon = dataToSubmit.icon;
+        if (dataToSubmit.category === "combo" && !updatedIcon) {
           const COMBO_ICONS = ['local_fire_department', 'bolt', 'celebration', 'military_tech', 'workspace_premium', 'emoji_events', 'diamond', 'auto_awesome'];
           const h = productId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-          dataToSubmit.icon = COMBO_ICONS[h % COMBO_ICONS.length];
+          updatedIcon = COMBO_ICONS[h % COMBO_ICONS.length];
         }
-        await productApi.update(productId, dataToSubmit);
+        
+        const { name, icon, ...restData } = dataToSubmit;
+        const productToUpdate = {
+          name,
+          ...(updatedIcon ? { icon: updatedIcon } : {}),
+          ...restData
+        };
+        await productApi.update(productId, productToUpdate as Product);
       } else {
-        const nextId = "p_" + Math.random().toString(36).substr(2, 9);
+        const prefix = dataToSubmit.category === "combo" ? "p_c_" : "p_";
+        const nextId = prefix + Math.random().toString(36).substr(2, 9);
+        
         // Tự động gán icon cho combo mới
-        if (dataToSubmit.category === "combo" && !dataToSubmit.icon) {
+        let generatedIcon = dataToSubmit.icon;
+        if (dataToSubmit.category === "combo" && !generatedIcon) {
           const COMBO_ICONS = ['local_fire_department', 'bolt', 'celebration', 'military_tech', 'workspace_premium', 'emoji_events', 'diamond', 'auto_awesome'];
           const h = nextId.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-          dataToSubmit.icon = COMBO_ICONS[h % COMBO_ICONS.length];
+          generatedIcon = COMBO_ICONS[h % COMBO_ICONS.length];
         }
+        
+        const { name, icon, ...restData } = dataToSubmit;
         const productToCreate = {
           id: nextId,
-          ...dataToSubmit,
+          name,
+          ...(generatedIcon ? { icon: generatedIcon } : {}),
+          ...restData,
         } as Product;
         await productApi.create(productToCreate);
       }

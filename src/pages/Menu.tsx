@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { productApi, categoryApi, comboApi } from "../services/api";
-import type { Product, Category, Combo } from "../types";
+import { productApi, categoryApi } from "../services/api";
+import type { Product, Category } from "../types";
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 
@@ -89,13 +89,11 @@ const DYNAMIC_THEMES = [
 ];
 
 function ComboCard({
-  combo,
   product,
   allProducts,
   index = 0,
 }: {
-  combo?: Combo;
-  product?: Product;
+  product: Product;
   allProducts: Product[];
   index?: number;
 }) {
@@ -103,74 +101,49 @@ function ComboCard({
   const { isAuthenticated } = useAuth();
   const [adding, setAdding] = useState(false);
 
-  // Determine which data source to use
-  const isDynamic = !!product;
   const theme = DYNAMIC_THEMES[index % 3];
 
-  const id = isDynamic ? product.id : combo!.id;
-  const name = isDynamic ? product.name : combo!.name;
-  const price = isDynamic ? product.price : combo!.price;
-  const originalPrice = isDynamic
-    ? product.originalPrice
-    : combo!.originalPrice;
+  const name = product.name;
+  const price = product.price;
+  const originalPrice = product.originalPrice;
   const DYNAMIC_ICONS = ['local_fire_department', 'bolt', 'celebration', 'military_tech', 'workspace_premium', 'emoji_events', 'diamond', 'auto_awesome'];
-  const dynamicIcon = product?.icon || (() => { const h = (product?.id || '').split('').reduce((a, c) => a + c.charCodeAt(0), 0); return DYNAMIC_ICONS[h % DYNAMIC_ICONS.length]; })();
-  const icon = isDynamic ? dynamicIcon : combo!.icon;
-  const iconColor = isDynamic ? theme.iconColor : combo!.iconColor;
-  const borderColor = isDynamic ? theme.borderColor : combo!.borderColor;
-  const discountLabel = isDynamic
-    ? originalPrice
-      ? `-${Math.round((1 - price / originalPrice) * 100)}% OFF`
-      : "COMBO"
-    : combo!.discount;
-  const discountColor = isDynamic ? theme.discountColor : combo!.discountColor;
+  const h = product.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const icon = product.icon || DYNAMIC_ICONS[h % DYNAMIC_ICONS.length];
+  const iconColor = theme.iconColor;
+  const borderColor = theme.borderColor;
+  const discountLabel = originalPrice
+    ? `-${Math.round((1 - price / originalPrice) * 100)}% OFF`
+    : "COMBO";
+  const discountColor = theme.discountColor;
 
   // Format items list
-  const items = isDynamic
-    ? product.comboItems?.map((item) => {
-        const p = allProducts.find((ap) => ap.id === item.productId);
-        return `${item.quantity}x ${p ? p.name : "Sản phẩm"}`;
-      }) || []
-    : combo!.items;
+  const items = product.comboItems?.map((item) => {
+      const p = allProducts.find((ap) => ap.id === item.productId);
+      return `${item.quantity}x ${p ? p.name : "Sản phẩm"}`;
+    }) || [];
 
   const handleAdd = async () => {
-    if (isDynamic) {
-      // Dynamic combo logic: Add all products in combo to cart
-      if (product.comboItems && product.comboItems.length > 0) {
-        const results = await Promise.allSettled(
-          product.comboItems.map((item) => productApi.getById(item.productId)),
-        );
-        results.forEach((r, idx) => {
-          if (r.status === "fulfilled") {
-            const p = r.value;
-            const qty = product.comboItems![idx].quantity;
-            addItem(
-              { id: p.id, name: p.name, price: p.price, image: p.image },
-              qty,
-            );
-          }
-        });
-      }
+    if (product.comboItems && product.comboItems.length > 0) {
+      const results = await Promise.allSettled(
+        product.comboItems.map((item) => productApi.getById(item.productId)),
+      );
+      results.forEach((r, idx) => {
+        if (r.status === "fulfilled") {
+          const p = r.value;
+          const qty = product.comboItems![idx].quantity;
+          addItem(
+            { id: p.id, name: p.name, price: p.price, image: p.image },
+            qty,
+          );
+        }
+      });
     } else {
-      // Static combo logic
-      if (combo!.productIds && combo!.productIds.length > 0) {
-        const results = await Promise.allSettled(
-          combo!.productIds.map((id) => productApi.getById(id)),
-        );
-        results.forEach((r) => {
-          if (r.status === "fulfilled") {
-            const p = r.value;
-            addItem({ id: p.id, name: p.name, price: p.price, image: p.image });
-          }
-        });
-      } else {
-        addItem({
-          id: combo!.id,
-          name: combo!.name,
-          price: combo!.price,
-          image: "",
-        });
-      }
+      addItem({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+      });
     }
 
     if (isAuthenticated) {
@@ -179,26 +152,13 @@ function ComboCard({
     }
   };
 
-  const isPentakill = !isDynamic && id === "c3";
-  // Button style
-  const resolvedBtnClass = isDynamic
-    ? theme.btnClass
-    : isPentakill
-      ? "bg-tertiary-fixed-dim text-on-secondary"
-      : borderColor === "border-primary"
-        ? "bg-primary text-on-primary shadow-primary/20"
-        : "bg-secondary text-on-secondary shadow-secondary/20";
-  // Icon bg
-  const resolvedIconBg = isDynamic
-    ? theme.iconBg
-    : isPentakill
-      ? "bg-tertiary-fixed-dim/10"
-      : "bg-white/5";
+  const resolvedBtnClass = theme.btnClass;
+  const resolvedIconBg = theme.iconBg;
 
   return (
     <div
       className={`bg-surface-container-highest p-4 rounded-2xl relative border-l-[4px] ${
-        isPentakill ? "border-tertiary-fixed-dim" : borderColor
+        borderColor
       } hover:border-l-[6px] transition-all relative flex flex-col gap-3`}
     >
       {/* Icon + Discount */}
@@ -232,8 +192,8 @@ function ComboCard({
             className="flex items-start gap-1.5 text-[11px] font-bold text-on-surface-variant leading-normal"
           >
             <span
-              className={`material-symbols-outlined text-[13px] mt-0.5 shrink-0 ${isPentakill ? "text-tertiary-fixed-dim" : "text-secondary"}`}
-            >
+            className={`material-symbols-outlined text-[13px] mt-0.5 shrink-0 text-secondary`}
+          >
               check_circle
             </span>
             {item}
@@ -289,7 +249,6 @@ export default function Menu() {
   const [products, setProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [combos, setCombos] = useState<Combo[]>([]);
   const [activeTab, setActiveTab] = useState<TabType>("all");
   const [loading, setLoading] = useState(true);
   const [priceRanges, setPriceRanges] = useState<PriceRange[]>([]);
@@ -298,10 +257,9 @@ export default function Menu() {
   const sortRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    Promise.all([categoryApi.getAll(), comboApi.getAll(), productApi.getAll()])
-      .then(([cats, combosData, productsData]) => {
+    Promise.all([categoryApi.getAll(), productApi.getAll()])
+      .then(([cats, productsData]) => {
         setCategories(cats);
-        setCombos(combosData);
         setAllProducts(productsData);
       })
       .catch(() => {});
@@ -545,11 +503,7 @@ export default function Menu() {
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {/* Render static combos */}
-                {combos.map((c) => (
-                  <ComboCard key={c.id} combo={c} allProducts={allProducts} />
-                ))}
-                {/* Render product-based combos */}
+                {/* Render all product-based combos */}
                 {products.map((p, i) => (
                   <ComboCard
                     key={p.id}

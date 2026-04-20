@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import type { Product, Combo } from "../types";
+import type { Product } from "../types";
 import { useCart } from "../hooks/useCart";
 import { useAuth } from "../hooks/useAuth";
 import { useFeaturedProducts } from "../hooks/useProducts";
@@ -89,7 +89,8 @@ function ProductSkeleton() {
 export default function Home() {
   const { products: featuredProducts, loading: productsLoading } =
     useFeaturedProducts();
-  const { combos, loading: combosLoading } = useCombos();
+  const { combos: allCombos, loading: combosLoading } = useCombos();
+  const combos = allCombos.slice(0, 3);
   const { isAuthenticated } = useAuth();
   const [toast, setToast] = useState(false);
   const { addItem } = useCart();
@@ -103,15 +104,19 @@ export default function Home() {
     .slice(0, 4);
 
   const handleComboOrder = useCallback(
-    async (combo: Combo) => {
-      if (combo.productIds && combo.productIds.length > 0) {
-        const productDetails = await Promise.allSettled(
-          combo.productIds.map((id) => productApi.getById(id)),
+    async (combo: Product) => {
+      if (combo.comboItems && combo.comboItems.length > 0) {
+        const results = await Promise.allSettled(
+          combo.comboItems.map((item) => productApi.getById(item.productId)),
         );
-        productDetails.forEach((result) => {
+        results.forEach((result, idx) => {
           if (result.status === "fulfilled") {
             const p = result.value;
-            addItem({ id: p.id, name: p.name, price: p.price, image: p.image });
+            const qty = combo.comboItems![idx].quantity;
+            addItem(
+              { id: p.id, name: p.name, price: p.price, image: p.image },
+              qty,
+            );
           }
         });
       } else {
@@ -119,7 +124,7 @@ export default function Home() {
           id: combo.id,
           name: combo.name,
           price: combo.price,
-          image: "",
+          image: combo.image,
         });
       }
 
@@ -249,64 +254,110 @@ export default function Home() {
                       <div className="h-12 bg-surface-container-high rounded-xl" />
                     </div>
                   ))
-              : combos.map((combo) => (
-                  <div
-                    key={combo.id}
-                    className={`bg-surface-container-highest p-8 rounded-2xl border-l-4 ${combo.borderColor} hover:border-l-8 transition-all relative flex flex-col`}
-                  >
-                    <div className="flex justify-between mb-6">
-                      <span
-                        className={`material-symbols-outlined text-${combo.iconColor} text-5xl`}
-                      >
-                        {combo.icon}
-                      </span>
-                      
-                      <span
-                        className={`px-3 py-1 rounded-full text-xs 
-                          font-bold tracking-wider self-start bg-${combo.discountColor}/10 text-${combo.discountColor}`}
-                      >
-                        {combo.discount}
-                      </span>
-
-                    </div>
-                    <h3 className="text-2xl font-black mb-4 min-h-[4rem] flex items-start">
-                      {combo.name}
-                    </h3>
-                    <ul className="space-y-3 mb-8 text-on-surface-variant flex-1">
-                      {combo.items.map((item, i) => (
-                        <li key={i} className="flex items-center gap-2">
-                          <span className="material-symbols-outlined text-secondary text-sm">
-                            check_circle
-                          </span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                    <div className="flex items-baseline gap-2 mb-6">
-                      <span className="text-3xl font-black text-on-surface">
-                        {formatPrice(combo.price)}
-                      </span>
-                      <span className="text-on-surface-variant line-through text-sm">
-                        {formatPrice(combo.originalPrice)}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => handleComboOrder(combo)}
-                      className={`w-full py-3 rounded-xl font-black hover:brightness-110 transition-all flex items-center justify-center gap-2 active:scale-95 mt-auto ${
-                        combo.borderColor === "border-primary"
-                          ? "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]"
-                          : combo.borderColor === "border-secondary"
-                            ? "bg-secondary text-on-secondary shadow-[0_0_15px_rgba(255,171,105,0.3)]"
-                            : "bg-tertiary-fixed-dim text-on-secondary"
-                      }`}
+              : combos.map((combo, idx) => {
+                  const THEMES = [
+                    {
+                      border: "border-primary",
+                      icon: "primary",
+                      btn: "bg-primary text-on-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]",
+                      discount: "primary",
+                      iconBg: "bg-primary/20",
+                    },
+                    {
+                      border: "border-secondary",
+                      icon: "secondary",
+                      btn: "bg-secondary text-on-secondary shadow-[0_0_15px_rgba(255,171,105,0.3)]",
+                      discount: "secondary",
+                      iconBg: "bg-secondary/20",
+                    },
+                    {
+                      border: "border-tertiary-fixed-dim",
+                      icon: "tertiary-fixed-dim",
+                      btn: "bg-tertiary-fixed-dim text-on-secondary",
+                      discount: "tertiary-fixed-dim",
+                      iconBg: "bg-tertiary-fixed-dim/20",
+                    },
+                  ];
+                  const COMBO_ICONS = [
+                    "local_fire_department",
+                    "bolt",
+                    "celebration",
+                    "military_tech",
+                    "workspace_premium",
+                    "emoji_events",
+                    "diamond",
+                    "auto_awesome",
+                  ];
+                  const theme = THEMES[idx % 3];
+                  const h = combo.id
+                    .split("")
+                    .reduce((a, c) => a + c.charCodeAt(0), 0);
+                  const icon =
+                    combo.icon || COMBO_ICONS[h % COMBO_ICONS.length];
+                  const discountLabel =
+                    combo.originalPrice && combo.originalPrice > combo.price
+                      ? `-${Math.round((1 - combo.price / combo.originalPrice) * 100)}% OFF`
+                      : "COMBO";
+                  return (
+                    <div
+                      key={combo.id}
+                      className={`bg-surface-container-highest p-8 rounded-2xl border-l-4 ${theme.border} hover:border-l-8 transition-all relative flex flex-col`}
                     >
-                      <span className="material-symbols-outlined text-sm">
-                        bolt
-                      </span>
-                      CHỐT NGAY
-                    </button>
-                  </div>
-                ))}
+                      <div className="flex justify-between mb-6">
+                        <div
+                          className={`w-14 h-14 rounded-2xl flex items-center justify-center shrink-0 ${theme.iconBg}`}
+                        >
+                          <span
+                            className={`material-symbols-outlined text-${theme.icon} text-3xl`}
+                          >
+                            {icon}
+                          </span>
+                        </div>
+                        <span
+                          className={`px-3 py-1 rounded-full text-xs font-bold tracking-wider self-start bg-${theme.discount}/10 text-${theme.discount}`}
+                        >
+                          {discountLabel}
+                        </span>
+                      </div>
+                      <h3 className="text-2xl font-black mb-4 min-h-[4rem] flex items-start">
+                        {combo.name}
+                      </h3>
+                      <ul className="space-y-3 mb-8 text-on-surface-variant flex-1">
+                        {combo.description
+                          .replace(/^Combo bao gồm:\s*/i, "")
+                          .split(", ")
+                          .map((item, i) => (
+                            <li key={i} className="flex items-center gap-2">
+                              <span className="material-symbols-outlined text-secondary text-sm">
+                                check_circle
+                              </span>
+                              {item.replace(/\.$/, "")}
+                            </li>
+                          ))}
+                      </ul>
+                      <div className="flex items-baseline gap-2 mb-6">
+                        <span className="text-3xl font-black text-on-surface">
+                          {combo.price.toLocaleString("vi-VN")}đ
+                        </span>
+                        {combo.originalPrice &&
+                          combo.originalPrice > combo.price && (
+                            <span className="text-on-surface-variant line-through text-sm">
+                              {combo.originalPrice.toLocaleString("vi-VN")}đ
+                            </span>
+                          )}
+                      </div>
+                      <button
+                        onClick={() => handleComboOrder(combo)}
+                        className={`w-full py-3 rounded-xl font-black hover:brightness-110 transition-all flex items-center justify-center gap-2 active:scale-95 mt-auto ${theme.btn}`}
+                      >
+                        <span className="material-symbols-outlined text-sm">
+                          bolt
+                        </span>
+                        CHỐT NGAY
+                      </button>
+                    </div>
+                  );
+                })}
           </div>
         </div>
       </section>

@@ -4,7 +4,7 @@ const API_BASE = "http://localhost:8888";
 
 const api = axios.create({ baseURL: API_BASE });
 
-import type { Product, Category, Combo, Order, User } from "../types";
+import type { Product, Category, Order, User } from "../types";
 
 /**
  * Utility: Tạo ID ngẫu nhiên với prefix tùy chỉnh.
@@ -209,7 +209,7 @@ export const authApi = {
     }
     
     // Always "claim" the machine to ensure exclusivity (unbinds anyone else)
-    guestUser = await authApi._claimMachineId(guestUser.id, machineId);
+    guestUser = await authApi._claimMachineId(guestUser!.id, machineId);
 
     const token = generateSimulatedJWT(guestUser);
     localStorage.setItem(TOKEN_KEY, token);
@@ -307,9 +307,7 @@ export const categoryApi = {
   getAll: () => api.get<Category[]>("/categories").then((r) => r.data),
 };
 
-export const comboApi = {
-  getAll: () => api.get<Combo[]>("/combos").then((r) => r.data),
-};
+
 
 export const orderApi = {
   getAll: () => api.get<Order[]>("/orders").then((r) => r.data),

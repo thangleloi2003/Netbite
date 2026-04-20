@@ -16,7 +16,7 @@
       "role": "customer",
       "password": "123",
       "status": "active",
-      "machineId": "B-01"
+      "machineId": "C-12"
     },
     {
       "id": "u_59xn9080a",
@@ -559,7 +559,7 @@
       "relatedIds": []
     },
     {
-      "id": "c1",
+      "id": "p_c_1",
       "name": "Combo Leo Rank",
       "icon": "workspace_premium",
       "price": 85000,
@@ -590,7 +590,7 @@
       ]
     },
     {
-      "id": "c2",
+      "id": "p_c_2",
       "name": "Combo Duo Combat",
       "icon": "emoji_events",
       "price": 155000,
@@ -621,7 +621,7 @@
       ]
     },
     {
-      "id": "c3",
+      "id": "p_c_3",
       "name": "Combo Pentakill",
       "icon": "diamond",
       "price": 225000,
@@ -652,7 +652,7 @@
       ]
     },
     {
-      "id": "p_h3mdd1uxd",
+      "id": "p_c_h3mdd1uxd",
       "name": "Combo Destroyer Galaxy",
       "icon": "bolt",
       "price": 108000,
@@ -710,7 +710,7 @@
       "relatedIds": []
     },
     {
-      "id": "p_r0x7mecch",
+      "id": "p_c_r0x7mecch",
       "name": "Combo Huyền Thoại",
       "icon": "star",
       "price": 50000,
@@ -741,7 +741,7 @@
       ]
     },
     {
-      "id": "p_loyl2apl8",
+      "id": "p_c_loyl2apl8",
       "name": "Combo Rẻ",
       "icon": "rocket_launch",
       "price": 100000,
@@ -772,7 +772,7 @@
       ]
     },
     {
-      "id": "p_wc758rb5y",
+      "id": "p_c_wc758rb5y",
       "name": "Kabuto Driver",
       "icon": "military_tech",
       "price": 150000,
@@ -800,24 +800,27 @@
       ]
     },
     {
-      "id": "p_w7lm7wv9t",
-      "name": "asd",
-      "price": 50000,
-      "originalPrice": 150000,
+      "id": "p_c_r0kbpljg9",
+      "name": "Enterrr",
+      "price": 120000,
+      "originalPrice": 152000,
       "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
       "images": [],
       "category": "combo",
-      "description": "Combo bao gồm: Gà rán KFC, Takoyaki Nhật Bản (6 Viên), Trà Đào Cam Sả Tươi Mát.",
-      "tags": [],
+      "description": "Combo bao gồm: Tài lộc quá lớn đỏ, Udon Xào Bò Sốt Tiêu Đen, Trà Đào Cam Sả Tươi Mát.",
+      "tags": [
+        "hot",
+        "bestseller"
+      ],
       "toppings": [],
       "relatedIds": [],
       "comboItems": [
         {
-          "productId": "p_zlj9s6213",
+          "productId": "p_wfnfz00n0",
           "quantity": 1
         },
         {
-          "productId": "p_9xz7rwgfr",
+          "productId": "p_0qjhrjd18",
           "quantity": 1
         },
         {
@@ -825,10 +828,37 @@
           "quantity": 1
         }
       ],
-      "icon": "auto_awesome"
+      "icon": "workspace_premium"
+    },
+    {
+      "id": "p_c_5eqkyg486",
+      "name": "Combo ngày",
+      "icon": "bolt",
+      "price": 50000,
+      "originalPrice": 57000,
+      "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
+      "images": [],
+      "category": "combo",
+      "description": "Combo bao gồm: Tài lộc quá lớn vàng , Mì cay Hảo Hảo, Khoai tây chiên.",
+      "tags": [],
+      "toppings": [],
+      "relatedIds": [],
+      "comboItems": [
+        {
+          "productId": "p_tz9qki7g7",
+          "quantity": 1
+        },
+        {
+          "productId": "p_x2vwcxjcb",
+          "quantity": 1
+        },
+        {
+          "productId": "p_ha8hrnfsk",
+          "quantity": 1
+        }
+      ]
     }
   ],
-  "combos": [],
   "orders": [
     {
       "id": "LKqy4vs",

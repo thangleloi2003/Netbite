@@ -1,20 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useAdminProducts } from "../../hooks/useAdminProducts";
 import { useState, useRef, useEffect } from "react";
-import type { Combo } from "../../types";
-
-// Danh sách icon dự phòng cho combo mới chưa có icon riêng
-const COMBO_ICONS = [
-  'local_fire_department', 'bolt', 'celebration', 'military_tech',
-  'workspace_premium', 'emoji_events', 'auto_awesome', 'diamond',
-];
-
-// Dùng icon có sẵn trong db, nếu không có thì chọn ngẫu nhiên ổn định theo ID
-const getComboIcon = (combo: Combo): string => {
-  if (combo.icon) return combo.icon;
-  const hash = combo.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-  return COMBO_ICONS[hash % COMBO_ICONS.length];
-};
 
 export default function AdminProducts() {
   const navigate = useNavigate();
@@ -36,7 +22,6 @@ export default function AdminProducts() {
   const {
     paginatedProducts,
     categories,
-    combos,
     loading, 
     filter, 
     setFilter, 
@@ -252,58 +237,6 @@ export default function AdminProducts() {
         </>
       )}
 
-      {/* === SECTION COMBO === */}
-      {!loading && combos.length > 0 && (
-        <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-2xl font-black tracking-tight italic uppercase">Combo Đóng Gói</h3>
-              <div className="h-1 w-10 bg-primary mt-1 rounded-full" />
-            </div>
-            <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant bg-surface-container-low px-4 py-2 rounded-full border border-white/5">
-              {combos.length} combo
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {combos.map((combo) => (
-              <div key={combo.id} className="group bg-surface-container-low border border-white/5 hover:border-primary/30 rounded-3xl p-5 flex flex-col gap-4 hover:-translate-y-1 transition-all duration-300 shadow-xl relative overflow-hidden">
-                {/* Glow bg */}
-                <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-primary/5 rounded-full blur-2xl pointer-events-none" />
-
-                {/* Header */}
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                    <span className="material-symbols-outlined text-primary text-2xl">{getComboIcon(combo)}</span>
-                  </div>
-                  <div className="flex-grow min-w-0">
-                    <h4 className="font-black text-base tracking-tight group-hover:text-primary transition-colors truncate">{combo.name}</h4>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-primary border border-primary/30 px-2 py-0.5 rounded-full">
-                      {combo.discount}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Items */}
-                <ul className="space-y-1">
-                  {combo.items.map((item, idx) => (
-                    <li key={idx} className="text-xs text-on-surface-variant font-medium flex items-center gap-2">
-                      <span className="w-1 h-1 rounded-full bg-primary/60 shrink-0" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-
-                {/* Price */}
-                <div className="flex items-center gap-3 mt-auto pt-3 border-t border-white/5">
-                  <span className="text-2xl font-black text-primary tracking-tighter">{combo.price.toLocaleString('vi-VN')}đ</span>
-                  <span className="text-sm text-on-surface-variant line-through">{combo.originalPrice.toLocaleString('vi-VN')}đ</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
     </main>
   );
 }
