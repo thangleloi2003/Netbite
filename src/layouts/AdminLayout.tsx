@@ -55,7 +55,7 @@ export default function AdminLayout() {
               />
             )}
 
-            <div className="space-y-2 relative z-10">
+            <div className="space-y-2 relative z-10 flex-grow">
               {menuItems.map((item, index) => {
                 const isActive = activeIndex === index;
                 return (
@@ -83,7 +83,7 @@ export default function AdminLayout() {
               })}
             </div>
 
-            <div className="mt-[310px] pb-4 space-y-2">
+            <div className="mt-auto pb-4 space-y-2">
               <div className="mx-4 h-px bg-white/5 mt-4"></div>
               <button
                 onClick={handleLogout}

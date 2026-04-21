@@ -13,6 +13,7 @@ export default function Checkout() {
   const { user, isAdmin } = useAuth(); 
   const [machine, setMachine] = useState(user?.machineId || '');
   const [payment, setPayment] = useState('cash');
+  const [note, setNote] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false); 
   const navigate = useNavigate();
@@ -31,6 +32,7 @@ export default function Checkout() {
         machineNumber: machine,
         paymentMethod: payment,
         total: total,
+        note: note.trim(),
         status: "pending" as const,
         createdAt: now.toISOString(),
         date: now.toISOString().split('T')[0], // Định dạng YYYY-MM-DD chuẩn xác
@@ -173,6 +175,20 @@ export default function Checkout() {
                   {!isAdmin && (
                     <span className="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-variant/40 text-sm">lock</span>
                   )}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-2">Ghi chú cho nhà bếp</label>
+                <div className="relative group">
+                  <span className="material-symbols-outlined absolute left-4 top-4 text-on-surface-variant group-focus-within:text-primary transition-colors">edit_note</span>
+                  <textarea
+                    value={note}
+                    onChange={e => setNote(e.target.value)}
+                    rows={3}
+                    className="w-full bg-surface-container-highest pl-12 pr-4 py-4 rounded-3xl border border-white/5 focus:border-primary focus:ring-1 focus:ring-primary text-on-surface font-bold placeholder:text-white/20 transition-all outline-none resize-none"
+                    placeholder="VD: Không hành, nhiều cay, v.v..."
+                  />
                 </div>
               </div>
 

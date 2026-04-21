@@ -8,7 +8,6 @@ export function useAdminCustomers() {
     orders, 
     loading, 
     error, 
-    createUser: contextCreateUser,
     updateUser: contextUpdateUser,
     refreshData 
   } = useAdmin();
@@ -85,7 +84,6 @@ export function useAdminCustomers() {
     getCustomerTotalSpend,
     getCustomerOrderCount,
     toggleUserStatus,
-    createUser: contextCreateUser,
     refreshCustomers: refreshData,
   };
 }

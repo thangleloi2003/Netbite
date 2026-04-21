@@ -18,5 +18,6 @@ export interface Order {
   status: "pending" | "processing" | "delivered" | "cancelled";
   date: string;
   machineNumber: string;
+  note?: string;
 }
 

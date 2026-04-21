@@ -15,7 +15,6 @@ interface AdminContextType {
   updateProduct: (id: string, data: Partial<Product>) => Promise<Product>;
   deleteProduct: (id: string) => Promise<void>;
   updateOrder: (id: string, data: Partial<Order>) => Promise<Order>;
-  createUser: (data: Omit<User, "id">) => Promise<User>;
   updateUser: (id: string, data: Partial<User>) => Promise<User>;
   deleteUser: (id: string) => Promise<void>;
 }
@@ -109,20 +108,6 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     }
   };
 
-  const createUser = async (data: Omit<User, "id">) => {
-    try {
-      setActionLoading(true);
-      const created = await authApi.createUser(data);
-      setUsers(prev => [...prev, created]);
-      return created;
-    } catch (err) {
-      console.error("Create user failed:", err);
-      throw err;
-    } finally {
-      setActionLoading(false);
-    }
-  };
-
   const updateUser = async (id: string, data: Partial<User>) => {
     try {
       setActionLoading(true);
@@ -163,7 +148,6 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     updateProduct,
     deleteProduct,
     updateOrder,
-    createUser,
     updateUser,
     deleteUser,
   };

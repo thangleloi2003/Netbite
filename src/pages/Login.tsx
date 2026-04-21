@@ -6,11 +6,12 @@ import { authApi } from '../services/api';
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isQuickAccess, setIsQuickAccess] = useState(false);
+  const [name, setName] = useState('');
+  const [authMode, setAuthMode] = useState<'login' | 'register' | 'guest'>('login');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, guestLogin } = useAuth();
+  const { login, register, guestLogin } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -20,8 +21,14 @@ export default function Login() {
     setLoading(true);
 
     try {
-      if (isQuickAccess) {
+      if (authMode === 'guest') {
         await guestLogin();
+        navigate('/');
+        return;
+      }
+
+      if (authMode === 'register') {
+        await register({ name, username, password });
         navigate('/');
         return;
       }
@@ -66,15 +73,22 @@ export default function Login() {
           <div className="flex bg-surface-container-highest/50 p-2 border-b border-white/5 gap-1">
             <button 
               type="button"
-              onClick={() => setIsQuickAccess(false)}
-              className={`flex-1 py-3 text-xs font-black tracking-widest uppercase rounded-full transition-all ${!isQuickAccess ? "text-on-primary bg-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white"}`}
+              onClick={() => setAuthMode('login')}
+              className={`flex-1 py-3 text-[10px] font-black tracking-widest uppercase rounded-full transition-all ${authMode === 'login' ? "text-on-primary bg-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white"}`}
             >
-              Thành viên
+              Đăng nhập
             </button>
             <button 
               type="button"
-              onClick={() => setIsQuickAccess(true)}
-              className={`flex-1 py-3 text-xs font-black tracking-widest uppercase rounded-full transition-all ${isQuickAccess ? "text-on-primary bg-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white"}`}
+              onClick={() => setAuthMode('register')}
+              className={`flex-1 py-3 text-[10px] font-black tracking-widest uppercase rounded-full transition-all ${authMode === 'register' ? "text-on-primary bg-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white"}`}
+            >
+              Đăng ký
+            </button>
+            <button 
+              type="button"
+              onClick={() => setAuthMode('guest')}
+              className={`flex-1 py-3 text-[10px] font-black tracking-widest uppercase rounded-full transition-all ${authMode === 'guest' ? "text-on-primary bg-primary shadow-[0_0_15px_rgba(255,141,140,0.3)]" : "text-on-surface-variant hover:text-white"}`}
             >
               Vào nhanh
             </button>
@@ -89,8 +103,24 @@ export default function Login() {
                 </div>
               )}
 
-              {!isQuickAccess && (
+              {authMode !== 'guest' && (
                 <>
+                  {authMode === 'register' && (
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Họ và tên</label>
+                      <div className="relative group">
+                        <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">badge</span>
+                        <input 
+                          className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-6 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
+                          placeholder="Nhập họ và tên" 
+                          type="text" 
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                  )}
                   <div>
                     <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Tài khoản</label>
                     <div className="relative group">
@@ -107,10 +137,7 @@ export default function Login() {
                   </div>
 
                   <div>
-                    <div className="flex justify-between items-center mb-2 px-4">
-                      <label className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Mật khẩu</label>
-                      <Link className="text-[12px] font-black text-primary tracking-widest hover:brightness-125 transition-colors" to="#">Quên mật khẩu?</Link>
-                    </div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Mật khẩu</label>
                     <div className="relative group">
                       <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock</span>
                       <input 
@@ -135,7 +162,7 @@ export default function Login() {
                 </>
               )}
 
-              {isQuickAccess && (
+              {authMode === 'guest' && (
                 <div className="py-10 text-center space-y-4">
                   <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6">
                     <span className="material-symbols-outlined text-primary text-4xl animate-pulse">desktop_windows</span>
@@ -152,10 +179,12 @@ export default function Login() {
                 type="submit"
                 disabled={loading}
               >
-                {loading ? 'Đang xử lý...' : isQuickAccess ? 'Vào đặt món ngay' : 'Đăng nhập'}
+                {loading ? 'Đang xử lý...' : 
+                 authMode === 'guest' ? 'Vào đặt món ngay' : 
+                 authMode === 'register' ? 'Tạo tài khoản & Đặt món' : 'Đăng nhập'}
               </button>
 
-              {!isQuickAccess && (
+              {authMode === 'login' && (
                 <div className="pt-6 space-y-4">
                   <div className="flex items-center gap-4">
                     <div className="h-px flex-1 bg-white/5"></div>

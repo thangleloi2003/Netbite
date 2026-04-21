@@ -5,6 +5,7 @@ import { authApi } from '../services/api';
 type AuthContextType = {
   user: User | null;
   login: (user: User) => void;
+  register: (data: Omit<User, "id" | "role" | "status" | "isGuest" | "machineId">) => Promise<void>;
   guestLogin: () => Promise<void>;
   logout: () => void;
   loading: boolean;
@@ -55,6 +56,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Token is already stored in localStorage by authApi.login
   };
 
+  const register = async (data: Omit<User, "id" | "role" | "status" | "isGuest" | "machineId">) => {
+    try {
+      const { user: registeredUser } = await authApi.register(data);
+      setUser(registeredUser);
+    } catch (err) {
+      console.error("Registration failed:", err);
+      throw err;
+    }
+  };
+
   const guestLogin = async () => {
     try {
       const { user: guestUser } = await authApi.guestAccess();
@@ -75,7 +86,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const isAdmin = user?.role === 'admin';
 
   return (
-    <AuthContext.Provider value={{ user, login, guestLogin, logout, loading, isAuthenticated, isAdmin }}>
+    <AuthContext.Provider value={{ user, login, register, guestLogin, logout, loading, isAuthenticated, isAdmin }}>
       {children}
     </AuthContext.Provider>
   );

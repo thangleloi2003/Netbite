@@ -41,7 +41,7 @@ export default function AdminDashboard() {
     .slice(0, 5);
 
   const topCustomers = users
-    .filter(u => u.role !== 'admin')
+    .filter(u => u.role !== 'admin' && !u.isGuest)
     .map(u => ({
       ...u,
       totalSpend: getCustomerTotalSpend(u.id)
@@ -140,12 +140,22 @@ export default function AdminDashboard() {
                       </div>
                     </td>
                     <td className="px-8 py-5 text-sm text-on-surface-variant font-medium">
-                      {order.items.length > 0 ? (
-                        <>
-                          {order.items[0].productName} x{order.items[0].quantity}
-                          {order.items.length > 1 && "..."}
-                        </>
-                      ) : "Không có món"}
+                      <div className="flex flex-col gap-1">
+                        <div>
+                          {order.items.length > 0 ? (
+                            <>
+                              {order.items[0].productName} x{order.items[0].quantity}
+                              {order.items.length > 1 && "..."}
+                            </>
+                          ) : "Không có món"}
+                        </div>
+                        {order.note && (
+                          <div className="flex items-center gap-1 text-[10px] font-bold text-secondary italic">
+                            <span className="material-symbols-outlined text-[12px]">edit_note</span>
+                            <span className="truncate max-w-[120px]">{order.note}</span>
+                          </div>
+                        )}
+                      </div>
                     </td>
                     <td className="px-8 py-5 text-sm font-black text-on-surface">{formatPrice(order.total)}</td>
                     <td className="px-8 py-5">

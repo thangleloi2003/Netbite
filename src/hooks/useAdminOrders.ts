@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { useAdmin } from "../context/AdminContext";
 import type { Order } from "../types";
 
-export type OrderFilterStatus = "all" | "pending" | "processing" | "delivered" | "cancelled";
+export type OrderFilterStatus = "all" | "pending" | "processing" | "delivered" | "cancelled" | "guest";
 
 export function useAdminOrders() {
   const { 
@@ -44,8 +44,13 @@ export function useAdminOrders() {
 
   const filteredOrders = useMemo(() => {
     return orders.filter(o => {
-      const matchesFilter = filter === "all" || o.status === filter;
       const user = getUser(o.userId);
+      const matchesFilter = filter === "all" 
+        ? true 
+        : filter === "guest" 
+          ? user?.isGuest === true 
+          : o.status === filter;
+      
       const matchesSearch = o.id.toLowerCase().includes(search.toLowerCase()) || 
                             user?.name.toLowerCase().includes(search.toLowerCase()) ||
                             o.machineNumber?.toLowerCase().includes(search.toLowerCase());
@@ -69,6 +74,20 @@ export function useAdminOrders() {
     }).length;
   }, [orders]);
 
+  const machinePopularity = useMemo(() => {
+    const stats: Record<string, number> = {};
+    orders.forEach(o => {
+      if (o.machineNumber) {
+        stats[o.machineNumber] = (stats[o.machineNumber] || 0) + 1;
+      }
+    });
+    return Object.entries(stats)
+      .map(([machine, count]) => ({ machine, count }))
+      .filter(m => m.count > 5) // Only show machines with more than 5 orders
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 5); // Top 5 machines meeting criteria
+  }, [orders]);
+
   return {
     orders,
     filteredOrders,
@@ -87,6 +106,7 @@ export function useAdminOrders() {
     cancelOrder,
     getUser,
     todayOrdersCount,
+    machinePopularity,
     refreshOrders: refreshData,
   };
 }

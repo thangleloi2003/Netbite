@@ -87,6 +87,33 @@
       "password": "123456",
       "role": "customer",
       "status": "active"
+    },
+    {
+      "id": "2yfpd86",
+      "username": "guest_a_19",
+      "name": "Máy A-19",
+      "role": "customer",
+      "status": "active",
+      "machineId": null,
+      "isGuest": true
+    },
+    {
+      "id": "u_cg79a4n2g",
+      "name": "Trinh Hoang D",
+      "username": "D123",
+      "password": "123",
+      "role": "customer",
+      "status": "active"
+    },
+    {
+      "id": "u_38k4z9t8z",
+      "name": "Hoang Anh H",
+      "username": "H",
+      "password": "123",
+      "role": "customer",
+      "status": "active",
+      "isGuest": false,
+      "machineId": "A-19"
     }
   ],
   "categories": [
@@ -135,8 +162,8 @@
       "category": "food",
       "description": "Chiếc Burger Bò Full Buff huyền thoại với miếng thịt bò Úc tươi ngon nướng lửa hồng, phủ phô mai Cheddar và tương đặc biệt của NetBite. Đây là nguồn năng lượng tối thượng cho mọi trận đấu.",
       "tags": [
-        "hot",
-        "bestseller"
+        "bestseller",
+        "hot"
       ],
       "toppings": [
         {
@@ -857,6 +884,42 @@
           "quantity": 1
         }
       ]
+    },
+    {
+      "id": "p_koicczug9",
+      "name": "Burger Bò Full Buff",
+      "price": 35000,
+      "originalPrice": 50000,
+      "image": "https://th.bing.com/th/id/OIP.nsRO0D1s6jDn0xxeXgaKMgHaE8?w=300&h=200&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3",
+      "images": [],
+      "category": "snack",
+      "description": "Rất ngon mà không sợ nóng",
+      "tags": [
+        "hot",
+        "bestseller"
+      ],
+      "toppings": [
+        {
+          "id": "t1776755399843",
+          "label": "Thêm chân giò",
+          "price": 20000,
+          "icon": "restaurant",
+          "type": "quantifiable",
+          "options": []
+        },
+        {
+          "id": "t1776755749107",
+          "label": "",
+          "price": 0,
+          "icon": "restaurant",
+          "type": "level",
+          "options": [
+            "Thêm hành",
+            "THêm bún"
+          ]
+        }
+      ],
+      "relatedIds": []
     }
   ],
   "orders": [
@@ -975,7 +1038,7 @@
       "machineNumber": "VIP-09",
       "paymentMethod": "cash",
       "total": 315000,
-      "status": "pending",
+      "status": "delivered",
       "createdAt": "2026-04-20T12:22:59.728Z",
       "date": "2026-04-20",
       "items": [
@@ -996,6 +1059,133 @@
           "productName": "Combo ngày (1x Tài lộc quá lớn vàng , 1x Mì cay Hảo Hảo, 1x Khoai tây chiên)",
           "quantity": 1,
           "price": 50000
+        }
+      ]
+    },
+    {
+      "id": "ord_j9xcayh9f",
+      "userId": "2yfpd86",
+      "machineNumber": "A-19",
+      "paymentMethod": "cash",
+      "total": 50000,
+      "status": "cancelled",
+      "createdAt": "2026-04-21T07:22:27.963Z",
+      "date": "2026-04-21",
+      "items": [
+        {
+          "productId": "p_d1yicwtv0",
+          "productName": "Burger Bò Full Buff",
+          "quantity": 1,
+          "price": 45000
+        }
+      ]
+    },
+    {
+      "id": "ord_48gvfftiw",
+      "userId": "2yfpd86",
+      "machineNumber": "A-19",
+      "paymentMethod": "cash",
+      "total": 134000,
+      "status": "cancelled",
+      "createdAt": "2026-04-21T07:24:45.124Z",
+      "date": "2026-04-21",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        }
+      ]
+    },
+    {
+      "id": "ord_5ye62nbr2",
+      "userId": "2yfpd86",
+      "machineNumber": "A-19",
+      "paymentMethod": "cash",
+      "total": 195000,
+      "status": "delivered",
+      "createdAt": "2026-04-21T09:14:41.020Z",
+      "date": "2026-04-21",
+      "items": [
+        {
+          "productId": "p_pzei3e03l",
+          "productName": "Sườn Nướng BBQ Gank (Thêm sốt BBQ)",
+          "quantity": 1,
+          "price": 190000
+        }
+      ]
+    },
+    {
+      "id": "ord_agr9l3w1o",
+      "userId": "2yfpd86",
+      "machineNumber": "A-19",
+      "paymentMethod": "cash",
+      "total": 45000,
+      "status": "delivered",
+      "createdAt": "2026-04-21T09:23:33.258Z",
+      "date": "2026-04-21",
+      "items": [
+        {
+          "productId": "p_ha8hrnfsk",
+          "productName": "Khoai tây chiên (Thêm phô mai bột)",
+          "quantity": 1,
+          "price": 40000
+        }
+      ]
+    },
+    {
+      "id": "ord_gvlhi7tly",
+      "userId": "2yfpd86",
+      "machineNumber": "A-19",
+      "paymentMethod": "cash",
+      "total": 134000,
+      "status": "delivered",
+      "createdAt": "2026-04-21T09:38:00.547Z",
+      "date": "2026-04-21",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        }
+      ]
+    },
+    {
+      "id": "ord_07s0fn77h",
+      "userId": "2yfpd86",
+      "machineNumber": "A-19",
+      "paymentMethod": "cash",
+      "total": 134000,
+      "status": "cancelled",
+      "createdAt": "2026-04-21T09:39:17.630Z",
+      "date": "2026-04-21",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        }
+      ]
+    },
+    {
+      "id": "ord_ihkdu81mv",
+      "userId": "2yfpd86",
+      "machineNumber": "A-19",
+      "paymentMethod": "cash",
+      "total": 50000,
+      "note": "Khong cay",
+      "status": "cancelled",
+      "createdAt": "2026-04-21T09:42:20.951Z",
+      "date": "2026-04-21",
+      "items": [
+        {
+          "productId": "p_d1yicwtv0",
+          "productName": "Burger Bò Full Buff",
+          "quantity": 1,
+          "price": 45000
         }
       ]
     }

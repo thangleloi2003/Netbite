@@ -185,6 +185,33 @@ export const authApi = {
         return { user: userWithoutPassword, token };
       }),
 
+  register: async (data: Omit<User, "id" | "role" | "status" | "isGuest" | "machineId">) => {
+    // Check if username already exists
+    const allUsers = await api.get<User[]>("/users").then(r => r.data);
+    const exists = allUsers.some(u => u.username === data.username);
+    if (exists) throw new Error("Tên tài khoản đã tồn tại");
+
+    const newUser: User = {
+      id: generateId('u'),
+      ...data,
+      role: "customer",
+      status: "active",
+      isGuest: false
+    };
+
+    const createdUser = await api.post<User>("/users", newUser).then(r => r.data);
+    
+    // Auto login after register
+    const machineId = getSimulatedHardwareId();
+    const updatedUser = await authApi._claimMachineId(createdUser.id, machineId);
+    
+    const token = generateSimulatedJWT(updatedUser);
+    localStorage.setItem(TOKEN_KEY, token);
+
+    const { password: _password, ...userWithoutPassword } = updatedUser;
+    return { user: userWithoutPassword, token };
+  },
+
   guestAccess: async () => {
     const machineId = getSimulatedHardwareId();
     // Use a fixed username format for machine-specific guest accounts
@@ -275,9 +302,6 @@ export const authApi = {
 
   updateUser: (id: string, data: Partial<User>) => 
     api.patch<User>(`/users/${id}`, data).then((r) => r.data),
-
-  createUser: (user: Omit<User, "id">) =>
-    api.post<User>("/users", { id: generateId('u'), ...user, status: "active" }).then((r) => r.data),
 
   deleteUser: (id: string) => api.delete(`/users/${id}`).then((r) => r.data),
 };
