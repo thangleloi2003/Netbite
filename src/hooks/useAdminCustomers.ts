@@ -63,6 +63,12 @@ export function useAdminCustomers() {
 
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   
+  useEffect(() => {
+    if (page > totalPages && totalPages > 0) {
+      setPage(totalPages);
+    }
+  }, [totalPages, page]);
+
   const paginatedUsers = useMemo(() => {
     const start = (page - 1) * itemsPerPage;
     return filteredUsers.slice(start, start + itemsPerPage);

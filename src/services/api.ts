@@ -193,10 +193,13 @@ export const authApi = {
 
     const newUser: User = {
       id: generateId('u'),
-      ...data,
+      username: data.username,
+      name: data.name,
       role: "customer",
+      password: data.password,
       status: "active",
-      isGuest: false
+      isGuest: false,
+      machineId: null
     };
 
     const createdUser = await api.post<User>("/users", newUser).then(r => r.data);
@@ -228,8 +231,8 @@ export const authApi = {
         name: `Máy ${machineId}`,
         role: "customer",
         status: "active",
-        machineId,
-        isGuest: true
+        isGuest: true,
+        machineId
       };
       // Create the fixed guest account
       guestUser = await api.post<User>("/users", newGuest).then(r => r.data);

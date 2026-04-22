@@ -7,6 +7,7 @@
       "role": "admin",
       "password": "12345",
       "status": "active",
+      "isGuest": false,
       "machineId": null
     },
     {
@@ -14,8 +15,9 @@
       "username": "customer",
       "name": "Tuấn Kiệt",
       "role": "customer",
-      "password": "123",
+      "password": "12345",
       "status": "active",
+      "isGuest": false,
       "machineId": null
     },
     {
@@ -23,8 +25,9 @@
       "username": "B",
       "name": "Dinh Van B",
       "role": "customer",
-      "password": "Abc1234@",
+      "password": "12345",
       "status": "active",
+      "isGuest": false,
       "machineId": null
     },
     {
@@ -32,16 +35,19 @@
       "username": "thang",
       "name": "Thang Nguyen",
       "role": "customer",
-      "password": "12345@Thang",
-      "status": "active"
+      "password": "12345",
+      "status": "active",
+      "isGuest": false,
+      "machineId": null
     },
     {
       "id": "u_b95bhmj02",
       "username": "C",
       "name": "C",
       "role": "customer",
-      "password": "1234@Abcd",
+      "password": "12345",
       "status": "inactive",
+      "isGuest": false,
       "machineId": null
     },
     {
@@ -50,8 +56,8 @@
       "name": "Máy B-13",
       "role": "customer",
       "status": "active",
-      "machineId": "B-13",
-      "isGuest": true
+      "isGuest": true,
+      "machineId": "B-13"
     },
     {
       "id": "oa5aCS0",
@@ -59,8 +65,8 @@
       "name": "Máy C-12",
       "role": "customer",
       "status": "active",
-      "machineId": null,
-      "isGuest": true
+      "isGuest": true,
+      "machineId": null
     },
     {
       "id": "804fly6",
@@ -68,8 +74,8 @@
       "name": "Máy VIP-14",
       "role": "customer",
       "status": "active",
-      "machineId": null,
-      "isGuest": true
+      "isGuest": true,
+      "machineId": null
     },
     {
       "id": "6cad38f",
@@ -77,16 +83,18 @@
       "name": "Máy A-16",
       "role": "customer",
       "status": "active",
-      "machineId": null,
-      "isGuest": true
+      "isGuest": true,
+      "machineId": null
     },
     {
       "id": "KQ9aBfl",
-      "name": "Ennter",
       "username": "enter",
-      "password": "123456",
+      "name": "Ennter",
       "role": "customer",
-      "status": "active"
+      "password": "12345",
+      "status": "active",
+      "isGuest": false,
+      "machineId": null
     },
     {
       "id": "2yfpd86",
@@ -94,26 +102,47 @@
       "name": "Máy A-19",
       "role": "customer",
       "status": "active",
-      "machineId": null,
-      "isGuest": true
+      "isGuest": true,
+      "machineId": null
     },
     {
       "id": "u_cg79a4n2g",
-      "name": "Trinh Hoang D",
       "username": "D123",
-      "password": "123",
+      "name": "Trinh Hoang D",
       "role": "customer",
-      "status": "active"
+      "password": "12345",
+      "status": "active",
+      "isGuest": false,
+      "machineId": null
     },
     {
       "id": "u_38k4z9t8z",
-      "name": "Hoang Anh H",
       "username": "H",
-      "password": "123",
+      "name": "Hoang Anh H",
       "role": "customer",
+      "password": "12345",
       "status": "active",
       "isGuest": false,
       "machineId": "A-19"
+    },
+    {
+      "id": "u_m0cit0jgj",
+      "username": "d",
+      "name": "D",
+      "role": "customer",
+      "password": "12345",
+      "status": "active",
+      "isGuest": false,
+      "machineId": null
+    },
+    {
+      "id": "i7yltcv",
+      "username": "guest_c_19",
+      "name": "Máy C-19",
+      "role": "customer",
+      "status": "active",
+      "isGuest": true,
+      "machineId": "C-19"
     }
   ],
   "categories": [
@@ -829,6 +858,7 @@
     {
       "id": "p_c_r0kbpljg9",
       "name": "Enter",
+      "icon": "workspace_premium",
       "price": 110000,
       "originalPrice": 164000,
       "image": "https://images.unsplash.com/photo-1513104890138-7c749659a591?q=80&w=2070&auto=format&fit=crop",
@@ -854,8 +884,7 @@
           "productId": "p_ktzltm6yr",
           "quantity": 1
         }
-      ],
-      "icon": "workspace_premium"
+      ]
     },
     {
       "id": "p_c_5eqkyg486",
@@ -884,154 +913,9 @@
           "quantity": 1
         }
       ]
-    },
-    {
-      "id": "p_koicczug9",
-      "name": "Burger Bò Full Buff",
-      "price": 35000,
-      "originalPrice": 50000,
-      "image": "https://th.bing.com/th/id/OIP.nsRO0D1s6jDn0xxeXgaKMgHaE8?w=300&h=200&c=7&r=0&o=7&dpr=1.3&pid=1.7&rm=3",
-      "images": [],
-      "category": "snack",
-      "description": "Rất ngon mà không sợ nóng",
-      "tags": [
-        "hot",
-        "bestseller"
-      ],
-      "toppings": [
-        {
-          "id": "t1776755399843",
-          "label": "Thêm chân giò",
-          "price": 20000,
-          "icon": "restaurant",
-          "type": "quantifiable",
-          "options": []
-        },
-        {
-          "id": "t1776755749107",
-          "label": "",
-          "price": 0,
-          "icon": "restaurant",
-          "type": "level",
-          "options": [
-            "Thêm hành",
-            "THêm bún"
-          ]
-        }
-      ],
-      "relatedIds": []
     }
   ],
   "orders": [
-    {
-      "id": "LKqy4vs",
-      "userId": "u_5plh976s6",
-      "machineNumber": "1",
-      "phone": "",
-      "paymentMethod": "cash",
-      "total": 50000,
-      "status": "delivered",
-      "createdAt": "2026-04-15T04:12:23.090Z",
-      "date": "2026-04-15T04:12:23.090Z",
-      "items": [
-        {
-          "productId": "p_d1yicwtv0",
-          "productName": "Burger Bò Full Buff",
-          "quantity": 1,
-          "price": 45000
-        }
-      ]
-    },
-    {
-      "id": "zsobZjA",
-      "userId": "u_59xn9080a",
-      "machineNumber": "A-06",
-      "paymentMethod": "cash",
-      "total": 60000,
-      "status": "delivered",
-      "createdAt": "2026-04-17T14:27:11.942Z",
-      "date": "2026-04-17T14:27:11.942Z",
-      "items": [
-        {
-          "productId": "p_9xz7rwgfr",
-          "productName": "Takoyaki Nhật Bản (6 Viên)",
-          "quantity": 1,
-          "price": 55000
-        }
-      ]
-    },
-    {
-      "id": "VtMviof",
-      "userId": "xWCgic2",
-      "machineNumber": "B-13",
-      "paymentMethod": "cash",
-      "total": 190000,
-      "status": "delivered",
-      "createdAt": "2026-04-18T06:24:10.231Z",
-      "date": "2026-04-18T06:24:10.231Z",
-      "items": [
-        {
-          "productId": "p_pzei3e03l",
-          "productName": "Sườn Nướng BBQ Gank",
-          "quantity": 1,
-          "price": 185000
-        }
-      ]
-    },
-    {
-      "id": "uj-wbQe",
-      "userId": "xWCgic2",
-      "machineNumber": "B-13",
-      "paymentMethod": "cash",
-      "total": 50000,
-      "status": "delivered",
-      "createdAt": "2026-04-18T06:32:04.805Z",
-      "date": "2026-04-18T06:32:04.805Z",
-      "items": [
-        {
-          "productId": "p_ktzltm6yr",
-          "productName": "Trà Đào Cam Sả Tươi Mát (0% đường)",
-          "quantity": 1,
-          "price": 45000
-        }
-      ]
-    },
-    {
-      "id": "vOsysvl",
-      "userId": "u_59xn9080a",
-      "machineNumber": "A-06",
-      "paymentMethod": "cash",
-      "total": 134000,
-      "status": "delivered",
-      "createdAt": "2026-04-18T06:39:49.175Z",
-      "date": "2026-04-18T06:39:49.175Z",
-      "items": [
-        {
-          "productId": "p_34525rz62",
-          "productName": "Pizza Pepperoni MVP",
-          "quantity": 1,
-          "price": 129000
-        }
-      ]
-    },
-    {
-      "id": "WWdga5y",
-      "userId": "u_5plh976s6",
-      "machineNumber": "VIP-14",
-      "paymentMethod": "cash",
-      "total": 134000,
-      "status": "delivered",
-      "createdAt": "2026-04-20T02:52:48.831Z",
-      "date": "2026-04-20T02:52:48.832Z",
-      "items": [
-        {
-          "productId": "p_34525rz62",
-          "productName": "Pizza Pepperoni MVP",
-          "quantity": 1,
-          "price": 129000
-        }
-      ]
-    },
     {
       "id": "ord_h8pl3zrmx",
       "userId": "u_5plh976s6",
@@ -1186,6 +1070,227 @@
           "productName": "Burger Bò Full Buff",
           "quantity": 1,
           "price": 45000
+        }
+      ]
+    },
+    {
+      "id": "ord_b92uodljf",
+      "userId": "u_5plh976s6",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 134000,
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2026-04-22T07:12:16.553Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        }
+      ]
+    },
+    {
+      "id": "ord_ce3hf2t6s",
+      "userId": "u_5plh976s6",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 134000,
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2026-04-22T07:13:28.340Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        }
+      ]
+    },
+    {
+      "id": "ord_eam332glb",
+      "userId": "u_5plh976s6",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 50000,
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2026-04-22T07:14:21.297Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_d1yicwtv0",
+          "productName": "Burger Bò Full Buff",
+          "quantity": 1,
+          "price": 45000
+        }
+      ]
+    },
+    {
+      "id": "ord_x552z9s3n",
+      "userId": "u_5plh976s6",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 40000,
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2026-04-22T07:17:42.151Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_ha8hrnfsk",
+          "productName": "Khoai tây chiên",
+          "quantity": 1,
+          "price": 35000
+        }
+      ]
+    },
+    {
+      "id": "ord_kd3jkgxt5",
+      "userId": "u_5plh976s6",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 134000,
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2026-04-22T07:21:54.250Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        }
+      ]
+    },
+    {
+      "id": "ord_0u8nd1ntm",
+      "userId": "u_5plh976s6",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 134000,
+      "note": "",
+      "status": "cancelled",
+      "createdAt": "2026-04-22T07:22:34.036Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_34525rz62",
+          "productName": "Pizza Pepperoni MVP",
+          "quantity": 1,
+          "price": 129000
+        }
+      ]
+    },
+    {
+      "id": "ord_s1pf6x4cl",
+      "userId": "u_5plh976s6",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 25000,
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2026-04-22T07:26:51.274Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_ci9rbs8ls",
+          "productName": "Coca-Cola Zero Ice (Không đá)",
+          "quantity": 1,
+          "price": 20000
+        }
+      ]
+    },
+    {
+      "id": "ord_ph446g1lf",
+      "userId": "u_5plh976s6",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 60000,
+      "note": "",
+      "status": "cancelled",
+      "createdAt": "2026-04-22T07:29:07.866Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_9xz7rwgfr",
+          "productName": "Takoyaki Nhật Bản (6 Viên)",
+          "quantity": 1,
+          "price": 55000
+        }
+      ]
+    },
+    {
+      "id": "ord_oqjw7t0fe",
+      "userId": "u_5plh976s6",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 260000,
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2026-04-22T07:31:08.835Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_wd48jj258",
+          "productName": "Mì Cay Hải Sản Crit Dame",
+          "quantity": 2,
+          "price": 55000
+        },
+        {
+          "productId": "p_9xz7rwgfr",
+          "productName": "Takoyaki Nhật Bản (6 Viên)",
+          "quantity": 1,
+          "price": 55000
+        },
+        {
+          "productId": "p_ktzltm6yr",
+          "productName": "Trà Đào Cam Sả Tươi Mát",
+          "quantity": 2,
+          "price": 45000
+        }
+      ]
+    },
+    {
+      "id": "ord_v8tuspy41",
+      "userId": "u_65fphv5ur",
+      "machineNumber": "C-12",
+      "paymentMethod": "cash",
+      "total": 60000,
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2026-04-22T07:45:46.222Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_wd48jj258",
+          "productName": "Mì Cay Hải Sản Crit Dame (Cấp 7)",
+          "quantity": 1,
+          "price": 55000
+        }
+      ]
+    },
+    {
+      "id": "ord_1zl5y4vpe",
+      "userId": "i7yltcv",
+      "machineNumber": "C-19",
+      "paymentMethod": "cash",
+      "total": 17000,
+      "note": "",
+      "status": "delivered",
+      "createdAt": "2026-04-22T08:21:55.823Z",
+      "date": "2026-04-22",
+      "items": [
+        {
+          "productId": "p_wfnfz00n0",
+          "productName": "Tài lộc quá lớn đỏ (Ít đá)",
+          "quantity": 1,
+          "price": 12000
         }
       ]
     }

@@ -83,14 +83,14 @@ export default function AdminLayout() {
               })}
             </div>
 
-            <div className="mt-auto pb-4 space-y-2">
+            <div className="mt-[310px] pb-4 space-y-2">
               <div className="mx-4 h-px bg-white/5 mt-4"></div>
               <button
                 onClick={handleLogout}
                 className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-on-surface-variant hover:text-white 
                 hover:bg-surface-container-highest transition-all duration-300 h-[52px] group cursor-pointer"
               >
-                <span className="material-symbols-outlined transition-transform group-hover:-translate-x-1">logout</span>
+                <span className="material-symbols-outlined transition-transform">logout</span>
                 <span className="font-bold text-sm">Đăng xuất</span>
               </button>
             </div>

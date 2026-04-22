@@ -6,9 +6,11 @@ import { authApi } from '../services/api';
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [name, setName] = useState('');
   const [authMode, setAuthMode] = useState<'login' | 'register' | 'guest'>('login');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { login, register, guestLogin } = useAuth();
@@ -28,6 +30,11 @@ export default function Login() {
       }
 
       if (authMode === 'register') {
+        if (password !== confirmPassword) {
+          setError('Mật khẩu xác nhận không khớp.');
+          setLoading(false);
+          return;
+        }
         await register({ name, username, password });
         navigate('/');
         return;
@@ -61,7 +68,7 @@ export default function Login() {
       </div>
 
       <div className="w-full max-w-md z-10 flex flex-col items-center">
-        <Link to="/" className="text-center mb-8 hover:scale-105 transition-transform duration-300 inline-block">
+        <Link to="/" className="text-center mb-5 hover:scale-105 transition-transform duration-300 inline-block">
           <h1 className="text-5xl font-black tracking-tighter italic uppercase text-on-surface mb-2">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">NETBITE</span>
           </h1>
@@ -95,7 +102,7 @@ export default function Login() {
           </div>
 
           <div className="p-8 sm:p-10">
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-5" onSubmit={handleSubmit}>
               {error && (
                 <div className="bg-error/10 border border-error/20 text-error text-xs font-bold p-4 rounded-2xl flex items-center gap-3">
                   <span className="material-symbols-outlined text-sm">error</span>
@@ -151,7 +158,7 @@ export default function Login() {
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-5 top-1/2 -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors p-1"
+                        className="absolute right-5 top-[33px] -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors p-1"
                       >
                         <span className="material-symbols-outlined text-xl">
                           {showPassword ? 'visibility' : 'visibility_off'}
@@ -159,6 +166,32 @@ export default function Login() {
                       </button>
                     </div>
                   </div>
+
+                  {authMode === 'register' && (
+                    <div>
+                      <label className="block text-xs font-bold uppercase tracking-widest text-on-surface-variant mb-2 ml-4">Xác nhận mật khẩu</label>
+                      <div className="relative group">
+                        <span className="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock_reset</span>
+                        <input 
+                          className="w-full bg-surface-container-highest border border-white/5 focus:ring-1 focus:ring-primary focus:border-primary rounded-full py-4 pl-12 pr-12 text-on-surface placeholder:text-white/20 transition-all outline-none font-bold"
+                          type={showConfirmPassword ? 'text' : 'password'} 
+                          placeholder="••••••••"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute right-5 top-[33px] -translate-y-1/2 text-on-surface-variant hover:text-primary transition-colors p-1"
+                        >
+                          <span className="material-symbols-outlined text-xl">
+                            {showConfirmPassword ? 'visibility' : 'visibility_off'}
+                          </span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
 

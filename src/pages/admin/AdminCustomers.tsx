@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useAdminCustomers } from "../../hooks/useAdminCustomers";
 import { useFormat } from "../../hooks/useFormat";
 
@@ -20,8 +19,6 @@ export default function AdminCustomers() {
   } = useAdminCustomers();
 
   const { formatPrice, getInitials } = useFormat();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
 
   const formatStatus = (status: string) => {
     if (status === "active") {

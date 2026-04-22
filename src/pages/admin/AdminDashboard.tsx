@@ -25,7 +25,7 @@ export default function AdminDashboard() {
     .filter(o => o.status !== "cancelled")
     .reduce((sum, o) => sum + o.total, 0);
 
-  const activeUsersCount = users.filter(u => u.role !== 'admin').length;
+  const activeUsersCount = users.filter(u => u.role !== 'admin' && !u.isGuest && u.status === 'active').length;
 
   const topProducts = products
     .map(p => {
@@ -51,10 +51,10 @@ export default function AdminDashboard() {
 
   const formatStatus = (status: string) => {
     switch (status) {
-      case "pending": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-secondary/20 text-secondary uppercase tracking-widest border border-secondary/20">Đang chờ</span>;
-      case "processing": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-primary/20 text-primary uppercase tracking-widest border border-primary/20">Đang chuẩn bị</span>;
-      case "delivered": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-green-500/20 text-green-400 uppercase tracking-widest border border-green-500/20">Thành công</span>;
-      case "cancelled": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-error/20 text-error uppercase tracking-widest border border-error/20">Đã hủy</span>;
+      case "pending": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-secondary/20 text-secondary uppercase tracking-widest border border-secondary/20 whitespace-nowrap">Đang chờ</span>;
+      case "processing": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-primary/20 text-primary uppercase tracking-widest border border-primary/20 whitespace-nowrap">Đang chuẩn bị</span>;
+      case "delivered": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-green-500/20 text-green-400 uppercase tracking-widest border border-green-500/20 whitespace-nowrap">Thành công</span>;
+      case "cancelled": return <span className="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-black bg-error/20 text-error uppercase tracking-widest border border-error/20 whitespace-nowrap">Đã hủy</span>;
       default: return status;
     }
   };
@@ -113,14 +113,14 @@ export default function AdminDashboard() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse">
+          <table className="w-full table-fixed text-left border-collapse min-w-[800px]">
             <thead>
               <tr className="bg-surface-container-high/30">
-                <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">ID Đơn</th>
-                <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Khách hàng</th>
-                <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Món</th>
-                <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Tổng tiền</th>
-                <th className="px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Trạng thái</th>
+                <th className="w-[18%] px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">ID Đơn</th>
+                <th className="w-[20%] px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Khách hàng</th>
+                <th className="w-[37%] px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Món</th>
+                <th className="w-[12%] px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant">Tổng tiền</th>
+                <th className="w-[13%] px-8 py-4 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center">Trạng thái</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">

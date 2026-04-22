@@ -341,7 +341,7 @@ export default function AdminEditProduct() {
                       >
                         <option value="quantifiable">Chọn số lượng +/-</option>
                         <option value="binary">Chọn có/không</option>
-                        <option value="level">Chọn 1 trong các lựa chọn</option>
+                        <option value="level">Optional (Mì cay,...)</option>
                       </select>
                     </div>
                   </div>

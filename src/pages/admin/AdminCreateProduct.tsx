@@ -465,7 +465,7 @@ export default function AdminCreateProduct() {
                       >
                         <option value="quantifiable">Số lượng +/-</option>
                         <option value="binary">Chọn có/không</option>
-                        <option value="level">Optional (mì cay, tẩy đá)</option>
+                        <option value="level">Optional (mì cay,...)</option>
                       </select>
                     </div>
                   </div>

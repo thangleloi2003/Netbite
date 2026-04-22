@@ -59,6 +59,13 @@ export function useAdminOrders() {
   }, [orders, filter, search, users]);
 
   const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+
+  useEffect(() => {
+    if (page > totalPages && totalPages > 0) {
+      setPage(totalPages);
+    }
+  }, [totalPages, page]);
+
   const paginatedOrders = useMemo(() => {
     const start = (page - 1) * itemsPerPage;
     return filteredOrders.slice(start, start + itemsPerPage);

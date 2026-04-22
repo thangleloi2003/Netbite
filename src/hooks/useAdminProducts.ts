@@ -81,6 +81,13 @@ export function useAdminProducts() {
   }, [products, filter, search]);
 
   const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+  
+  useEffect(() => {
+    if (page > totalPages && totalPages > 0) {
+      setPage(totalPages);
+    }
+  }, [totalPages, page]);
+
   const paginatedProducts = useMemo(() => {
     const start = (page - 1) * itemsPerPage;
     return filteredProducts.slice(start, start + itemsPerPage);

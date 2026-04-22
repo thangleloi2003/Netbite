@@ -43,25 +43,25 @@ export default function AdminOrders() {
     switch (status) {
       case "pending":
         return (
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-secondary/10 text-secondary uppercase tracking-widest border border-secondary/30 animate-pulse">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-secondary/10 text-secondary uppercase tracking-widest border border-secondary/30 animate-pulse whitespace-nowrap">
             Chờ xử lý
           </span>
         );
       case "processing":
         return (
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-primary/10 text-primary uppercase tracking-widest border border-primary/30">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-primary/10 text-primary uppercase tracking-widest border border-primary/30 whitespace-nowrap">
             Đang chuẩn bị
           </span>
         );
       case "delivered":
         return (
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 uppercase tracking-widest border border-green-500/20">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-green-500/10 text-green-400 uppercase tracking-widest border border-green-500/20 whitespace-nowrap">
             Hoàn thành
           </span>
         );
       case "cancelled":
         return (
-          <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-error/10 text-error uppercase tracking-widest border border-error/20">
+          <span className="inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black bg-error/10 text-error uppercase tracking-widest border border-error/20 whitespace-nowrap">
             Đã hủy
           </span>
         );
@@ -198,25 +198,25 @@ export default function AdminOrders() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full text-left border-collapse min-w-[800px]">
+          <table className="w-full table-fixed text-left border-collapse min-w-[800px]">
             <thead>
               <tr className="bg-surface-container-highest/30">
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="w-[14%] px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                   Mã Đơn
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="w-[18%] px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                   Khách hàng
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="w-[27%] px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                   Nội dung
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="w-[12%] px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
                   Tổng tiền
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant">
+                <th className="w-[13%] px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center">
                   Trạng thái
                 </th>
-                <th className="px-8 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">
+                <th className="w-[16%] px-6 py-5 text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">
                   Thao tác
                 </th>
               </tr>
@@ -319,7 +319,7 @@ export default function AdminOrders() {
                                 e.stopPropagation();
                                 handleStatusChange(order.id, order.status);
                               }}
-                              className={`h-10 px-4 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center gap-2 ${
+                              className={`h-10 px-3 rounded-full text-[10px] font-black uppercase tracking-widest transition-all shadow-lg flex items-center justify-center gap-1.5 whitespace-nowrap shrink-0 ${
                                  order.status === "pending"
                                    ? "bg-primary text-on-primary shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5"
                                    : "bg-green-500 text-white shadow-green-500/20 hover:shadow-green-500/40 hover:-translate-y-0.5"
@@ -338,7 +338,7 @@ export default function AdminOrders() {
                                 e.stopPropagation();
                                 cancelOrder(order.id);
                               }}
-                              className="w-10 h-10 flex items-center justify-center bg-surface-container-highest text-on-surface-variant rounded-full hover:bg-error hover:text-white transition-all border border-white/5 hover:border-error/50"
+                              className="w-10 h-10 shrink-0 flex items-center justify-center bg-surface-container-highest text-on-surface-variant rounded-full hover:bg-error hover:text-white transition-all border border-white/5 hover:border-error/50"
                               title="Hủy đơn"
                             >
                               <span className="material-symbols-outlined text-[18px]">

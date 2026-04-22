@@ -112,32 +112,32 @@ export default function Header() {
             <div className="flex items-center gap-4">
               {/* Order Status Icon */}
               {user.role !== 'admin' && activeOrders.length > 0 && (
-                <div className="relative group/order p-2 hover:bg-white/5 transition-all duration-200 rounded-full active:scale-95 translate-y-0.5">
-                  <div className="flex items-center gap-1">
-                    <span className={`material-symbols-outlined ${getStatusColor(activeOrders[0].status)} ${activeOrders[0].status === 'pending' ? 'animate-pulse' : 'animate-bounce'}`}>
+                <div className="relative group/order p-2 hover:bg-white/5 transition-all duration-200 rounded-full cursor-pointer flex items-center justify-center">
+                  <div className="flex items-center gap-1 relative">
+                    <span className={`material-symbols-outlined text-[24px] ${getStatusColor(activeOrders[0].status)} ${activeOrders[0].status === 'pending' ? 'animate-pulse' : ''}`}>
                       {getStatusIcon(activeOrders[0].status)}
                     </span>
                     {activeOrders.length > 1 && (
-                      <span className="text-[10px] font-black bg-primary text-on-primary rounded-full w-4 h-4 flex items-center justify-center -ml-1.5 -mt-3 shadow-sm">
+                      <span className="text-[10px] font-black bg-primary text-on-primary rounded-full min-w-[16px] h-4 flex items-center justify-center absolute -top-1 -right-2 px-1 shadow-sm z-10">
                         {activeOrders.length}
                       </span>
                     )}
                   </div>
                   
                   {/* Tooltip */}
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-surface-container-high border border-white/10 rounded-xl p-3 shadow-2xl opacity-0 invisible group-hover/order:opacity-100 group-hover/order:visible transition-all duration-200 z-[100]">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-2">Đơn hàng hiện tại</p>
-                    <div className="space-y-2">
+                  <div className="absolute top-full right-0 w-52 bg-surface-container-high border border-white/10 rounded-xl p-3 shadow-2xl opacity-0 invisible group-hover/order:opacity-100 group-hover/order:visible transition-all duration-200 z-[100]">
+                    <p className="text-[10px] font-black uppercase tracking-widest text-on-surface-variant mb-3 border-b border-white/5 pb-2">Đơn hàng hiện tại</p>
+                    <div className="space-y-3">
                       {activeOrders.slice(0, 3).map(order => (
-                        <div key={order.id} className="flex justify-between items-center border-b border-white/5 pb-2 last:border-0 last:pb-0">
-                          <span className="text-xs font-bold truncate pr-2">#{order.id}</span>
-                          <span className={`text-[9px] font-black uppercase px-2 py-0.5 rounded-full bg-surface-container-highest ${getStatusColor(order.status)}`}>
+                        <div key={order.id} className="flex justify-between items-center gap-2">
+                          <span className="text-xs font-bold truncate text-on-surface">#{order.id}</span>
+                          <span className={`text-[9px] font-black uppercase px-2.5 py-1 rounded-full leading-none flex items-center justify-center min-w-[75px] whitespace-nowrap bg-surface-container-highest ${getStatusColor(order.status)}`}>
                             {order.status === 'pending' ? 'Chờ xử lý' : 'Đang làm'}
                           </span>
                         </div>
                       ))}
                       {activeOrders.length > 3 && (
-                        <p className="text-[9px] text-on-surface-variant text-center pt-1 italic">Và {activeOrders.length - 3} đơn khác...</p>
+                        <p className="text-[10px] text-on-surface-variant text-center pt-2 italic border-t border-white/5">Và {activeOrders.length - 3} đơn khác...</p>
                       )}
                     </div>
                   </div>
@@ -146,44 +146,45 @@ export default function Header() {
 
               <button
                 onClick={() => setCartOpen(true)}
-                className="relative p-2 hover:bg-white/5 transition-all duration-200 rounded-full active:scale-95 translate-y-0.5"
+                className="relative p-2 hover:bg-white/5 transition-all duration-200 rounded-full active:scale-95 flex items-center justify-center"
               >
-                <span className="material-symbols-outlined text-primary">shopping_cart</span>
+                <span className="material-symbols-outlined text-primary text-[24px]">shopping_cart</span>
                 {totalCount > 0 && (
-                  <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] bg-secondary text-on-secondary text-[10px] font-black rounded-full flex items-center justify-center px-1 shadow-[0_0_8px_rgba(255,171,105,0.6)]">
+                  <span className="absolute top-0.5 right-0.5 min-w-[18px] h-[18px] bg-secondary text-on-secondary text-[10px] font-black rounded-full flex items-center justify-center px-1 shadow-[0_0_8px_rgba(255,171,105,0.6)]">
                     {totalCount > 99 ? '99+' : totalCount}
                   </span>
                 )}
               </button>
-              <div className="flex gap-4 items-center">
-                <div className="hidden sm:flex flex-col items-center">
-                  <div className="flex items-center gap-2">
-                    {user.role === 'admin' ? (
-                      <Link
-                        to="/admin"
-                        className="text-slate-300 hover:text-white font-bold leading-none"
-                      >
-                        {user.name}
-                      </Link>
-                    ) : (
-                      <span className="text-slate-300 font-bold leading-none">
-                        {user.name}
-                      </span>
-                    )}
-                    <button 
-                      onClick={handleLogout}
-                      className="p-1 hover:bg-white/10 rounded-full transition-colors text-on-surface-variant hover:text-red-500 active:scale-90"
-                      title="Đăng xuất"
+              <div className="flex gap-3 items-center">
+                <div className="hidden sm:flex flex-col items-center justify-center">
+                  {user.role === 'admin' ? (
+                    <Link
+                      to="/admin"
+                      className="text-slate-200 hover:text-white font-bold text-sm tracking-wide"
                     >
-                      <span className="material-symbols-outlined text-[18px]">logout</span>
-                    </button>
-                  </div>
+                      {user.name}
+                    </Link>
+                  ) : (
+                    <span className="text-slate-200 font-bold text-sm tracking-wide">
+                      {user.name}
+                    </span>
+                  )}
                   {user.role !== 'admin' && user.machineId && (
                     <span className="text-[10px] font-black uppercase tracking-widest text-primary mt-1">
                       Máy: {user.machineId}
                     </span>
                   )}
                 </div>
+                
+                <div className="hidden sm:block h-6 w-px bg-white/10 mx-1"></div>
+
+                <button 
+                  onClick={handleLogout}
+                  className="p-2 hover:bg-error/10 rounded-full transition-colors text-on-surface-variant hover:text-error active:scale-90 flex items-center justify-center"
+                  title="Đăng xuất"
+                >
+                  <span className="material-symbols-outlined text-[20px]">logout</span>
+                </button>
               </div>
             </div>
           ) : (
